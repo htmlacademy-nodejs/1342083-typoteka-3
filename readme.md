@@ -1,7 +1,7 @@
 # Личный проект «Типотека» [![Build status][travis-image]][travis-url]
 
-* Студент: [Extends Null](https://up.htmlacademy.ru/nodejs/3/user/1342083).
-* Наставник: `Неизвестно`.
+* Студент: [Nick Petrenko](https://up.htmlacademy.ru/nodejs/3/user/1342083).
+* Наставник: [Юрий Кучма](https://htmlacademy.ru/profile/krabaton).
 
 ---
 
