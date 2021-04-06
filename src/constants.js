@@ -1,7 +1,7 @@
 'use strict';
 
 const ADDITIONAL_ARGV_SPLIT_INDEX = 2;
-const DEFAULT_ARGV = `--help`;
+const DEFAULT_COMMAND = `--help`;
 const ExitCode = {
   SUCCESS: 0,
   ERROR: 0,
@@ -9,6 +9,6 @@ const ExitCode = {
 
 module.exports = {
   ADDITIONAL_ARGV_SPLIT_INDEX,
-  DEFAULT_ARGV,
+  DEFAULT_COMMAND,
   ExitCode,
 };

@@ -52,7 +52,7 @@ const getDate = () => {
   return DateTime.fromMillis(randomTs).toFormat(DATE_FORMAT);
 };
 
-const getSentences = ({min = 1, max = 1}) => {
+const getSentences = ({min, max}) => {
   const count = getRandomIntInclusive(min, max);
 
   return getRandomArrayItems(ANOUNCES, count).join(` `);

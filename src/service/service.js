@@ -1,13 +1,13 @@
 'use strict';
 
 const Cli = require(`./cli`);
-const {ADDITIONAL_ARGV_SPLIT_INDEX, DEFAULT_ARGV} = require(`../constants`);
+const {ADDITIONAL_ARGV_SPLIT_INDEX, DEFAULT_COMMAND} = require(`../constants`);
 
-const additionalArgv = process.argv.slice(ADDITIONAL_ARGV_SPLIT_INDEX);
-const [command, count] = additionalArgv;
+const additionalArguments = process.argv.slice(ADDITIONAL_ARGV_SPLIT_INDEX);
+const [userCommand, ...restArguments] = additionalArguments;
 
-if (additionalArgv.length && Cli[command]) {
-  Cli[command].run(count);
-} else {
-  Cli[DEFAULT_ARGV].run();
+if (additionalArguments.length === 0 || !Cli[userCommand]) {
+  Cli[DEFAULT_COMMAND].run();
 }
+
+Cli[userCommand].run(restArguments);
