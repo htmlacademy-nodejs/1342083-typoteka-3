@@ -81,15 +81,16 @@ const publicationGenerator = (count) => {
 
 module.exports = {
   name: `--generate`,
-  run(count) {
-    count = parseInt(count, 10) || DEFAULT_COUNT;
+  run(args) {
+    const [count] = args;
+    const countPublication = Number.parseInt(count, 10) || DEFAULT_COUNT;
 
-    if (count > MAX_COUNT) {
+    if (countPublication > MAX_COUNT) {
       console.error(chalk.red(`Не больше ${MAX_COUNT} публикаций.`));
       process.exit(ExitCode.ERROR);
     }
 
-    const data = publicationGenerator(count);
+    const data = publicationGenerator(countPublication);
     const publications = JSON.stringify(data, null, 2);
 
     fs.writeFile(FILE_NAME, publications, (err) => {
@@ -98,7 +99,7 @@ module.exports = {
         process.exit(ExitCode.ERROR);
       }
 
-      console.info(chalk.green(`Публикации (${count}) успешно сгенерированы.`));
+      console.info(chalk.green(`Публикации (${countPublication}) успешно сгенерированы.`));
       process.exit(ExitCode.SUCCESS);
     });
   },
