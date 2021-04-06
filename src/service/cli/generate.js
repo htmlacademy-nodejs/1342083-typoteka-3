@@ -3,7 +3,7 @@
 const fs = require(`fs`);
 const chalk = require(`chalk`);
 const {DateTime} = require(`luxon`);
-const {EXIT_CODE} = require(`../../constants`);
+const {ExitCode} = require(`../../constants`);
 const {
   getRandomIntInclusive,
   getRandomArrayItem,
@@ -86,7 +86,7 @@ module.exports = {
 
     if (count > MAX_COUNT) {
       console.error(chalk.red(`Не больше ${MAX_COUNT} публикаций.`));
-      process.exit(EXIT_CODE.error);
+      process.exit(ExitCode.ERROR);
     }
 
     const data = publicationGenerator(count);
@@ -95,11 +95,11 @@ module.exports = {
     fs.writeFile(FILE_NAME, publications, (err) => {
       if (err) {
         console.error(chalk.red(`Невозможно сохранить публикации.`));
-        process.exit(EXIT_CODE.error);
+        process.exit(ExitCode.ERROR);
       }
 
       console.info(chalk.green(`Публикации (${count}) успешно сгенерированы.`));
-      process.exit(EXIT_CODE.success);
+      process.exit(ExitCode.SUCCESS);
     });
   },
 };
