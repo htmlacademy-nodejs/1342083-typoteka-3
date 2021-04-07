@@ -18,6 +18,10 @@
     "url": "https://github.com/extendsnull/1342083-typoteka-3/issues"
   },
   "homepage": "https://github.com/extendsnull/1342083-typoteka-3#readme",
+  "dependencies": {
+    "chalk": "4.1.0",
+    "luxon": "1.26.0"
+  },
   "devDependencies": {
     "eslint": "7.23.0",
     "eslint-config-htmlacademy": "0.6.0"
