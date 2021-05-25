@@ -10,6 +10,7 @@ const {
   getRandomArrayItems,
 } = require(`../../utils`);
 const {
+  CliCommand,
   MocksConfig,
   AnounceRestrict,
   FullTextRestrict,
@@ -62,7 +63,7 @@ const publicationGenerator = (count) => {
 };
 
 module.exports = {
-  name: `--generate`,
+  name: CliCommand.GENERATE,
   run(args) {
     const [count] = args;
     const countPublication = Number.parseInt(count, 10) || MocksConfig.DEFAULT_COUNT;
