@@ -12,9 +12,7 @@ const {
 const {
   CliCommand,
   MocksConfig,
-  AnounceRestrict,
   FullTextRestrict,
-  CategoryRestrict
 } = require(`./constants`);
 
 const getTitle = () => getRandomArrayItem(MocksConfig.TITLES);
@@ -40,13 +38,13 @@ const getSentences = ({MIN, MAX}) => {
 };
 
 const getAnounce = () => {
-  return getSentences(AnounceRestrict);
+  return getSentences(MocksConfig.ANOUNCE_RESTRICT);
 };
 
 const getFullText = () => getSentences(FullTextRestrict);
 
 const getCategories = () => {
-  const count = getRandomIntInclusive(CategoryRestrict.MIN, CategoryRestrict.MAX);
+  const count = getRandomIntInclusive(MocksConfig.CATEGORY_RESTRICT.MIN, MocksConfig.CATEGORY_RESTRICT.MAX);
   return getRandomArrayItems(MocksConfig.CATEGORIES, count);
 };
 

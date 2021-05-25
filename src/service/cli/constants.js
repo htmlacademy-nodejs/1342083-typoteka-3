@@ -61,11 +61,14 @@ const MocksConfig = {
     `Программирование`,
     `Железо`,
   ],
-};
-
-const AnounceRestrict = {
-  MIN: 1,
-  MAX: 5,
+  ANOUNCE_RESTRICT: {
+    MIN: 1,
+    MAX: 5,
+  },
+  CATEGORY_RESTRICT: {
+    MIN: 1,
+    MAX: 3,
+  },
 };
 
 const FullTextRestrict = {
@@ -73,16 +76,9 @@ const FullTextRestrict = {
   MAX: MocksConfig.ANOUNCES.length - 1,
 };
 
-const CategoryRestrict = {
-  MIN: 1,
-  MAX: 3,
-};
-
 module.exports = {
   CliCommand,
   DEFAULT_COMMAND,
   MocksConfig,
-  AnounceRestrict,
   FullTextRestrict,
-  CategoryRestrict,
 };
