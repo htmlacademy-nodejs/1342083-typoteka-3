@@ -1,11 +1,12 @@
 'use strict';
 
 const chulk = require(`chalk`);
-const {ExitCode} = require(`../../constants`);
 const packageJson = require(`../../../package.json`);
+const {ExitCode} = require(`../../constants`);
+const {CliCommand} = require(`./constants`);
 
 module.exports = {
-  name: `--version`,
+  name: CliCommand.VERSION,
   run() {
     console.info(chulk.yellow(packageJson.version));
     process.exit(ExitCode.SUCCESS);

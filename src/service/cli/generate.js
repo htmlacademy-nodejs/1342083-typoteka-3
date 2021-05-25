@@ -9,66 +9,48 @@ const {
   getRandomArrayItem,
   getRandomArrayItems,
 } = require(`../../utils`);
-
-const FILE_NAME = `mock.json`;
-const DEFAULT_COUNT = 1;
-const MAX_COUNT = 1000;
-const PAST_MONTH_LIMIT = 3;
-const DATE_FORMAT = `yyyy-LL-dd HH:mm:ss`;
-
 const {
-  TITLES,
-  ANOUNCES,
-  CATEGORIES,
-} = require(`./text-content`);
+  MocksConfig,
+  AnounceRestrict,
+  FullTextRestrict,
+  CategoryRestrict
+} = require(`./constants`);
 
-const AnounceRestrict = {
-  min: 1,
-  max: 5,
-};
-
-const FullTextRestrict = {
-  min: 1,
-  max: ANOUNCES.length - 1,
-};
-
-const CategoryRestrict = {
-  min: 1,
-  max: 3,
-};
-
-const getTitle = () => getRandomArrayItem(TITLES);
+const getTitle = () => getRandomArrayItem(MocksConfig.TITLES);
 
 const getDate = () => {
   const now = DateTime.now();
   const past = now.minus({
-    month: PAST_MONTH_LIMIT,
+    month: MocksConfig.PAST_MONTH_LIMIT,
   });
 
   const nowTs = now.valueOf();
   const pastTs = past.valueOf();
   const randomTs = getRandomIntInclusive(nowTs, pastTs);
 
-  return DateTime.fromMillis(randomTs).toFormat(DATE_FORMAT);
+  return DateTime
+    .fromMillis(randomTs)
+    .toFormat(MocksConfig.DATE_FORMAT);
 };
 
-const getSentences = ({min, max}) => {
-  const count = getRandomIntInclusive(min, max);
-
-  return getRandomArrayItems(ANOUNCES, count).join(` `);
+const getSentences = ({MIN, MAX}) => {
+  const count = getRandomIntInclusive(MIN, MAX);
+  return getRandomArrayItems(MocksConfig.ANOUNCES, count).join(` `);
 };
 
-const getAnounce = () => getSentences(AnounceRestrict);
+const getAnounce = () => {
+  return getSentences(AnounceRestrict);
+};
 
 const getFullText = () => getSentences(FullTextRestrict);
 
 const getCategories = () => {
-  const count = getRandomIntInclusive(CategoryRestrict.min, CategoryRestrict.max);
-  return getRandomArrayItems(CATEGORIES, count);
+  const count = getRandomIntInclusive(CategoryRestrict.MIN, CategoryRestrict.MAX);
+  return getRandomArrayItems(MocksConfig.CATEGORIES, count);
 };
 
 const publicationGenerator = (count) => {
-  return Array(count).fill(``).map(() => {
+  return Array.from(new Array(count), () => {
     return {
       title: getTitle(),
       createdDate: getDate(),
@@ -83,17 +65,17 @@ module.exports = {
   name: `--generate`,
   run(args) {
     const [count] = args;
-    const countPublication = Number.parseInt(count, 10) || DEFAULT_COUNT;
+    const countPublication = Number.parseInt(count, 10) || MocksConfig.DEFAULT_COUNT;
 
-    if (countPublication > MAX_COUNT) {
-      console.error(chalk.red(`Не больше ${MAX_COUNT} публикаций.`));
+    if (countPublication > MocksConfig.MAX_COUNT) {
+      console.error(chalk.red(`Не больше ${MocksConfig.MAX_COUNT} публикаций.`));
       process.exit(ExitCode.ERROR);
     }
 
     const data = publicationGenerator(countPublication);
     const publications = JSON.stringify(data, null, 2);
 
-    fs.writeFile(FILE_NAME, publications, (err) => {
+    fs.writeFile(MocksConfig.FILE_NAME, publications, (err) => {
       if (err) {
         console.error(chalk.red(`Невозможно сохранить публикации.`));
         process.exit(ExitCode.ERROR);

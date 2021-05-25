@@ -2,6 +2,7 @@
 
 const chulk = require(`chalk`);
 const {ExitCode} = require(`../../constants`);
+const {CliCommand} = require(`./constants`);
 
 const HELP_TEXT = `
 Программа запускает http-сервер и формирует файл с данными для API.
@@ -10,13 +11,13 @@ const HELP_TEXT = `
 ${chulk.yellow(`service.js <command>`)}
 
 Команды:
-${chulk.yellow(`--version:`)}            выводит номер версии
-${chulk.yellow(`--help:`)}               печатает этот текст
-${chulk.yellow(`--generate <count>`)}    формирует файл mocks.json
+${chulk.yellow(CliCommand.VERSION)}            выводит номер версии
+${chulk.yellow(CliCommand.HELP)}               печатает этот текст
+${chulk.yellow(CliCommand.GENERATE)}           формирует файл mocks.json
 `;
 
 module.exports = {
-  name: `--help`,
+  name: CliCommand.HELP,
   run() {
     console.info(HELP_TEXT);
     process.exit(ExitCode.SUCCESS);
