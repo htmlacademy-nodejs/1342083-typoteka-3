@@ -8,18 +8,18 @@ const HELP_TEXT = `
 Программа запускает http-сервер и формирует файл с данными для API.
 
 Гайд:
-${chulk.yellow(`service.js <command>`)}
+service.js <command>
 
 Команды:
-${chulk.yellow(CliCommand.VERSION)}            выводит номер версии
-${chulk.yellow(CliCommand.HELP)}               печатает этот текст
-${chulk.yellow(CliCommand.GENERATE)}           формирует файл mocks.json
+${CliCommand.VERSION}            выводит номер версии
+${CliCommand.HELP}               печатает этот текст
+${CliCommand.GENERATE}           формирует файл mocks.json
 `;
 
 module.exports = {
   name: CliCommand.HELP,
   run() {
-    console.info(HELP_TEXT);
+    console.info(chulk.gray(HELP_TEXT));
     process.exit(ExitCode.SUCCESS);
   },
 };
