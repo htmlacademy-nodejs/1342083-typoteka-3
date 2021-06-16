@@ -1,6 +1,6 @@
 'use strict';
 
-const fs = require(`fs`);
+const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
 const {DateTime} = require(`luxon`);
 const {ExitCode} = require(`../../constants`);
@@ -62,7 +62,7 @@ const publicationGenerator = (count) => {
 
 module.exports = {
   name: CliCommand.GENERATE,
-  run(args) {
+  async run(args) {
     const [count] = args;
     const countPublication = Number.parseInt(count, 10) || MocksConfig.DEFAULT_COUNT;
 
@@ -74,14 +74,13 @@ module.exports = {
     const data = publicationGenerator(countPublication);
     const publications = JSON.stringify(data, null, 2);
 
-    fs.writeFile(MocksConfig.FILE_NAME, publications, (err) => {
-      if (err) {
-        console.error(chalk.red(`Невозможно сохранить публикации.`));
-        process.exit(ExitCode.ERROR);
-      }
-
+    try {
+      await fs.writeFile(MocksConfig.FILE_NAME, publications);
       console.info(chalk.green(`Публикации (${countPublication}) успешно сгенерированы.`));
       process.exit(ExitCode.SUCCESS);
-    });
+    } catch (err) {
+      console.error(chalk.red(`Невозможно сохранить публикации.`));
+      process.exit(ExitCode.ERROR);
+    }
   },
 };
