@@ -13,7 +13,6 @@ const {
   CliCommand,
   FilePath,
   MocksConfig,
-  FULL_TEXT_RESTRICT_MIN,
 } = require(`./constants`);
 
 const getTitle = (titles) => getRandomArrayItem(titles);
@@ -43,7 +42,8 @@ const getAnounce = (sentences) => {
   return getSentences(sentences, MIN, MAX);
 };
 
-const getFullText = (sentences) => getSentences(sentences, FULL_TEXT_RESTRICT_MIN, sentences.length - 1);
+const getFullText = (sentences) =>
+  getSentences(sentences, MocksConfig.FULL_TEXT_RESTRICT_MIN, sentences.length - 1);
 
 const getCategories = (categories) => {
   const count = getRandomIntInclusive(MocksConfig.CATEGORY_RESTRICT.MIN, MocksConfig.CATEGORY_RESTRICT.MAX);

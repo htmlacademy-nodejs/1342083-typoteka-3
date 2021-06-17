@@ -28,14 +28,13 @@ const MocksConfig = {
     MIN: 1,
     MAX: 3,
   },
+  FULL_TEXT_RESTRICT_MIN: 1,
 };
 
-const FULL_TEXT_RESTRICT_MIN = 1;
 
 module.exports = {
   CliCommand,
   DEFAULT_COMMAND,
   FilePath,
   MocksConfig,
-  FULL_TEXT_RESTRICT_MIN,
 };
