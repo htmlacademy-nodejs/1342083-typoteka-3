@@ -11,11 +11,12 @@ const {
 } = require(`../../utils`);
 const {
   CliCommand,
+  FilePath,
   MocksConfig,
-  FullTextRestrict,
+  FULL_TEXT_RESTRICT_MIN,
 } = require(`./constants`);
 
-const getTitle = () => getRandomArrayItem(MocksConfig.TITLES);
+const getTitle = (titles) => getRandomArrayItem(titles);
 
 const getDate = () => {
   const now = DateTime.now();
@@ -32,32 +33,43 @@ const getDate = () => {
     .toFormat(MocksConfig.DATE_FORMAT);
 };
 
-const getSentences = ({MIN, MAX}) => {
-  const count = getRandomIntInclusive(MIN, MAX);
-  return getRandomArrayItems(MocksConfig.ANOUNCES, count).join(` `);
+const getSentences = (sentences, min, max) => {
+  const count = getRandomIntInclusive(min, max);
+  return getRandomArrayItems(sentences, count).join(` `);
 };
 
-const getAnounce = () => {
-  return getSentences(MocksConfig.ANOUNCE_RESTRICT);
+const getAnounce = (sentences) => {
+  const {MIN, MAX} = MocksConfig.ANOUNCE_RESTRICT;
+  return getSentences(sentences, MIN, MAX);
 };
 
-const getFullText = () => getSentences(FullTextRestrict);
+const getFullText = (sentences) => getSentences(sentences, FULL_TEXT_RESTRICT_MIN, sentences.length - 1);
 
-const getCategories = () => {
+const getCategories = (categories) => {
   const count = getRandomIntInclusive(MocksConfig.CATEGORY_RESTRICT.MIN, MocksConfig.CATEGORY_RESTRICT.MAX);
-  return getRandomArrayItems(MocksConfig.CATEGORIES, count);
+  return getRandomArrayItems(categories, count);
 };
 
-const publicationGenerator = (count) => {
+const publicationGenerator = (count, titles, sentences, categories) => {
   return Array.from(new Array(count), () => {
     return {
-      title: getTitle(),
+      title: getTitle(titles),
       createdDate: getDate(),
-      announce: getAnounce(),
-      fullText: getFullText(),
-      сategory: getCategories(),
+      announce: getAnounce(sentences),
+      fullText: getFullText(sentences),
+      сategory: getCategories(categories),
     };
   });
+};
+
+const readContent = async (filePath) => {
+  try {
+    const content = await fs.readFile(filePath, `utf-8`);
+    return content.trim().split(`\n`);
+  } catch (err) {
+    console.error(chalk.red(err));
+    return [];
+  }
 };
 
 module.exports = {
@@ -66,13 +78,17 @@ module.exports = {
     const [count] = args;
     const countPublication = Number.parseInt(count, 10) || MocksConfig.DEFAULT_COUNT;
 
+    const titles = await readContent(FilePath.TITLES);
+    const sentences = await readContent(FilePath.SENTENCES);
+    const categories = await readContent(FilePath.CATEGORIES);
+
     if (countPublication > MocksConfig.MAX_COUNT) {
       console.error(chalk.red(`Не больше ${MocksConfig.MAX_COUNT} публикаций.`));
       process.exit(ExitCode.ERROR);
     }
 
-    const data = publicationGenerator(countPublication);
-    const publications = JSON.stringify(data, null, 2);
+    const content = publicationGenerator(countPublication, titles, sentences, categories);
+    const publications = JSON.stringify(content, null, 2);
 
     try {
       await fs.writeFile(MocksConfig.FILE_NAME, publications);
