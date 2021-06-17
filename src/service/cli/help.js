@@ -13,7 +13,8 @@ service.js <command>
 Команды:
 ${CliCommand.VERSION}            выводит номер версии
 ${CliCommand.HELP}               печатает этот текст
-${CliCommand.GENERATE}           формирует файл mocks.json
+${CliCommand.GENERATE} <count>   формирует файл mocks.json
+${CliCommand.SERVER} <port>      запускает http-сервер
 `;
 
 module.exports = {
