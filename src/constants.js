@@ -2,8 +2,8 @@
 
 const ADDITIONAL_ARGV_SPLIT_INDEX = 2;
 const ExitCode = {
+  ERROR: 1,
   SUCCESS: 0,
-  ERROR: 0,
 };
 const RANDOM_SEPARATOR = 0.5;
 

@@ -4,7 +4,9 @@
   "description": "Типотека",
   "main": "./src/service/service.js",
   "scripts": {
-    "start": "node ./src/service/service.js",
+    "start": "npm run server",
+    "generate": "node ./src/service/service.js --generate",
+    "server": "nodemon ./src/service/service.js --server",
     "test": "npm run eslint",
     "eslint": "eslint --ext .js src/"
   },
@@ -24,6 +26,7 @@
   },
   "devDependencies": {
     "eslint": "7.23.0",
-    "eslint-config-htmlacademy": "0.6.0"
+    "eslint-config-htmlacademy": "0.6.0",
+    "nodemon": "2.0.7"
   }
 }
