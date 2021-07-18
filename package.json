@@ -7,6 +7,7 @@
     "start": "npm run server",
     "generate": "node ./src/service/service.js --generate",
     "server": "nodemon ./src/service/service.js --server",
+    "start-front-server": "nodemon ./src/express/express.js",
     "test": "npm run eslint",
     "eslint": "eslint --ext .js src/"
   },
@@ -22,6 +23,7 @@
   "homepage": "https://github.com/extendsnull/1342083-typoteka-3#readme",
   "dependencies": {
     "chalk": "4.1.0",
+    "express": "4.17.1",
     "luxon": "1.26.0"
   },
   "devDependencies": {
