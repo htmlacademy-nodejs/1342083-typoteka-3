@@ -32,7 +32,7 @@ module.exports = {
 
     app.listen(port, (err) => {
       if (err) {
-        console.error(chalk.green(`Сервер запущен: http://localhost:${port}`));
+        console.error(chalk.red(err));
       }
 
       console.info(chalk.green(`Сервер запущен: http://localhost:${port}`));
