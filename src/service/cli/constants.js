@@ -10,6 +10,7 @@ const CliCommand = {
 const DEFAULT_COMMAND = CliCommand.HELP;
 
 const FilePath = {
+  COMMENTS: `./data/comments.txt`,
   CATEGORIES: `./data/categories.txt`,
   SENTENCES: `./data/sentences.txt`,
   TITLES: `./data/titles.txt`,
@@ -29,6 +30,10 @@ const MocksConfig = {
   CATEGORY_RESTRICT: {
     MIN: 1,
     MAX: 3,
+  },
+  COMMENTS_RESTRICT: {
+    MIN: 0,
+    MAX: 5,
   },
   FULL_TEXT_RESTRICT_MIN: 1,
 };

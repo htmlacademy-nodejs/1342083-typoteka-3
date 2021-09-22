@@ -51,7 +51,15 @@ const getCategories = (categories) => {
   return getRandomArrayItems(categories, count);
 };
 
-const publicationGenerator = (count, titles, sentences, categories) => {
+const getComments = (comments) => {
+  const count = getRandomIntInclusive(MocksConfig.COMMENTS_RESTRICT.MIN, MocksConfig.COMMENTS_RESTRICT.MAX);
+  return getRandomArrayItems(comments, count).map((text) => ({
+    id: getRandomId(),
+    text,
+  }));
+};
+
+const publicationGenerator = (count, titles, sentences, categories, comments) => {
   return Array.from(new Array(count), () => {
     return {
       id: getRandomId(),
@@ -60,6 +68,7 @@ const publicationGenerator = (count, titles, sentences, categories) => {
       announce: getAnounce(sentences),
       fullText: getFullText(sentences),
       сategory: getCategories(categories),
+      comments: getComments(comments),
     };
   });
 };
@@ -83,13 +92,14 @@ module.exports = {
     const titles = await readContent(FilePath.TITLES);
     const sentences = await readContent(FilePath.SENTENCES);
     const categories = await readContent(FilePath.CATEGORIES);
+    const comments = await readContent(FilePath.COMMENTS);
 
     if (countPublication > MocksConfig.MAX_COUNT) {
       console.error(chalk.red(`Не больше ${MocksConfig.MAX_COUNT} публикаций.`));
       process.exit(ExitCode.ERROR);
     }
 
-    const content = publicationGenerator(countPublication, titles, sentences, categories);
+    const content = publicationGenerator(countPublication, titles, sentences, categories, comments);
     const publications = JSON.stringify(content, null, 2);
 
     try {
