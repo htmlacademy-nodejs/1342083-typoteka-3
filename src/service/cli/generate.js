@@ -8,6 +8,7 @@ const {
   getRandomIntInclusive,
   getRandomArrayItem,
   getRandomArrayItems,
+  getRandomId,
 } = require(`../../utils`);
 const {
   CliCommand,
@@ -53,6 +54,7 @@ const getCategories = (categories) => {
 const publicationGenerator = (count, titles, sentences, categories) => {
   return Array.from(new Array(count), () => {
     return {
+      id: getRandomId(),
       title: getTitle(titles),
       createdDate: getDate(),
       announce: getAnounce(sentences),
