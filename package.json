@@ -4,12 +4,14 @@
   "description": "Типотека",
   "main": "./src/service/service.js",
   "scripts": {
-    "start": "npm run server",
     "generate": "node ./src/service/service.js --generate",
+    "version": "node ./src/service/service.js --version",
+    "help": "node ./src/service/service.js --help",
     "server": "nodemon ./src/service/service.js --server",
+    "start": "npm run server",
     "start-front-server": "nodemon ./src/express/express.js",
-    "test": "npm run eslint",
-    "eslint": "eslint --ext .js src/"
+    "eslint": "eslint --ext .js src/",
+    "test": "npm run eslint"
   },
   "repository": {
     "type": "git",

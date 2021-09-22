@@ -1,7 +1,7 @@
 'use strict';
 
 const {nanoid} = require(`nanoid`);
-const {RANDOM_SEPARATOR, DEFAULT_ID_LENGTH} = require(`./constants`);
+const {RANDOM_SEPARATOR, MAX_ID_LENGTH} = require(`./constants`);
 
 const getRandomIntInclusive = (min, max) => {
   min = Math.ceil(min);
@@ -29,7 +29,7 @@ const getRandomArrayItems = (array, count) => {
   return shuffleArray(array).slice(0, count);
 };
 
-const getRandomId = (length = DEFAULT_ID_LENGTH) => nanoid(length);
+const getRandomId = (length = MAX_ID_LENGTH) => nanoid(length);
 
 module.exports = {
   getRandomIntInclusive,
