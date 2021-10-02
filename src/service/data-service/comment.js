@@ -13,7 +13,7 @@ class CommentService {
   }
 
   drop(article, id) {
-    const commentToDrop = article.comments.find((comment) => comment.id === id);
+    const commentToDrop = this.findOne(article, id);
 
     if (!commentToDrop) {
       return null;
@@ -22,6 +22,10 @@ class CommentService {
     const index = article.comments.findIndex((comment) => comment.id === id);
     article.comments = [...article.comments.slice(0, index), ...article.comments.slice(index + 1)];
     return commentToDrop;
+  }
+
+  findOne(article, id) {
+    return article.comments.find((comment) => comment.id === id);
   }
 
   findAll(article) {
