@@ -8,7 +8,7 @@ class CategoryService {
   findAll() {
     if (Array.isArray(this._articles)) {
       const categories = this._articles.reduce((acc, article) => {
-        article.сategory.forEach((category) => acc.add(category));
+        article.category.forEach((category) => acc.add(category));
         return acc;
       }, new Set());
 
