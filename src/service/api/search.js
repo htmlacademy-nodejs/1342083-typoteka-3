@@ -10,7 +10,7 @@ module.exports = (app, service) => {
   app.use(URL, route);
 
   route.get(`/`, (req, res) => {
-    const {query} = req.query;
+    const {query = ``} = req.query;
     let results = [];
 
     if (!query.length) {

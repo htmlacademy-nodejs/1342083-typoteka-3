@@ -206,6 +206,10 @@ describe(`API возвращает результаты поиска на нев
     expect(response.statusCode).toBe(HttpStatusCode.BAD_REQUEST);
   });
 
+  test(`Ответ сервера равен 400`, async () => {
+    await request(app).get(`/search`).expect(HttpStatusCode.BAD_REQUEST);
+  });
+
   test(`Возвращает пустой массив`, () => {
     expect(Array.isArray(response.body)).toBeTruthy();
     expect(response.body.length).toBe(0);
