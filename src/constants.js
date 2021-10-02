@@ -1,6 +1,7 @@
 'use strict';
 
 const ADDITIONAL_ARGV_SPLIT_INDEX = 2;
+const DATE_FORMAT_PATTERN = `yyyy-LL-dd HH:mm:ss`;
 const DEFAULT_COMMAND = `--help`;
 const DEFAULT_ENCODING = `utf-8`;
 const MAX_ID_LENGTH = 6;
@@ -26,6 +27,7 @@ const HttpStatusCode = {
 
 module.exports = {
   ADDITIONAL_ARGV_SPLIT_INDEX,
+  DATE_FORMAT_PATTERN,
   DEFAULT_COMMAND,
   DEFAULT_ENCODING,
   MAX_ID_LENGTH,

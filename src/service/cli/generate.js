@@ -3,6 +3,7 @@
 const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
 const {
+  DATE_FORMAT_PATTERN,
   DEFAULT_ENCODING,
   CliCommand,
   ExitCode,
@@ -17,7 +18,6 @@ const {
   getComments,
 } = require(`./utils`);
 
-const DATE_FORMAT_PATTERN = `yyyy-LL-dd HH:mm:ss`;
 const FULL_TEXT_MIN_SIZE = 1;
 const OUTPUT_FILE_NAME = `mock.json`;
 const PAST_MONTH_LIMIT = 3;
