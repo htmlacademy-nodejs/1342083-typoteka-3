@@ -160,16 +160,16 @@ describe(`API возвращает результаты поиска`, () => {
     expect(response.statusCode).toBe(HttpStatusCode.OK);
   });
 
-  test(`Возвращает массив с одной статьей`, () => {
+  test(`Возвращает массив с одной публикацией`, () => {
     expect(Array.isArray(response.body)).toBeTruthy();
     expect(response.body.length).toBe(1);
   });
 
-  test(`Заголовок найденной статьи равен ${mockData[0].title}`, () => {
+  test(`Заголовок найденной публикации равен ${mockData[0].title}`, () => {
     expect(response.body[0].title).toBe(mockData[0].title);
   });
 
-  test(`Id найденной статьи равен ${mockData[0].id}`, () => {
+  test(`Id найденной публикации равен ${mockData[0].id}`, () => {
     expect(response.body[0].id).toBe(mockData[0].id);
   });
 });
