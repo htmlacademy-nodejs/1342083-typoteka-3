@@ -1,7 +1,12 @@
 'use strict';
 
 const {nanoid} = require(`nanoid`);
-const {RANDOM_SEPARATOR, MAX_ID_LENGTH} = require(`./constants`);
+const {DateTime} = require(`luxon`);
+const {DATE_FORMAT_PATTERN, RANDOM_SEPARATOR, MAX_ID_LENGTH} = require(`./constants`);
+
+const compareDates = (firstDate, secondDate) => {
+  return DateTime.fromFormat(secondDate, DATE_FORMAT_PATTERN) - DateTime.fromFormat(firstDate, DATE_FORMAT_PATTERN);
+};
 
 const getRandomIntInclusive = (min, max) => {
   min = Math.ceil(min);
@@ -32,6 +37,7 @@ const getRandomArrayItems = (array, count) => {
 const getRandomId = (length = MAX_ID_LENGTH) => nanoid(length);
 
 module.exports = {
+  compareDates,
   getRandomIntInclusive,
   shuffleArray,
   getArrayRandomIndex,
