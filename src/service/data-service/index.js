@@ -1,6 +1,6 @@
 'use strict';
 
-const CategoryService = require(`./category-service`);
+const CategoryService = require(`./category`);
 
 module.exports = {
   CategoryService,

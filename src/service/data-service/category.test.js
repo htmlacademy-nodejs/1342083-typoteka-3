@@ -1,7 +1,7 @@
 'use strict';
 
 const {describe, expect, test} = require(`@jest/globals`);
-const CategoryService = require(`./category-service`);
+const CategoryService = require(`./category`);
 
 const mockData = [
   {
