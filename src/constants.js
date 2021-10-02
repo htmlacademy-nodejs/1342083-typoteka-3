@@ -8,6 +8,17 @@ const MAX_ID_LENGTH = 6;
 const MOCK_FILEPATH = `./mock.json`;
 const RANDOM_SEPARATOR = 0.5;
 
+const ArticleKey = {
+  ID: `id`,
+  TITLE: `title`,
+  PICTURE: `picture`,
+  CREATED_DATE: `createdDate`,
+  ANNOUNCE: `announce`,
+  FULL_TEXT: `fullText`,
+  CATEGORY: `category`,
+  COMMENTS: `comments`,
+};
+
 const CliCommand = {
   GENERATE: `--generate`,
   HELP: DEFAULT_COMMAND,
@@ -34,6 +45,7 @@ module.exports = {
   MAX_ID_LENGTH,
   MOCK_FILEPATH,
   RANDOM_SEPARATOR,
+  ArticleKey,
   CliCommand,
   ExitCode,
   HttpStatusCode,
