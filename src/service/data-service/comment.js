@@ -19,9 +19,22 @@ class CommentService {
       return null;
     }
 
-    const index = article.comments.findIndex((comment) => comment.id === id);
+    const index = this._findIndex(article, id);
     article.comments = [...article.comments.slice(0, index), ...article.comments.slice(index + 1)];
     return commentToDrop;
+  }
+
+  update(article, id, update) {
+    const commentToUpdate = this.findOne(article, id);
+
+    if (!commentToUpdate) {
+      return null;
+    }
+
+    const index = this._findIndex(article, id);
+    const updatedComment = {...commentToUpdate, ...update};
+    article.comments = [...article.comments.slice(0, index), updatedComment, ...article.comments.slice(index + 1)];
+    return updatedComment;
   }
 
   findOne(article, id) {
@@ -30,6 +43,10 @@ class CommentService {
 
   findAll(article) {
     return article.comments;
+  }
+
+  _findIndex(article, id) {
+    return article.comments.findIndex((comment) => comment.id === id);
   }
 }
 
