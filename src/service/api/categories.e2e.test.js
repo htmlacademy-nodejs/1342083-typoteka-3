@@ -139,21 +139,21 @@ app.use(express.json());
 categories(app, new CategoryService(mockData));
 
 describe(`API возвращает доступные категории`, () => {
-  let res;
+  let response;
 
   beforeAll(async () => {
-    res = await request(app).get(`/categories`);
+    response = await request(app).get(`/categories`);
   });
 
   test(`Статус ответа 200`, () => {
-    expect(res.statusCode).toBe(HttpStatusCode.OK);
+    expect(response.statusCode).toBe(HttpStatusCode.OK);
   });
 
   test(`Количество категорий равно 5`, () => {
-    expect(res.body.length).toBe(5);
+    expect(response.body.length).toBe(5);
   });
 
   test(`Возвращает определенный список категорий`, () => {
-    expect(res.body).toEqual(mockCategories);
+    expect(response.body).toEqual(mockCategories);
   });
 });
