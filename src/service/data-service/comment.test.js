@@ -33,7 +33,7 @@ const mockData = [
 ];
 
 describe(`CommentService `, () => {
-  const [article] = mockData.slice();
+  const [article] = mockData;
   const service = new CommentService();
   const text = `Он обязательно понравится геймерам со стажем`;
 
