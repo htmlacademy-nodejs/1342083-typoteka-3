@@ -2,7 +2,11 @@
 
 const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
-const {CliCommand, ExitCode} = require(`../../constants`);
+const {
+  DEFAULT_ENCODING,
+  CliCommand,
+  ExitCode,
+} = require(`../../constants`);
 const {
   getRandomArrayItem,
   getRandomId,
@@ -61,7 +65,7 @@ const publicationGenerator = (count, titles, sentences, categories, comments) =>
 
 const readContent = async (filePath) => {
   try {
-    const content = await fs.readFile(filePath, `utf-8`);
+    const content = await fs.readFile(filePath, DEFAULT_ENCODING);
     return content.trim().split(`\n`);
   } catch (err) {
     console.error(chalk.red(err));

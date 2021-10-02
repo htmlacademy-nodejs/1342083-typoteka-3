@@ -3,10 +3,9 @@
 const express = require(`express`);
 const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
-const {CliCommand, HttpStatusCode} = require(`../../constants`);
+const {DEFAULT_ENCODING, MOCK_FILEPATH, CliCommand, HttpStatusCode} = require(`../../constants`);
 
 const DEFAULT_PORT = 3000;
-const MOCK_FILE_PATH = `./mock.json`;
 const NOT_FOUND_TEXT = `404 - Not Found`;
 
 module.exports = {
@@ -22,7 +21,7 @@ module.exports = {
       let mocks = null;
 
       try {
-        const content = await fs.readFile(MOCK_FILE_PATH, `utf-8`);
+        const content = await fs.readFile(MOCK_FILEPATH, DEFAULT_ENCODING);
         mocks = JSON.parse(content);
       } catch (err) {
         console.error(chalk.red(err));
