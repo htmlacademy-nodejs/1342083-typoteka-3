@@ -3,7 +3,7 @@
 const fs = require(`fs`).promises;
 const {DEFAULT_ENCODING} = require(`../../constants`);
 
-const createGetMockData = () => {
+module.exports = () => {
   let data = [];
 
   return async (filePath) => {
@@ -21,5 +21,3 @@ const createGetMockData = () => {
     return data;
   };
 };
-
-module.exports = createGetMockData;
