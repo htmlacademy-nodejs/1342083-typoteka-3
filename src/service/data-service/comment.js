@@ -19,8 +19,7 @@ class CommentService {
       return null;
     }
 
-    const index = this._findIndex(article, id);
-    article.comments = [...article.comments.slice(0, index), ...article.comments.slice(index + 1)];
+    article.comments = article.comments.filter((comment) => comment.id !== id);
     return commentToDrop;
   }
 
@@ -31,9 +30,14 @@ class CommentService {
       return null;
     }
 
-    const index = this._findIndex(article, id);
     const updatedComment = {...commentToUpdate, ...update};
-    article.comments = [...article.comments.slice(0, index), updatedComment, ...article.comments.slice(index + 1)];
+    article.comments = article.comments.map((comment) => {
+      if (comment.id === id) {
+        return updatedComment;
+      }
+
+      return comment;
+    });
     return updatedComment;
   }
 
@@ -43,10 +47,6 @@ class CommentService {
 
   findAll(article) {
     return article.comments;
-  }
-
-  _findIndex(article, id) {
-    return article.comments.findIndex((comment) => comment.id === id);
   }
 }
 

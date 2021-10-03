@@ -26,8 +26,7 @@ class ArticleService {
       return null;
     }
 
-    const index = this._findIndex(id);
-    this._articles = [...this._articles.slice(0, index), ...this._articles.slice(index + 1)];
+    this._articles = this._articles.filter((article) => article.id !== id);
 
     return articleToDrop;
   }
@@ -39,9 +38,14 @@ class ArticleService {
       return null;
     }
 
-    const index = this._findIndex(id);
     const updatedArticle = {...oldArticle, ...update};
-    this._articles = [...this._articles.slice(0, index), updatedArticle, ...this._articles.slice(index + 1)];
+    this._articles = this._articles.map((article) => {
+      if (article.id === id) {
+        return updatedArticle;
+      }
+
+      return article;
+    });
 
     return updatedArticle;
   }
@@ -52,10 +56,6 @@ class ArticleService {
 
   findAll() {
     return this._articles.slice();
-  }
-
-  _findIndex(id) {
-    return this._articles.findIndex((article) => article.id === id);
   }
 }
 

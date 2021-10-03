@@ -4,17 +4,13 @@ const {compareDates} = require(`../../utils`);
 
 class SearchService {
   constructor(articles) {
-    this._articles = articles;
+    this._articles = Array.isArray(articles) ? articles : [];
   }
 
   findAll(searchText) {
-    if (Array.isArray(this._articles)) {
-      return this._articles
-        .filter((article) => article.title.includes(searchText))
-        .sort((first, second) => compareDates(first.createdDate, second.createdDate));
-    }
-
-    return [];
+    return this._articles
+      .filter((article) => article.title.includes(searchText))
+      .sort((first, second) => compareDates(first.createdDate, second.createdDate));
   }
 }
 
