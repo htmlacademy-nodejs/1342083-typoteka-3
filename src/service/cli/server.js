@@ -13,6 +13,10 @@ const {
 const DEFAULT_PORT = 3000;
 const NOT_FOUND_TEXT = `404 - Not Found`;
 
+const logger = getLogger({
+  name: `api`,
+});
+
 const app = express();
 app.use(express.json());
 
@@ -33,10 +37,6 @@ app.use((req, res) => {
 
 app.use((err, _req, _res, _next) => {
   logger.error(`An error occurred on processing request: ${err.message}`);
-});
-
-const logger = getLogger({
-  name: `api`,
 });
 
 module.exports = {
