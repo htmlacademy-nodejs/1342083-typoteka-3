@@ -32,6 +32,11 @@ const CliCommand = {
   VERSION: `--version`,
 };
 
+const Env = {
+  DEVELOPMENT: `development`,
+  PRODUCTION: `production`
+};
+
 const ExitCode = {
   ERROR: 1,
   SUCCESS: 0,
@@ -54,6 +59,7 @@ module.exports = {
   APIUrl,
   ArticleKey,
   CliCommand,
+  Env,
   ExitCode,
   HttpStatusCode,
 };
