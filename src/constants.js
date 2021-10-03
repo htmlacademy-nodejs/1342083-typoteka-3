@@ -9,6 +9,12 @@ const MAX_ID_LENGTH = 6;
 const MOCK_FILEPATH = `./mock.json`;
 const RANDOM_SEPARATOR = 0.5;
 
+const APIUrl = {
+  ARTICLES: `/articles`,
+  CATEGORIES: `/categories`,
+  SEARCH: `/search`,
+};
+
 const ArticleKey = {
   ID: `id`,
   TITLE: `title`,
@@ -47,6 +53,7 @@ module.exports = {
   MAX_ID_LENGTH,
   MOCK_FILEPATH,
   RANDOM_SEPARATOR,
+  APIUrl,
   ArticleKey,
   CliCommand,
   ExitCode,
