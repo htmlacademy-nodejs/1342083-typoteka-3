@@ -7,12 +7,10 @@
     "eslint": "eslint --ext .js src/",
     "jest": "jest",
     "test": "npm run eslint && npm run jest",
-
     "generate": "node ./src/service/service.js --generate",
     "version": "node ./src/service/service.js --version",
     "help": "node ./src/service/service.js --help",
     "server": "nodemon ./src/service/service.js --server",
-
     "start": "npm run server",
     "start-front-server": "node ./src/express/express.js",
     "start-front-server::debug": "nodemon ./src/express/express.js"
@@ -32,6 +30,7 @@
     "express": "4.17.1",
     "luxon": "1.26.0",
     "nanoid": "3.1.25",
+    "pino": "6.13.3",
     "pug": "2.0.4"
   },
   "devDependencies": {
