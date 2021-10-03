@@ -5,7 +5,7 @@ const {getRandomId} = require(`../../utils`);
 
 class ArticleService {
   constructor(articles) {
-    this._articles = Array.isArray(articles) ? articles : [];
+    this._articles = articles;
   }
 
   create(article) {

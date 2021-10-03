@@ -4,7 +4,7 @@ const {compareDates} = require(`../../utils`);
 
 class SearchService {
   constructor(articles) {
-    this._articles = Array.isArray(articles) ? articles : [];
+    this._articles = articles;
   }
 
   findAll(searchText) {

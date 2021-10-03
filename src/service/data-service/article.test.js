@@ -159,13 +159,6 @@ describe(`ArticleService возвращает публикации`, () => {
   });
 });
 
-test(`ArticleService возвращает пустой массив, если данные невалидны`, () => {
-  const service = new ArticleService(null);
-  const articles = service.findAll();
-  expect(Array.isArray(articles)).toBeTruthy();
-  expect(articles.length).toBe(0);
-});
-
 describe(`ArticleService редактирует список публикаций`, () => {
   const service = new ArticleService(mockData);
   const someId = mockData[1].id;

@@ -139,10 +139,4 @@ describe(`CategoryService возвращает категории`, () => {
     const categories = categoryService.findAll();
     expect(categories).toEqual([]);
   });
-
-  test(`Экземпляр CategoryService возвращает пустой массив, если данные невалидны`, () => {
-    const categoryService = new CategoryService(null);
-    const categories = categoryService.findAll();
-    expect(categories).toEqual([]);
-  });
 });

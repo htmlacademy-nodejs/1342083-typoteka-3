@@ -2,7 +2,7 @@
 
 class CategoryService {
   constructor(articles) {
-    this._articles = Array.isArray(articles) ? articles : [];
+    this._articles = articles;
   }
 
   findAll() {
