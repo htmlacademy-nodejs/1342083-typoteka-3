@@ -127,9 +127,4 @@ describe(`SearchService возвращает результаты поиска`,
   test(`Возвращает пустой массив, если ничего не найдено`, () => {
     expect(service.findAll(`To be, or not to be`)).toEqual([]);
   });
-
-  test(`Возвращает пустой массив, если данные невалидны`, () => {
-    const invalidService = new SearchService(null);
-    expect(invalidService.findAll(`Борьба с прокрастинацией`)).toEqual([]);
-  });
 });

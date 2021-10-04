@@ -6,16 +6,12 @@ class CategoryService {
   }
 
   findAll() {
-    if (Array.isArray(this._articles)) {
-      const categories = this._articles.reduce((acc, article) => {
-        article.category.forEach((category) => acc.add(category));
-        return acc;
-      }, new Set());
+    const categories = this._articles.reduce((acc, article) => {
+      article.category.forEach((category) => acc.add(category));
+      return acc;
+    }, new Set());
 
-      return [...categories];
-    }
-
-    return [];
+    return [...categories];
   }
 }
 

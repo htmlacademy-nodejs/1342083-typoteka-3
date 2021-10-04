@@ -3,11 +3,16 @@
 const ADDITIONAL_ARGV_SPLIT_INDEX = 2;
 const API_PREFIX = `/api`;
 const DATE_FORMAT_PATTERN = `yyyy-LL-dd HH:mm:ss`;
-const DEFAULT_COMMAND = `--help`;
 const DEFAULT_ENCODING = `utf-8`;
 const MAX_ID_LENGTH = 6;
 const MOCK_FILEPATH = `./mock.json`;
 const RANDOM_SEPARATOR = 0.5;
+
+const APIUrl = {
+  ARTICLES: `/articles`,
+  CATEGORIES: `/categories`,
+  SEARCH: `/search`,
+};
 
 const ArticleKey = {
   ID: `id`,
@@ -22,9 +27,14 @@ const ArticleKey = {
 
 const CliCommand = {
   GENERATE: `--generate`,
-  HELP: DEFAULT_COMMAND,
-  VERSION: `--version`,
+  HELP: `--help`,
   SERVER: `--server`,
+  VERSION: `--version`,
+};
+
+const Env = {
+  DEVELOPMENT: `development`,
+  PRODUCTION: `production`
 };
 
 const ExitCode = {
@@ -42,13 +52,14 @@ module.exports = {
   ADDITIONAL_ARGV_SPLIT_INDEX,
   API_PREFIX,
   DATE_FORMAT_PATTERN,
-  DEFAULT_COMMAND,
   DEFAULT_ENCODING,
   MAX_ID_LENGTH,
   MOCK_FILEPATH,
   RANDOM_SEPARATOR,
+  APIUrl,
   ArticleKey,
   CliCommand,
+  Env,
   ExitCode,
   HttpStatusCode,
 };

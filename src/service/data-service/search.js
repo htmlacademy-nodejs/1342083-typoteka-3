@@ -8,13 +8,9 @@ class SearchService {
   }
 
   findAll(searchText) {
-    if (Array.isArray(this._articles)) {
-      return this._articles
-        .filter((article) => article.title.includes(searchText))
-        .sort((first, second) => compareDates(first.createdDate, second.createdDate));
-    }
-
-    return [];
+    return this._articles
+      .filter((article) => article.title.includes(searchText))
+      .sort((first, second) => compareDates(first.createdDate, second.createdDate));
   }
 }
 

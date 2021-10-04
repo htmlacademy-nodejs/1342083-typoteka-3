@@ -183,8 +183,8 @@ describe(`API возвращает результаты поиска, ничег
     });
   });
 
-  test(`Ответ сервера равен 404`, () => {
-    expect(response.statusCode).toBe(HttpStatusCode.NOT_FOUND);
+  test(`Ответ сервера равен 200`, () => {
+    expect(response.statusCode).toBe(HttpStatusCode.OK);
   });
 
   test(`Возвращает пустой массив`, () => {
@@ -197,17 +197,11 @@ describe(`API возвращает результаты поиска на нев
   let response;
 
   beforeAll(async () => {
-    response = await request(app).get(`/search`).query({
-      query: null,
-    });
+    response = await request(app).get(`/search`);
   });
 
-  test(`Ответ сервера равен 400`, () => {
-    expect(response.statusCode).toBe(HttpStatusCode.BAD_REQUEST);
-  });
-
-  test(`Ответ сервера равен 400`, async () => {
-    await request(app).get(`/search`).expect(HttpStatusCode.BAD_REQUEST);
+  test(`Ответ сервера равен 200`, () => {
+    expect(response.statusCode).toBe(HttpStatusCode.OK);
   });
 
   test(`Возвращает пустой массив`, () => {

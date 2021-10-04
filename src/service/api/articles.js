@@ -1,7 +1,7 @@
 'use strict';
 
 const {Router} = require(`express`);
-const {HttpStatusCode} = require(`../../constants`);
+const {APIUrl, HttpStatusCode} = require(`../../constants`);
 const {
   articleExist,
   articleValidator,
@@ -9,11 +9,9 @@ const {
   commentValidator,
 } = require(`../middleware`);
 
-const URL = `/articles`;
-
 module.exports = (app, articleService, commentService) => {
   const route = new Router();
-  app.use(URL, route);
+  app.use(APIUrl.ARTICLES, route);
 
   route.get(`/`, (req, res) => {
     const articles = articleService.findAll();
