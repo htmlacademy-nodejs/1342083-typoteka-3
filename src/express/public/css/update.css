@@ -1,0 +1,13 @@
+/* preview */
+
+.preview {
+  margin-bottom: 0;
+}
+
+.preview__item {
+  min-height: auto;
+}
+
+.preview__toggle-wrapper {
+  margin-top: 42px;
+}
