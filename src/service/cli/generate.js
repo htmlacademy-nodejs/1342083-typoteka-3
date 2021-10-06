@@ -28,7 +28,7 @@ const AnounceRestrict = {
   MAX: 5,
 };
 
-const CategoryRestrict = {
+const CategoriesRestrict = {
   MIN: 1,
   MAX: 3,
 };
@@ -58,7 +58,7 @@ const publicationGenerator = (count, titles, sentences, categories, comments) =>
       [ArticleKey.CREATED_DATE]: getDate(PAST_MONTH_LIMIT, DATE_FORMAT_PATTERN),
       [ArticleKey.ANNOUNCE]: getItems(sentences, AnounceRestrict.MIN, AnounceRestrict.MAX).join(` `),
       [ArticleKey.FULL_TEXT]: getItems(sentences, FULL_TEXT_MIN_SIZE, sentences.length - 1).join(` `),
-      [ArticleKey.CATEGORY]: getItems(categories, CategoryRestrict.MIN, CategoryRestrict.MAX),
+      [ArticleKey.CATEGORIES]: getItems(categories, CategoriesRestrict.MIN, CategoriesRestrict.MAX),
       [ArticleKey.COMMENTS]: getComments(comments, CommentsRestrict.MIN, CommentsRestrict.MAX),
     };
   });

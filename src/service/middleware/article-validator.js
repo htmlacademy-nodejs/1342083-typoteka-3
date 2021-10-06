@@ -6,7 +6,7 @@ const requiredKeys = [
   ArticleKey.TITLE,
   ArticleKey.CREATED_DATE,
   ArticleKey.ANNOUNCE,
-  ArticleKey.CATEGORY,
+  ArticleKey.CATEGORIES,
 ];
 
 module.exports = (req, res, next) => {

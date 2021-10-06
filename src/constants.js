@@ -21,7 +21,7 @@ const ArticleKey = {
   CREATED_DATE: `createdDate`,
   ANNOUNCE: `announce`,
   FULL_TEXT: `fullText`,
-  CATEGORY: `category`,
+  CATEGORIES: `categories`,
   COMMENTS: `comments`,
 };
 
