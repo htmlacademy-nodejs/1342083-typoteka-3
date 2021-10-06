@@ -1,12 +1,14 @@
 'use strict';
 
-const {getRandomId} = require(`../../utils`);
+const {DATE_FORMAT_PATTERN, CommentKey} = require(`../../constants`);
+const {getRandomId, getCurrentDate} = require(`../../utils`);
 
 class CommentService {
   create(article, comment) {
     const newComment = {
       ...comment,
-      id: getRandomId(),
+      [CommentKey.ID]: getRandomId(),
+      [CommentKey.CREATED_DATE]: getCurrentDate(DATE_FORMAT_PATTERN),
     };
     article.comments = [...article.comments, newComment];
     return newComment;
