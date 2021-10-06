@@ -1,12 +1,14 @@
 'use strict';
 
 const {DateTime} = require(`luxon`);
-const {CommentKey} = require(`../../constants`);
+const {CommentKey, DATE_FORMAT_PATTERN} = require(`../../constants`);
 const {
   getRandomArrayItems,
   getRandomIntInclusive,
   getRandomId,
 } = require(`../../utils`);
+
+const PAST_MONTH_LIMIT = 3;
 
 const getDate = (pastMonthLimit, formatPattern) => {
   const now = DateTime.now();
@@ -32,6 +34,7 @@ const getComments = (comments, min, max) => {
   return getItems(comments, min, max).map((text) => ({
     [CommentKey.ID]: getRandomId(),
     [CommentKey.TEXT]: text,
+    [CommentKey.CREATED_DATE]: getDate(PAST_MONTH_LIMIT, DATE_FORMAT_PATTERN),
   }));
 };
 
