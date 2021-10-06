@@ -2,7 +2,6 @@
 
 const {ArticleKey} = require(`../../constants`);
 const {
-  compareDates,
   getRandomId,
 } = require(`../../utils`);
 
@@ -58,8 +57,7 @@ class ArticleService {
   }
 
   findAll() {
-    return this._articles.slice()
-      .sort((a, b) => compareDates(a.createdDate, b.createdDate));
+    return this._articles.slice();
   }
 }
 
