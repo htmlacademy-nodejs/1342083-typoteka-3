@@ -23,6 +23,10 @@ class API {
     return this._load(`/articles`);
   }
 
+  getArticle(id) {
+    return this._load(`/articles/${id}`);
+  }
+
   getCategories() {
     return this._load(`/categories`);
   }
