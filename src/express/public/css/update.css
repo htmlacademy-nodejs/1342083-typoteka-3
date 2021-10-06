@@ -11,3 +11,9 @@
 .preview__toggle-wrapper {
   margin-top: 42px;
 }
+
+/* publication */
+
+.publication__list-item:last-child {
+  margin-bottom: 0;
+}
