@@ -12,6 +12,12 @@
   margin-top: 42px;
 }
 
+/* notes */
+
+.notes__list-item:last-child {
+  margin-bottom: 0;
+}
+
 /* publication */
 
 .publication__list-item:last-child {

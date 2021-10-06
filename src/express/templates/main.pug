@@ -19,14 +19,84 @@ block content
       if articles.length
         section.main-page__theme-list
           h2.visually-hidden Список тем
-          include ./partials/categories.pug
+          ul.themes
+            each category in categories
+              li.themes__item
+                a.themes__item-link(href="/")
+                  | #{category}
+                  sup &nbsp;22
         -
           const hotIsEmpty = false;
           const lastIsEmpty = false;
         .main-page__section-flex(class={"main-page__section-flex--short": hotIsEmpty && lastIsEmpty})
-          include ./partials/hot.pug
-          include ./partials/last.pug
-        include ./partials/preview.pug
+          section.main-page__hot.hot
+            h2.hot__name(class={"hot__name--empty": hotIsEmpty})
+              | Самое обсуждаемое&nbsp;
+              span.hot__icon.hot__icon--fire
+            if !hotIsEmpty
+              ul.hot__list
+                li.hot__list-item
+                  a.hot__list-link(href="/articles/1")
+                    | Билл Гейтс впервые за два года возглавил рейтинг самых богатых людей мира по версии Bloomberg
+                    sup.hot__link-sup &nbsp;12
+                li.hot__list-item
+                  a.hot__list-link(href="/articles/1")
+                    | Сервис для аналитики Telegram-чатов Combot попал под блокировку из-за информации на служебной
+                    sup.hot__link-sup &nbsp;15
+                    |  странице
+                li.hot__list-item.hot__list-item--margin
+                  a.hot__list-link(href="/articles/1")
+                    | Модель Кайли Дженнер продаст 51% своей компании Kylie Cosmetics владельцу Factor за $600 млн
+                    sup.hot__link-sup &nbsp;52
+                li.hot__list-item.hot__list-item--end
+                  a.hot__list-link(href="/articles/1")
+                    | Tesla получила 146 тысяч предзаказов на электрический пикап Cybertruck за двое суток
+                    sup.hot__link-sup &nbsp;153
+            else
+              p.hot__empty Здесь пока ничего нет...
+          section.main-page__last.last
+            h2.last__name
+              | Последние комментарии&nbsp;
+              span.last__icon.last__icon--cloud
+            if !lastIsEmpty
+              ul.last__list
+                li.last__list-item
+                  img.last__list-image(src="/img/avatar-small-1.png" width="20" height="20" alt="Аватар пользователя")
+                  b.last__list-name Анна Артамонова
+                  a.last__list-link(href="/articles/1") Сервис аренды жилья Airbnb стал глобальным партнером Международного олимпийского комитета (МОК) на девять лет, в течение которых пройдет пять Олимпиад, в том числе в Токио в 2020 году.
+                li.last__list-item
+                  img.last__list-image(src="/img/avatar-small-2.png" width="20" height="20" alt="Аватар пользователя")
+                  b.last__list-name Александр Петров
+                  a.last__list-link(href="/articles/1") Главреды «Дождя», Forbes и других СМИ попросили Роскомнадзор разъяснить штрафы за ссылки на сайты с матом
+                li.last__list-item.last__list-item--end
+                  img.last__list-image(src="/img/avatar-small-3.png" width="20" height="20" alt="Аватар пользователя")
+                  b.last__list-name Игорь Шманский
+                  a.last__list-link(href="/articles/1") Что-то все электрокары в последнее время все на одно лицо делаются))
+            else
+              p.last__empty Здесь пока ничего нет...
+        section.main-page__list.preview
+          h2.visually-hidden Список превью статей
+          ul.preview__list
+            each article in articles.slice(0, 8)
+              li.preview__item(class={"preview__item--noimage": !article.picture})
+                ul.preview__breadcrumbs
+                  each category in article.categories
+                    li.preview__breadcrumbs-item
+                      a.preview__breadcrumbs-link(href="#") #{category}
+                if article.picture
+                  .preview__background
+                    img.preview__background-image(src=article.picture width="460" height="240" alt=article.title)
+                time.preview__time(datetime=article.createdDate) #{article.createdDate}
+                h3.preview__name
+                  a.preview__name-link(href=`/articles/${article.id}`) #{article.title}
+                if article.announce
+                  p.preview__text #{article.announce}
+                a.preview__comment(href=`/articles/${article.id}#comments`)
+                  | Комментарии
+                  span.preview__cloud
+                  b.preview__comment-count &nbsp;#{article.comments.length}
+          .preview__toggle-wrapper
+            include ./partials/pagination.pug
       else
         .main-page__empty-wrapper
           p.main-page__empty-text Здесь пока пусто!

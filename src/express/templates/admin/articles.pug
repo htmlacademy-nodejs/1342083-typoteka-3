@@ -21,7 +21,15 @@ block content
       a.header__search.button.button--search(href="/search" aria-label="поиск по сайту")
     main.main-page.main-page--padding
       if articles.length
-        include ../partials/notes.pug
+        section.main-page__notes.notes
+          h1.notes__title Мои записи
+          ul.notes__list
+            each article in articles
+              li.notes__list-item
+                time.notes__item-time(datetime=article.createdDate) #{article.createdDate}
+                a.notes__item-text(href=`/articles/${article.id}`) #{article.title}
+                button.notes__button.button.button--close-item(type="button")
+                  span.visually-hidden Закрыть строку списка
       else
         .main-page__empty-wrapper
           p.main-page__empty-text Здесь пока пусто!
