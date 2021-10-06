@@ -14,7 +14,8 @@ mainRouter.get(`/`, async (req, res) => {
 
 mainRouter.get(`/my`, async (req, res) => {
   const articles = await api.getArticles();
-  res.render(`my`, {articles});
+  res.render(`admin/articles`, {articles});
+});
 });
 
 mainRouter.get(`/register`, (req, res) => res.render(`register`));

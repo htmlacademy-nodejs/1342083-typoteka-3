@@ -1,4 +1,4 @@
-extends ./layout.pug
+extends ../layout.pug
 
 block content
   .wrapper.wrapper--nobackground
@@ -21,8 +21,8 @@ block content
       a.header__search.button.button--search(href="/search" aria-label="поиск по сайту")
     main.main-page.main-page--padding
       if articles.length
-        include ./partials/notes.pug
+        include ../partials/notes.pug
       else
         .main-page__empty-wrapper
           p.main-page__empty-text Здесь пока пусто!
-    include ./partials/footer.pug
+    include ../partials/footer.pug
