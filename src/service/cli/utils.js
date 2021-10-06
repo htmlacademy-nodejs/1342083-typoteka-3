@@ -4,6 +4,7 @@ const {DateTime} = require(`luxon`);
 const {CommentKey, DATE_FORMAT_PATTERN} = require(`../../constants`);
 const {
   getRandomArrayItems,
+  getRandomBoolean,
   getRandomIntInclusive,
   getRandomId,
 } = require(`../../utils`);
@@ -31,11 +32,17 @@ const getItems = (categories, min, max) => {
 };
 
 const getComments = (comments, min, max) => {
-  return getItems(comments, min, max).map((text) => ({
-    [CommentKey.ID]: getRandomId(),
-    [CommentKey.TEXT]: text,
-    [CommentKey.CREATED_DATE]: getDate(PAST_MONTH_LIMIT, DATE_FORMAT_PATTERN),
-  }));
+  const hasComments = Boolean(getRandomBoolean());
+
+  if (hasComments) {
+    return getItems(comments, min, max).map((text) => ({
+      [CommentKey.ID]: getRandomId(),
+      [CommentKey.TEXT]: text,
+      [CommentKey.CREATED_DATE]: getDate(PAST_MONTH_LIMIT, DATE_FORMAT_PATTERN),
+    }));
+  }
+
+  return [];
 };
 
 module.exports = {

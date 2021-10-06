@@ -60,7 +60,6 @@ const articleGenerator = (count, titles, sentences, categories, comments) => {
   return Array.from(new Array(count), () => {
     const hasPicture = Boolean(getRandomBoolean());
     const hasFullText = Boolean(getRandomBoolean());
-    const hasComments = Boolean(getRandomBoolean());
 
     const article = {
       [ArticleKey.ID]: getRandomId(),
@@ -68,6 +67,7 @@ const articleGenerator = (count, titles, sentences, categories, comments) => {
       [ArticleKey.CREATED_DATE]: getDate(PAST_MONTH_LIMIT, DATE_FORMAT_PATTERN),
       [ArticleKey.ANNOUNCE]: getItems(sentences, AnounceRestrict.MIN, AnounceRestrict.MAX).join(` `),
       [ArticleKey.CATEGORIES]: getItems(categories, CategoriesRestrict.MIN, CategoriesRestrict.MAX),
+      [ArticleKey.COMMENTS]: getComments(comments, CommentsRestrict.MIN, CommentsRestrict.MAX),
     };
 
     if (hasPicture) {
@@ -76,10 +76,6 @@ const articleGenerator = (count, titles, sentences, categories, comments) => {
 
     if (hasFullText) {
       article[ArticleKey.FULL_TEXT] = getItems(sentences, FULL_TEXT_MIN_SIZE, sentences.length - 1).join(` `);
-    }
-
-    if (hasComments) {
-      article[ArticleKey.COMMENTS] = getComments(comments, CommentsRestrict.MIN, CommentsRestrict.MAX);
     }
 
     return article;
