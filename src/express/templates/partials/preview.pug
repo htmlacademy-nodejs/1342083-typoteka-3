@@ -15,7 +15,7 @@ section.main-page__list.preview
             img.preview__background-image(src=picture width="460" height="240" alt=title)
         time.preview__time(datetime=createdDate) #{createdDate}
         h3.preview__name
-          a.preview__name-link(href="/articles/#{id}") #{title}
+          a.preview__name-link(href=`/articles/${id}`) #{title}
         if announce
           p.preview__text #{announce}
         a.preview__comment(href=`/articles/${id}#comments`)
