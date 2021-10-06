@@ -24,9 +24,9 @@ const FULL_TEXT_MIN_SIZE = 1;
 const OUTPUT_FILE_NAME = `mock.json`;
 const PAST_MONTH_LIMIT = 3;
 const PICTURES = [
-  `img/forest.jpg`,
-  `img/sea.jpg`,
-  `img/skyscraper.jpg`,
+  `forest.jpg`,
+  `sea.jpg`,
+  `skyscraper.jpg`,
 ];
 
 const AnounceRestrict = {
