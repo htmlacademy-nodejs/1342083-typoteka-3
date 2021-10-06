@@ -14,6 +14,8 @@ const getRandomIntInclusive = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
+const getRandomBoolean = () => Boolean(getRandomIntInclusive(0, 1));
+
 const shuffleArray = (array) => {
   return array
     .slice()
@@ -39,6 +41,7 @@ const getRandomId = (length = MAX_ID_LENGTH) => nanoid(length);
 module.exports = {
   compareDates,
   getRandomIntInclusive,
+  getRandomBoolean,
   shuffleArray,
   getArrayRandomIndex,
   getRandomArrayItem,

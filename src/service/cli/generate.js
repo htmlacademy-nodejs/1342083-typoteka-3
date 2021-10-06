@@ -11,6 +11,7 @@ const {
 } = require(`../../constants`);
 const {
   getRandomArrayItem,
+  getRandomBoolean,
   getRandomId,
 } = require(`../../utils`);
 const {
@@ -22,6 +23,11 @@ const {
 const FULL_TEXT_MIN_SIZE = 1;
 const OUTPUT_FILE_NAME = `mock.json`;
 const PAST_MONTH_LIMIT = 3;
+const PICTURES = [
+  `img/forest.jpg`,
+  `img/sea.jpg`,
+  `img/skyscraper.jpg`,
+];
 
 const AnounceRestrict = {
   MIN: 1,
@@ -45,14 +51,15 @@ const FilePath = {
   TITLES: `./data/titles.txt`,
 };
 
-const PublicationsCountRestrict = {
+const ArticlesCountRestrict = {
   MIN: 1,
   MAX: 1000,
 };
 
-const publicationGenerator = (count, titles, sentences, categories, comments) => {
+const articleGenerator = (count, titles, sentences, categories, comments) => {
   return Array.from(new Array(count), () => {
-    return {
+    const hasImage = Boolean(getRandomBoolean());
+    const article = {
       [ArticleKey.ID]: getRandomId(),
       [ArticleKey.TITLE]: getRandomArrayItem(titles),
       [ArticleKey.CREATED_DATE]: getDate(PAST_MONTH_LIMIT, DATE_FORMAT_PATTERN),
@@ -61,6 +68,12 @@ const publicationGenerator = (count, titles, sentences, categories, comments) =>
       [ArticleKey.CATEGORIES]: getItems(categories, CategoriesRestrict.MIN, CategoriesRestrict.MAX),
       [ArticleKey.COMMENTS]: getComments(comments, CommentsRestrict.MIN, CommentsRestrict.MAX),
     };
+
+    if (hasImage) {
+      article[ArticleKey.PICTURE] = getRandomArrayItem(PICTURES);
+    }
+
+    return article;
   });
 };
 
@@ -78,24 +91,24 @@ module.exports = {
   name: CliCommand.GENERATE,
   async run(args) {
     const [count] = args;
-    const countPublication = Number.parseInt(count, 10) || PublicationsCountRestrict.MIN;
+    const articleCount = Number.parseInt(count, 10) || ArticlesCountRestrict.MIN;
 
     const titles = await readContent(FilePath.TITLES);
     const sentences = await readContent(FilePath.SENTENCES);
     const categories = await readContent(FilePath.CATEGORIES);
     const comments = await readContent(FilePath.COMMENTS);
 
-    if (countPublication > PublicationsCountRestrict.MAX) {
-      console.error(chalk.red(`Не больше ${PublicationsCountRestrict.MAX} публикаций.`));
+    if (articleCount > ArticlesCountRestrict.MAX) {
+      console.error(chalk.red(`Не больше ${ArticlesCountRestrict.MAX} публикаций.`));
       process.exit(ExitCode.ERROR);
     }
 
-    const content = publicationGenerator(countPublication, titles, sentences, categories, comments);
-    const publications = JSON.stringify(content, null, 2);
+    const content = articleGenerator(articleCount, titles, sentences, categories, comments);
+    const articles = JSON.stringify(content, null, 2);
 
     try {
-      await fs.writeFile(OUTPUT_FILE_NAME, publications);
-      console.info(chalk.green(`Публикации (${countPublication}) успешно сгенерированы.`));
+      await fs.writeFile(OUTPUT_FILE_NAME, articles);
+      console.info(chalk.green(`Публикации (${articleCount}) успешно сгенерированы.`));
       process.exit(ExitCode.SUCCESS);
     } catch (err) {
       console.error(chalk.red(`Невозможно сохранить публикации.`));
