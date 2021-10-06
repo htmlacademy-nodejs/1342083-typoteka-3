@@ -1,0 +1,17 @@
+section.main-page__publication.publication
+  h1.publication__title Комментарии
+  ul.publication__list
+    each comment, index in comments
+      -
+        const {id, createdDate, text, title} = comment;
+        const isLast = index === (comments.length - 1);
+
+      li.publication__list-item(class={"publication__list-item--last": isLast})
+        .publication__header
+          img.publication__list-image(src="/img/avatar-small-2.png" width="20" height="20" alt="Аватар пользователя")
+          b.publication__list-name Александр Петров
+          time.publication__item-time(datetime=createdDate) #{createdDate}
+        a.publication__item-text(href=`/articles/${id}`) #{title}
+        p.publication__text-strong #{text}
+        button.publication__button.button.button--close-item(type="button")
+          span.visually-hidden Закрыть строку списка
