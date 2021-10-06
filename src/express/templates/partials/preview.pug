@@ -3,7 +3,7 @@ section.main-page__list.preview
   ul.preview__list
     each article in articles.slice(0, 8)
       -
-        const {announce, categories, comments, id, picture, title} = article;
+        const {announce, categories, createdDate, comments, id, picture, title} = article;
 
       li.preview__item(class={"preview__item--noimage": !picture})
         ul.preview__breadcrumbs
@@ -13,7 +13,7 @@ section.main-page__list.preview
         if picture
           .preview__background
             img.preview__background-image(src=picture width="460" height="240" alt=title)
-        time.preview__time(datetime=article.createdDate) #{article.createdDate}
+        time.preview__time(datetime=createdDate) #{createdDate}
         h3.preview__name
           a.preview__name-link(href="/articles/#{id}") #{title}
         if announce
