@@ -40,7 +40,7 @@ const CategoriesRestrict = {
 };
 
 const CommentsRestrict = {
-  MIN: 0,
+  MIN: 1,
   MAX: 5,
 };
 
@@ -58,19 +58,28 @@ const ArticlesCountRestrict = {
 
 const articleGenerator = (count, titles, sentences, categories, comments) => {
   return Array.from(new Array(count), () => {
-    const hasImage = Boolean(getRandomBoolean());
+    const hasPicture = Boolean(getRandomBoolean());
+    const hasFullText = Boolean(getRandomBoolean());
+    const hasComments = Boolean(getRandomBoolean());
+
     const article = {
       [ArticleKey.ID]: getRandomId(),
       [ArticleKey.TITLE]: getRandomArrayItem(titles),
       [ArticleKey.CREATED_DATE]: getDate(PAST_MONTH_LIMIT, DATE_FORMAT_PATTERN),
       [ArticleKey.ANNOUNCE]: getItems(sentences, AnounceRestrict.MIN, AnounceRestrict.MAX).join(` `),
-      [ArticleKey.FULL_TEXT]: getItems(sentences, FULL_TEXT_MIN_SIZE, sentences.length - 1).join(` `),
       [ArticleKey.CATEGORIES]: getItems(categories, CategoriesRestrict.MIN, CategoriesRestrict.MAX),
-      [ArticleKey.COMMENTS]: getComments(comments, CommentsRestrict.MIN, CommentsRestrict.MAX),
     };
 
-    if (hasImage) {
+    if (hasPicture) {
       article[ArticleKey.PICTURE] = getRandomArrayItem(PICTURES);
+    }
+
+    if (hasFullText) {
+      article[ArticleKey.FULL_TEXT] = getItems(sentences, FULL_TEXT_MIN_SIZE, sentences.length - 1).join(` `);
+    }
+
+    if (hasComments) {
+      article[ArticleKey.COMMENTS] = getComments(comments, CommentsRestrict.MIN, CommentsRestrict.MAX);
     }
 
     return article;
