@@ -1,6 +1,7 @@
 'use strict';
 
 const {DateTime} = require(`luxon`);
+const {CommentKey} = require(`../../constants`);
 const {
   getRandomArrayItems,
   getRandomIntInclusive,
@@ -29,8 +30,8 @@ const getItems = (categories, min, max) => {
 
 const getComments = (comments, min, max) => {
   return getItems(comments, min, max).map((text) => ({
-    id: getRandomId(),
-    text,
+    [CommentKey.ID]: getRandomId(),
+    [CommentKey.TEXT]: text,
   }));
 };
 

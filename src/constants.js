@@ -32,6 +32,12 @@ const CliCommand = {
   VERSION: `--version`,
 };
 
+const CommentKey = {
+  ID: `id`,
+  CREATED_DATE: `createdDate`,
+  TEXT: `text`,
+};
+
 const Env = {
   DEVELOPMENT: `development`,
   PRODUCTION: `production`
@@ -59,6 +65,7 @@ module.exports = {
   APIUrl,
   ArticleKey,
   CliCommand,
+  CommentKey,
   Env,
   ExitCode,
   HttpStatusCode,
