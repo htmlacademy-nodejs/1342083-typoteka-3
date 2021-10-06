@@ -12,12 +12,6 @@ mainRouter.get(`/`, async (req, res) => {
   res.render(`main`, {articles, categories});
 });
 
-mainRouter.get(`/my`, async (req, res) => {
-  const articles = await api.getArticles();
-  res.render(`admin/articles`, {articles});
-});
-});
-
 mainRouter.get(`/register`, (req, res) => res.render(`register`));
 mainRouter.get(`/login`, (req, res) => res.render(`login`));
 mainRouter.get(`/search`, (req, res) => res.render(`search`));
