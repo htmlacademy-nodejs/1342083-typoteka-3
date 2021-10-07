@@ -30,6 +30,12 @@ class API {
   getCategories() {
     return this._load(`/categories`);
   }
+
+  search(query) {
+    return this._load(`/search`, {
+      params: {query},
+    });
+  }
 }
 
 const defaultAPI = new API(apiURL, TIMEOUT);

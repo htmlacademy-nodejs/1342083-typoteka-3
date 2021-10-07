@@ -1,6 +1,13 @@
 extends ./layout.pug
 
 block content
+  -
+    const formatResult = (result, query) => {
+      const startIndex = result.indexOf(query);
+      const endIndex = startIndex + query.length;
+      return `${result.slice(0, startIndex)} <b>${query}</b> ${result.slice(endIndex)}`;
+    };
+
   .wrapper-color
     header.header
       a.header__logo.logo(href="/")
@@ -20,12 +27,20 @@ block content
             a(href="/") Пункт меню
       a.header__search.button.button--search(href="/search" aria-label="поиск по сайту")
     main
+      - const hasResults = query && !results.length;
       section.search-page
-        .search-page__wrapper
+        .search-page__wrapper(class={"search-page__wrapper--empty": hasResults})
           h1 Поиск
           .search.search-page__form
-            form(action="#" method="get")
+            form(action="/search" method="get")
               label
-                input(type="text" name="search" placeholder="Что ищем?")
+                input(type="text" name="query" placeholder="Что ищем?" value=query)
               button.search__button.button.button--transparent(type="submit") Найти
+            if results.length
+              each article in results
+                .search__result
+                  time.search__date(datetime=article.createdDate) #{article.createdDate}
+                  a.search__link(href=`/articles/${article.id}`)!= formatResult(article.title, query)
+          if hasResults
+            p.search-page__empty Ничего не нашлось
     include ./partials/footer.pug
