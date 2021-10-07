@@ -1,0 +1,11 @@
+ul.themes
+  each category in categories
+    li.themes__item
+      if category === currentCategory
+        a.themes__item-link.themes__item-link--active
+          | #{category}
+          sup &nbsp;22
+      else
+        a.themes__item-link(href="/articles/category/1")
+          | #{category}
+          sup &nbsp;22

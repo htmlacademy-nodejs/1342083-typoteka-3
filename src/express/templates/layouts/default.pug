@@ -1,0 +1,11 @@
+include /config.pug
+
+doctype html
+html(lang=LANG)
+  include /partials/layout/head.pug
+  body
+    .wrapper
+      include /partials/layout/header.pug
+      block content
+      include /partials/layout/footer.pug
+    include /partials/layout/script.pug
