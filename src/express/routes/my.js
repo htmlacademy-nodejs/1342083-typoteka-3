@@ -8,12 +8,24 @@ const api = getAPI();
 
 myRouter.get(`/`, async (req, res) => {
   const articles = await api.getArticles();
-  res.render(`admin/articles`, {articles});
+
+  res.render(`pages/admin/articles`, {
+    articles,
+    account: {
+      type: `admin`,
+    },
+  });
 });
 
 myRouter.get(`/comments`, async (req, res) => {
   const articles = await api.getArticles();
-  res.render(`admin/comments`, {articles});
+
+  res.render(`pages/admin/comments`, {
+    articles,
+    account: {
+      type: `admin`,
+    },
+  });
 });
 
 module.exports = myRouter;
