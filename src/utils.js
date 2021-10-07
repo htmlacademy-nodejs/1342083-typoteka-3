@@ -40,6 +40,8 @@ const getRandomArrayItems = (array, count) => {
 
 const getRandomId = (length = MAX_ID_LENGTH) => nanoid(length);
 
+const ensureArray = (value) => Array.isArray(value) ? value : [value];
+
 module.exports = {
   compareDates,
   getCurrentDate,
@@ -50,4 +52,5 @@ module.exports = {
   getRandomArrayItem,
   getRandomArrayItems,
   getRandomId,
+  ensureArray,
 };
