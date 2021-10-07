@@ -36,6 +36,20 @@ class API {
       params: {query},
     });
   }
+
+  updateArticle(id, update) {
+    return this._load(`/articles/${id}`, {
+      method: `PUT`,
+      body: update,
+    });
+  }
+
+  createArticle(data) {
+    return this._load(`/articles`, {
+      method: `POST`,
+      data,
+    });
+  }
 }
 
 const defaultAPI = new API(apiURL, TIMEOUT);

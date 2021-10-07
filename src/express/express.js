@@ -11,8 +11,10 @@ const app = express();
 
 app.set(`view engine`, `pug`);
 app.set(`views`, path.resolve(__dirname, ServerConfig.VIEWS_PATH));
+app.locals.basedir = path.join(__dirname, ServerConfig.VIEWS_PATH);
 
 app.use(express.static(path.resolve(__dirname, ServerConfig.PUBLIC_PATH)));
+app.use(express.static(path.resolve(__dirname, ServerConfig.UPLOAD_PATH)));
 
 app.use(`/`, mainRoutes);
 app.use(`/my`, myRoutes);
