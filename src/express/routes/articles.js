@@ -7,7 +7,12 @@ const articlesRouter = new Router();
 const api = getAPI();
 
 articlesRouter.get(`/category/:id`, (req, res) => res.render(`publications-by-category`));
-articlesRouter.get(`/add`, (req, res) => res.render(`admin/add-new-post-empty`));
+
+articlesRouter.get(`/add`, async (req, res) => {
+  const categories = await api.getCategories();
+
+  res.render(`admin/add`, {categories});
+});
 
 articlesRouter.get(`/edit/:id`, async (req, res) => {
   const {id} = req.params;
