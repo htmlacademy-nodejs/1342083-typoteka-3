@@ -14,7 +14,7 @@ block content
       .search-page__wrapper(class={"search-page__wrapper--empty": hasResults})
         h1 Поиск
         .search.search-page__form
-          form(action="/search" method="get")
+          form(action=FormAction.SEARCH method="get")
             label
               input(type="text" name="query" placeholder="Что ищем?" value=query)
             button.search__button.button.button--transparent(type="submit") Найти
@@ -22,6 +22,6 @@ block content
             each article in results
               .search__result
                 time.search__date(datetime=article.createdDate) #{article.createdDate}
-                a.search__link(href=`/articles/${article.id}`)!= formatResult(article.title, query)
+                a.search__link(href=`${AppRoute.ARTICLE}/${article.id}`)!= formatResult(article.title, query)
         if hasResults
           p.search-page__empty Ничего не нашлось

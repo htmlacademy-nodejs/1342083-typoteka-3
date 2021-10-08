@@ -13,7 +13,7 @@ block content
                   img.publication__list-image(src="/img/avatar-small-2.png" width="20" height="20" alt="Аватар пользователя")
                   b.publication__list-name Александр Петров
                   time.publication__item-time(datetime=comment.createdDate) #{comment.createdDate}
-                a.publication__item-text(href=`/articles/${article.id}`) #{article.title}
+                a.publication__item-text(href=`${AppRoute.ARTICLE}/${article.id}`) #{article.title}
                 p.publication__text-strong #{comment.text}
                 button.publication__button.button.button--close-item(type="button")
                   span.visually-hidden Закрыть строку списка

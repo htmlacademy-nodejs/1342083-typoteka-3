@@ -6,6 +6,6 @@ ul.themes
           | #{category}
           sup &nbsp;22
       else
-        a.themes__item-link(href="/articles/category/1")
+        a.themes__item-link(href=`${AppRoute.CATEGORY}/${category}`)
           | #{category}
           sup &nbsp;22

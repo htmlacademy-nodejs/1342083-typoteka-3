@@ -3,7 +3,7 @@ extends /layouts/admin.pug
 block content
   -
     const isEdit = Boolean(article.id);
-    const action = isEditMode ? `/articles/${article.id}` : "/articles/add";
+    const action = isEditMode ? `${AppRoute.ARTICLE}/${article.id}` : FormAction.ADD_ARTICLE;
     const method = isEditMode ? "PUT" : "POST";
     const title = isEditMode ? "Редактирование публикации" : "Новая публикация";
     const submitButtonText = isEditMode ? "Сохранить" : "Опубликовать";
@@ -22,7 +22,7 @@ block content
                     label(for="new-publication-date" aria-label="Календарь")
                     input#new-publication-date(type="text" name="date" placeholder="2019-03-21")
               button.new-publication__button.button.button--colored(type="submit") #{submitButtonText}
-            a.popup__button.button.button--popup-close(href="/my" aria-label="Отмена") Отмена
+            a.popup__button.button.button--popup-close(href=AppRoute.MY aria-label="Отмена") Отмена
             .new-publication__form.form
               .form__wrapper.form__wrapper--intro
                 .form__field
