@@ -1,0 +1,51 @@
+extends /layouts/admin.pug
+
+block content
+  -
+    const isEdit = Boolean(article.id);
+    const action = isEditMode ? `${AppRoute.ARTICLE}/${article.id}` : FormAction.ADD_ARTICLE;
+    const method = isEditMode ? "PUT" : "POST";
+    const title = isEditMode ? "Редактирование публикации" : "Новая публикация";
+    const submitButtonText = isEditMode ? "Сохранить" : "Опубликовать";
+
+  main
+    section
+      .popup.popup--new-publication.popup--anti
+        .new-publication
+          form(action=action method=method enctype="multipart/form-data")
+            .new-publication__header
+              h1 #{title}
+              .new-publication__date-form
+                h3 Дата публикации
+                .new-publication__date-form-division
+                  .new-publication__date-block
+                    label(for="new-publication-date" aria-label="Календарь")
+                    input#new-publication-date(type="text" name="date" placeholder="2019-03-21")
+              button.new-publication__button.button.button--colored(type="submit") #{submitButtonText}
+            a.popup__button.button.button--popup-close(href=AppRoute.MY aria-label="Отмена") Отмена
+            .new-publication__form.form
+              .form__wrapper.form__wrapper--intro
+                .form__field
+                  label
+                    input(type="text" name="title" placeholder="Заголовок" value=article.title)
+                .form__field.form__field--post-image
+                  label
+                    input#image-name-field(type="text" name="photo" placeholder="Фотография" value=article.picture readonly)
+                  .form__image-loader.form__image-loader--publication
+                    label
+                      input.visually-hidden(type="file" name="upload")
+                      | Обзор
+                .new-publication__category-wrapper
+                  each category in categories
+                    - const isChecked = article.categories && article.categories.includes(category)
+                    .new-publication__checkbox
+                      input(id=category type="checkbox" name="category" value=category checked=isChecked)
+                      label(for=category) #{category}
+                  a.new-publication__form-link.button.button--transparent(href="/categories") Добавить категорию
+              .form__wrapper.form__wrapper--text
+                .form__field.form__field--publication-text
+                  label
+                    textarea(rows="5" name="announcement" placeholder="Анонс публикации") #{article.announce}
+                .form__field.form__field--publication-text
+                  label
+                    textarea(rows="10" name="full-text" placeholder="Полный текст публикации") #{article.fullText}

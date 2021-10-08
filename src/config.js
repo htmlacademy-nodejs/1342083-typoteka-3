@@ -1,7 +1,10 @@
 'use strict';
 
 const dotenv = require(`dotenv`);
-dotenv.config();
+const dotenvExpand = require(`dotenv-expand`);
+
+const myEnv = dotenv.config();
+dotenvExpand(myEnv);
 
 module.exports = {
   LOG_LEVEL: process.env.LOG_LEVEL,

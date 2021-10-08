@@ -1,0 +1,21 @@
+extends /layouts/admin.pug
+
+block content
+  main.main-page.main-page--padding
+    if articles.length
+      section.main-page__publication.publication
+        h1.publication__title Комментарии
+        ul.publication__list
+          each article in articles
+            each comment in article.comments
+              li.publication__list-item
+                .publication__header
+                  img.publication__list-image(src="/img/avatar-small-2.png" width="20" height="20" alt="Аватар пользователя")
+                  b.publication__list-name Александр Петров
+                  time.publication__item-time(datetime=comment.createdDate) #{comment.createdDate}
+                a.publication__item-text(href=`${AppRoute.ARTICLE}/${article.id}`) #{article.title}
+                p.publication__text-strong #{comment.text}
+                button.publication__button.button.button--close-item(type="button")
+                  span.visually-hidden Закрыть строку списка
+    else
+      include /partials/common/empty.pug

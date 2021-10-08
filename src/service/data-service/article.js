@@ -1,7 +1,9 @@
 'use strict';
 
 const {ArticleKey} = require(`../../constants`);
-const {getRandomId} = require(`../../utils`);
+const {
+  getRandomId,
+} = require(`../../utils`);
 
 class ArticleService {
   constructor(articles) {

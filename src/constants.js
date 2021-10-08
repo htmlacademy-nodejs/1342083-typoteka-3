@@ -1,6 +1,7 @@
 'use strict';
 
 const ADDITIONAL_ARGV_SPLIT_INDEX = 2;
+const API_PORT = 3000;
 const API_PREFIX = `/api`;
 const DATE_FORMAT_PATTERN = `yyyy-LL-dd HH:mm:ss`;
 const DEFAULT_ENCODING = `utf-8`;
@@ -21,7 +22,7 @@ const ArticleKey = {
   CREATED_DATE: `createdDate`,
   ANNOUNCE: `announce`,
   FULL_TEXT: `fullText`,
-  CATEGORY: `category`,
+  CATEGORIES: `categories`,
   COMMENTS: `comments`,
 };
 
@@ -30,6 +31,12 @@ const CliCommand = {
   HELP: `--help`,
   SERVER: `--server`,
   VERSION: `--version`,
+};
+
+const CommentKey = {
+  ID: `id`,
+  CREATED_DATE: `createdDate`,
+  TEXT: `text`,
 };
 
 const Env = {
@@ -46,10 +53,18 @@ const HttpStatusCode = {
   OK: 200,
   BAD_REQUEST: 400,
   NOT_FOUND: 404,
+  INTERNAL_SERVER_ERROR: 500,
+};
+
+const UserType = {
+  ADMIN: `admin`,
+  GUEST: `guest`,
+  USER: `user`,
 };
 
 module.exports = {
   ADDITIONAL_ARGV_SPLIT_INDEX,
+  API_PORT,
   API_PREFIX,
   DATE_FORMAT_PATTERN,
   DEFAULT_ENCODING,
@@ -59,7 +74,9 @@ module.exports = {
   APIUrl,
   ArticleKey,
   CliCommand,
+  CommentKey,
   Env,
   ExitCode,
   HttpStatusCode,
+  UserType,
 };

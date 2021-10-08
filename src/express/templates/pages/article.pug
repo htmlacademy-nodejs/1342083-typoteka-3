@@ -1,0 +1,22 @@
+extends /layouts/default.pug
+
+block content
+  main
+    section.post
+      h1.visually-hidden Пост
+      section.post__content
+        h2.visually-hidden Основное содержание
+        .post__wrapper
+          .post__head
+            a.post__backwards.button.button--backwards(href=AppRoute.MAIN) Назад
+            time.post__date(datetime=article.createdDate) #{article.createdDate}
+            h2.post__title.title.title--main #{article.title}
+            include /partials/article/themes.pug
+          if article.picture
+            .post__picture
+              img(src=`/img/${article.picture}` alt=article.title)
+          .post__text
+            p #{article.announce}
+            p #{article.fullText}
+      .post__wrapper.post__wrapper--comments
+        include /partials/article/comments.pug

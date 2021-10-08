@@ -23,11 +23,14 @@
   },
   "homepage": "https://github.com/extendsnull/1342083-typoteka-3#readme",
   "dependencies": {
+    "axios": "0.22.0",
     "chalk": "4.1.0",
     "cross-env": "7.0.3",
     "dotenv": "10.0.0",
+    "dotenv-expand": "5.1.0",
     "express": "4.17.1",
     "luxon": "1.26.0",
+    "multer": "1.4.3",
     "nanoid": "3.1.25",
     "pino": "6.13.3",
     "pug": "2.0.4"

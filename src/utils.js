@@ -8,11 +8,15 @@ const compareDates = (firstDate, secondDate) => {
   return DateTime.fromFormat(secondDate, DATE_FORMAT_PATTERN) - DateTime.fromFormat(firstDate, DATE_FORMAT_PATTERN);
 };
 
+const getCurrentDate = (formatPattern) => DateTime.now().toFormat(formatPattern);
+
 const getRandomIntInclusive = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
+
+const getRandomBoolean = () => Boolean(getRandomIntInclusive(0, 1));
 
 const shuffleArray = (array) => {
   return array
@@ -36,12 +40,17 @@ const getRandomArrayItems = (array, count) => {
 
 const getRandomId = (length = MAX_ID_LENGTH) => nanoid(length);
 
+const ensureArray = (value) => Array.isArray(value) ? value : [value];
+
 module.exports = {
   compareDates,
+  getCurrentDate,
   getRandomIntInclusive,
+  getRandomBoolean,
   shuffleArray,
   getArrayRandomIndex,
   getRandomArrayItem,
   getRandomArrayItems,
   getRandomId,
+  ensureArray,
 };

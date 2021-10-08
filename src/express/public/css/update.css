@@ -1,0 +1,44 @@
+/* preview */
+
+.preview__item {
+  min-height: auto;
+}
+
+.preview__toggle-wrapper {
+  margin-top: 42px;
+}
+
+/* notes */
+
+.notes__list-item:last-child {
+  margin-bottom: 0;
+}
+
+/* publication */
+
+.publication__list-item:last-child {
+  margin-bottom: 0;
+}
+
+/* search-page */
+
+.search-page__wrapper {
+  height: auto;
+  min-height: 610px;
+}
+
+.search-page__form {
+  margin-bottom: 0;
+  padding-bottom: 40px;
+}
+
+.search-page__wrapper--empty .search-page__form {
+  margin-bottom: 216px;
+  padding-bottom: 0;
+}
+
+/* search */
+
+.search__result:last-child {
+  margin-bottom: 0;
+}

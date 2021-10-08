@@ -1,0 +1,22 @@
+extends /layouts/admin.pug
+
+block content
+  main.main-page.main-page--padding
+    section.main-page__category.category
+      h1.category__title Категории
+      .category__add-form
+        form(action=FormAction.ADD_CATEGORY method="POST")
+          input#add-form-add-category(type="text" name="add-category" placeholder="Новая категория")
+          label(for="add-form-add-category")
+            span.visually-hidden Добавить категорию
+          button.category__button.button.button--category(type="submit") Добавить
+      if categories.length
+        ul.category__list
+          each category in categories
+            li.category__list-item
+              form(action=FormAction.EDIT_CATEGORY method="POST")
+                input(id=category type="text" name=category value=category)
+                label(for=category)
+                  span.visually-hidden Редактировать категорию
+                button.category__button.button.button--category(type="submit") Сохранить
+                button.category__button.button.button--category(type="button") Удалить

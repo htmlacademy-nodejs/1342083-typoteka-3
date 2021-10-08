@@ -1,11 +1,11 @@
 'use strict';
 
-const {HttpStatusCode} = require(`../../constants`);
+const {CommentKey, HttpStatusCode} = require(`../../constants`);
 
 module.exports = (req, res, next) => {
   const comment = req.body;
 
-  if (!comment.text) {
+  if (!comment[CommentKey.TEXT]) {
     return res.status(HttpStatusCode.BAD_REQUEST).send(`Bad request`);
   }
 

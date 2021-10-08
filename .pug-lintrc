@@ -1,11 +1,8 @@
 {
   "disallowAttributeConcatenation": true,
-  "disallowAttributeInterpolation": true,
   "disallowBlockExpansion": true,
-  "disallowClassAttributeWithStaticValue": true,
   "disallowClassLiteralsBeforeIdLiterals": true,
   "disallowDuplicateAttributes": true,
-  "disallowHtmlText": true,
   "disallowLegacyMixinCall": true,
   "disallowMultipleLineBreaks": true,
   "disallowSpacesInsideAttributeBrackets": true,
