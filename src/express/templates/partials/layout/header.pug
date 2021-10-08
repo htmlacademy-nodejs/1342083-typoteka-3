@@ -4,22 +4,6 @@ header.header
     img.logo__image(src="/img/icons/logo-image-only.svg" alt="логотип Тайпотеки")
     span.logo__name Типотека #{error && `/ ${error}`}
   case type
-    when UserType.GUEST
-      nav.header__nav
-        ul.header__nav-list
-          li.header__list-item
-            a.header__registration(href=AppRoute.REGISTER) Регистрация
-          li.header__list-item
-            a.header__enter(href=AppRoute.LOGIN) Вход с паролем
-    when UserType.USER
-      nav.header__nav
-        ul.header__nav-list
-          li.header__list-item
-            p Алёна Фролова
-          li.header__list-item
-            a.header__exit(href=AppRoute.LOGOUT) Выйти
-      a.header__avatar.avatar
-        img(src="/img/avatar-2.png" alt="аватар пользователя")
     when UserType.ADMIN
       a.button.button--colored.header__button-new(href=AppRoute.ARTICLES_ADD) Новая запись
       .header__dropdown
@@ -33,4 +17,20 @@ header.header
             a(href=AppRoute.COMMENTS) Комментарии
           li.navigation__item
             a(href=AppRoute.CATEGORIES) Категории
+    when UserType.USER
+      nav.header__nav
+        ul.header__nav-list
+          li.header__list-item
+            p Алёна Фролова
+          li.header__list-item
+            a.header__exit(href=AppRoute.LOGOUT) Выйти
+      a.header__avatar.avatar
+        img(src="/img/avatar-2.png" alt="аватар пользователя")
+    default
+      nav.header__nav
+        ul.header__nav-list
+          li.header__list-item
+            a.header__registration(href=AppRoute.REGISTER) Регистрация
+          li.header__list-item
+            a.header__enter(href=AppRoute.LOGIN) Вход с паролем
   a.header__search.button.button--search(href=AppRoute.SEARCH aria-label="поиск по сайту")

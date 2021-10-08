@@ -30,17 +30,13 @@ mainRouter.get(MainRoute.MAIN, async (req, res) => {
 
 mainRouter.get(MainRoute.REGISTER, (req, res) => {
   res.render(AppPage.REGISTER, {
-    account: {
-      type: UserType.GUEST,
-    },
+    account: {},
   });
 });
 
 mainRouter.get(MainRoute.LOGIN, (req, res) => {
   res.render(AppPage.LOGIN, {
-    account: {
-      type: UserType.GUEST,
-    },
+    account: {},
   });
 });
 
@@ -75,8 +71,7 @@ mainRouter.get(MainRoute.CATEGORIES, async (req, res) => {
 mainRouter.get(MainRoute.NOT_FOUND, (req, res) => {
   res.render(AppPage.ERROR_404, {
     account: {
-      type: UserType.GUEST,
-      error: HttpStatusCode.NOT_FOUND
+      error: HttpStatusCode.NOT_FOUND,
     },
   });
 });
@@ -84,7 +79,6 @@ mainRouter.get(MainRoute.NOT_FOUND, (req, res) => {
 mainRouter.get(MainRoute.INTERNAL_SERVER_ERROR, (req, res) => {
   res.render(AppPage.ERROR_500, {
     account: {
-      type: UserType.GUEST,
       error: HttpStatusCode.INTERNAL_SERVER_ERROR,
     },
   });
