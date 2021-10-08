@@ -2,93 +2,106 @@
 
 const {Router} = require(`express`);
 const {getAPI} = require(`../api`);
-const {ArticleKey} = require(`../../constants`);
-const {ensureArray} = require(`../../utils`);
 const {upload} = require(`../storage`);
+const {
+  ArticleKey,
+  UserType,
+} = require(`../../constants`);
+const {ensureArray} = require(`../../utils`);
+const {
+  AppPage,
+  AppRoute,
+  ArticleRoute,
+  FormKey,
+} = require(`../constants`);
 
 const articlesRouter = new Router();
 const api = getAPI();
 
-articlesRouter.get(`/category/:id`, async (req, res) => {
+articlesRouter.get(ArticleRoute.MAIN, (req, res) => {
+  res.redirect(AppRoute.MAIN);
+});
+
+articlesRouter.get(ArticleRoute.CATEGORY, async (req, res) => {
   const {id} = req.params;
   const [articles, categories] = await Promise.all([
     api.getArticles(),
     api.getCategories(),
   ]);
 
-  res.render(`pages/category`, {
+  res.render(AppPage.CATEGORY, {
     articles,
     categories,
     currentCategory: id,
     account: {
-      type: `user`,
+      type: UserType.USER,
     },
   });
 });
 
-articlesRouter.get(`/add`, async (req, res) => {
+articlesRouter.get(ArticleRoute.ADD, async (req, res) => {
   const categories = await api.getCategories();
 
-  res.render(`pages/admin/article`, {
+  res.render(AppPage.ADMIN_ARTICLE, {
     article: {},
     categories,
     account: {
-      type: `admin`,
+      type: UserType.ADMIN,
     },
   });
 });
 
-articlesRouter.get(`/edit/:id`, async (req, res) => {
+articlesRouter.get(ArticleRoute.EDIT, async (req, res) => {
   const {id} = req.params;
   const [article, categories] = await Promise.all([
     api.getArticle(id),
     api.getCategories(),
   ]);
 
-  res.render(`pages/admin/article`, {
+  res.render(AppPage.ADMIN_ARTICLE, {
     article,
     categories,
     account: {
-      type: `admin`,
+      type: UserType.ADMIN,
     },
   });
 });
 
-articlesRouter.get(`/:id`, async (req, res) => {
+articlesRouter.get(ArticleRoute.ARTICLE, async (req, res) => {
   const {id} = req.params;
   const article = await api.getArticle(id);
 
-  res.render(`pages/article`, {
+  res.render(AppPage.ARTICLE, {
     article,
     account: {
-      type: `user`,
+      type: UserType.USER,
     },
   });
 });
 
-articlesRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
+articlesRouter.post(ArticleRoute.ADD, upload.single(FormKey.UPLOAD), async (req, res) => {
   const {body, file} = req;
 
   const article = {
-    [ArticleKey.TITLE]: body[`title`],
-    [ArticleKey.PICTURE]: file ? file.filename : ``,
-    [ArticleKey.CREATED_DATE]: body[`date`],
-    [ArticleKey.ANNOUNCE]: body[`announcement`],
-    [ArticleKey.FULL_TEXT]: body[`full-text`],
-    [ArticleKey.CATEGORIES]: ensureArray(body[`category`]),
+    [ArticleKey.TITLE]: body[FormKey.TITLE],
+    [ArticleKey.PICTURE]: file ? file[FormKey.PICTURE] : ``,
+    [ArticleKey.CREATED_DATE]: body[FormKey.CREATED_DATE],
+    [ArticleKey.ANNOUNCE]: body[FormKey.ANNOUNCE],
+    [ArticleKey.FULL_TEXT]: body[FormKey.FULL_TEXT],
+    [ArticleKey.CATEGORIES]: ensureArray(body[FormKey.CATEGORIES]),
   };
 
   try {
     await api.createArticle(article);
-    res.redirect(`/my`);
+    res.redirect(AppRoute.MY);
   } catch (err) {
     const categories = await api.getCategories();
 
-    res.render(`pages/admin/article`, {
+    res.render(AppPage.ADMIN_ARTICLE, {
       article,
       categories,
       account: {
-        type: `admin`,
+        type: UserType.ADMIN,
       },
     });
   }

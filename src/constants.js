@@ -1,6 +1,7 @@
 'use strict';
 
 const ADDITIONAL_ARGV_SPLIT_INDEX = 2;
+const API_PORT = 3000;
 const API_PREFIX = `/api`;
 const DATE_FORMAT_PATTERN = `yyyy-LL-dd HH:mm:ss`;
 const DEFAULT_ENCODING = `utf-8`;
@@ -55,8 +56,15 @@ const HttpStatusCode = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
+const UserType = {
+  ADMIN: `admin`,
+  GUEST: `guest`,
+  USER: `user`,
+};
+
 module.exports = {
   ADDITIONAL_ARGV_SPLIT_INDEX,
+  API_PORT,
   API_PREFIX,
   DATE_FORMAT_PATTERN,
   DEFAULT_ENCODING,
@@ -70,4 +78,5 @@ module.exports = {
   Env,
   ExitCode,
   HttpStatusCode,
+  UserType,
 };

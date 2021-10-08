@@ -2,77 +2,84 @@
 
 const {Router} = require(`express`);
 const {getAPI} = require(`../api`);
-const {HttpStatusCode} = require(`../../constants`);
+const {
+  HttpStatusCode,
+  UserType,
+} = require(`../../constants`);
+const {
+  MainRoute,
+  AppPage,
+} = require(`../constants`);
 
 const mainRouter = new Router();
 const api = getAPI();
 
-mainRouter.get(`/`, async (req, res) => {
+mainRouter.get(MainRoute.MAIN, async (req, res) => {
   const articles = await api.getArticles();
   const categories = await api.getCategories();
 
-  res.render(`pages/main`, {
+  res.render(AppPage.MAIN, {
     articles,
     categories,
     account: {
-      type: `guest`,
+      type: UserType.ADMIN,
     },
   });
 });
 
-mainRouter.get(`/register`, (req, res) => {
-  res.render(`pages/register`, {
+mainRouter.get(MainRoute.REGISTER, (req, res) => {
+  res.render(AppPage.REGISTER, {
     account: {
-      type: `guest`,
+      type: UserType.GUEST,
     },
   });
 });
 
-mainRouter.get(`/login`, (req, res) => {
-  res.render(`pages/login`, {
+mainRouter.get(MainRoute.LOGIN, (req, res) => {
+  res.render(AppPage.LOGIN, {
     account: {
-      type: `guest`,
+      type: UserType.GUEST,
     },
   });
 });
 
-mainRouter.get(`/search`, async (req, res) => {
+mainRouter.get(MainRoute.SEARCH, async (req, res) => {
   const {query} = req.query;
   const results = await api.search(query);
 
-  res.render(`pages/search`, {
+  res.render(AppPage.SEARCH, {
     query,
     results,
     account: {
-      type: `user`,
+      type: UserType.USER,
     },
   });
 });
 
-mainRouter.get(`/categories`, async (req, res) => {
+mainRouter.get(MainRoute.CATEGORIES, async (req, res) => {
   const categories = await api.getCategories();
 
-  res.render(`pages/admin/categories`, {
+  res.render(AppPage.ADMIN_CATEGORIES, {
     categories,
     account: {
-      type: `admin`,
+      type: UserType.ADMIN,
     },
   });
 });
 
-mainRouter.get(`/404`, (req, res) => {
-  res.render(`pages/errors/404`, {
+mainRouter.get(MainRoute.NOT_FOUND, (req, res) => {
+  res.render(AppPage.ERROR_404, {
     account: {
-      type: `guest`,
+      type: UserType.GUEST,
       error: HttpStatusCode.NOT_FOUND
     },
   });
 });
 
-mainRouter.get(`/500`, (req, res) => {
-  res.render(`pages/errors/500`, {
+mainRouter.get(MainRoute.INTERNAL_SERVER_ERROR, (req, res) => {
+  res.render(AppPage.ERROR_500, {
     account: {
-      type: `guest`,
+      type: UserType.GUEST,
       error: HttpStatusCode.INTERNAL_SERVER_ERROR,
     },
   });

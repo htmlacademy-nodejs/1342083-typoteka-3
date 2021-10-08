@@ -2,28 +2,33 @@
 
 const {Router} = require(`express`);
 const {getAPI} = require(`../api`);
+const {UserType} = require(`../../constants`);
+const {
+  MyRoute,
+  AppPage,
+} = require(`../constants`);
 
 const myRouter = new Router();
 const api = getAPI();
 
-myRouter.get(`/`, async (req, res) => {
+myRouter.get(MyRoute.MAIN, async (req, res) => {
   const articles = await api.getArticles();
 
-  res.render(`pages/admin/articles`, {
+  res.render(AppPage.ADMIN_ARTICLES, {
     articles,
     account: {
-      type: `admin`,
+      type: UserType.ADMIN,
     },
   });
 });
 
-myRouter.get(`/comments`, async (req, res) => {
+myRouter.get(MyRoute.COMMENTS, async (req, res) => {
   const articles = await api.getArticles();
 
-  res.render(`pages/admin/comments`, {
+  res.render(AppPage.ADMIN_COMMENTS, {
     articles,
     account: {
-      type: `admin`,
+      type: UserType.ADMIN,
     },
   });
 });

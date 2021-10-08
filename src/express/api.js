@@ -1,21 +1,24 @@
 'use strict';
 
 const axios = require(`axios`);
+const {API_PORT} = require(`../constants`);
 
 const TIMEOUT = 1000;
-const port = 3000;
-const apiURL = `http://localhost:${port}/api/`;
+const API_URL = `http://localhost:${API_PORT}/api/`;
 
 class API {
   constructor(baseURL, timeout) {
     this._http = axios.create({
       baseURL,
-      timeout
+      timeout,
     });
   }
 
   async _load(url, options) {
-    const response = await this._http.request({url, ...options});
+    const response = await this._http.request({
+      url,
+      ...options
+    });
     return response.data;
   }
 
@@ -52,7 +55,7 @@ class API {
   }
 }
 
-const defaultAPI = new API(apiURL, TIMEOUT);
+const defaultAPI = new API(API_URL, TIMEOUT);
 
 module.exports = {
   API,
