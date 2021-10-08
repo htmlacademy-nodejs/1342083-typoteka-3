@@ -2,7 +2,7 @@ section.main-page__last.last
   h2.last__name
     | Последние комментарии&nbsp;
     span.last__icon.last__icon--cloud
-  if !lastIsEmpty
+  if !isLastEmpty
     ul.last__list
       li.last__list-item
         img.last__list-image(src="/img/avatar-small-1.png" width="20" height="20" alt="Аватар пользователя")

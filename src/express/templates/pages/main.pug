@@ -2,8 +2,8 @@ extends /layouts/default.pug
 
 block content
   -
-    const hotIsEmpty = false;
-    const lastIsEmpty = false;
+    const isHotEmpty = false;
+    const isLastEmpty = false;
 
   main.main-page
     h1.visually-hidden Главная страница личного блога Типотека
@@ -12,7 +12,7 @@ block content
       section.main-page__theme-list
         h2.visually-hidden Список тем
         include /partials/main/themes.pug
-      .main-page__section-flex(class={"main-page__section-flex--short": hotIsEmpty && lastIsEmpty})
+      .main-page__section-flex(class={"main-page__section-flex--short": isHotEmpty && isLastEmpty})
         include /partials/main/hot.pug
         include /partials/main/last.pug
       include /partials/main/preview.pug
