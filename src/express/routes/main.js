@@ -7,8 +7,9 @@ const {
   UserType,
 } = require(`../../constants`);
 const {
-  MainRoute,
   AppPage,
+  AppRoute,
+  MainRoute,
 } = require(`../constants`);
 
 const mainRouter = new Router();
@@ -41,6 +42,10 @@ mainRouter.get(MainRoute.LOGIN, (req, res) => {
       type: UserType.GUEST,
     },
   });
+});
+
+mainRouter.get(MainRoute.LOGOUT, (req, res) => {
+  res.redirect(AppRoute.MAIN);
 });
 
 mainRouter.get(MainRoute.SEARCH, async (req, res) => {
