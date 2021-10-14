@@ -1,8 +1,8 @@
-DROP TABLE IF EXISTS categories;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS publications;
-DROP TABLE IF EXISTS comments;
-DROP TABLE IF EXISTS publications_categories;
+DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS publications CASCADE;
+DROP TABLE IF EXISTS comments CASCADE;
+DROP TABLE IF EXISTS publications_categories CASCADE;
 
 CREATE TABLE categories(
   id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -25,8 +25,6 @@ CREATE TABLE publications(
   created_date timestamp DEFAULT current_timestamp,
   announce varchar(250) NOT NULL,
   full_text varchar(1000),
-  categories text NOT NULL,
-  comments text NOT NULL,
   user_id integer NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
