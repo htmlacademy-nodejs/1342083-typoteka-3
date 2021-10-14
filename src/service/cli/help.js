@@ -1,7 +1,10 @@
 'use strict';
 
 const chulk = require(`chalk`);
-const {CliCommand, ExitCode} = require(`../../constants`);
+const {
+  CliCommand,
+  ExitCode,
+} = require(`../../constants`);
 
 const HELP_TEXT = `
 Программа запускает http-сервер и формирует файл с данными для API.

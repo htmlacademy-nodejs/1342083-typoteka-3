@@ -3,7 +3,7 @@
 const ADDITIONAL_ARGV_SPLIT_INDEX = 2;
 const API_PORT = 3000;
 const API_PREFIX = `/api`;
-const DATE_FORMAT_PATTERN = `yyyy-LL-dd HH:mm:ss`;
+const DATE_FORMAT_PATTERN = `YYYY-MM-DD`;
 const DEFAULT_ENCODING = `utf-8`;
 const MAX_ID_LENGTH = 6;
 const MOCK_FILEPATH = `./mock.json`;
@@ -15,29 +15,12 @@ const APIUrl = {
   SEARCH: `/search`,
 };
 
-const PublicationKey = {
-  ID: `id`,
-  TITLE: `title`,
-  PICTURE: `picture`,
-  CREATED_DATE: `createdDate`,
-  ANNOUNCE: `announce`,
-  FULL_TEXT: `fullText`,
-  CATEGORIES: `categories`,
-  COMMENTS: `comments`,
-};
-
 const CliCommand = {
   FILL: `--fill`,
   GENERATE: `--generate`,
   HELP: `--help`,
   SERVER: `--server`,
   VERSION: `--version`,
-};
-
-const CommentKey = {
-  ID: `id`,
-  CREATED_DATE: `createdDate`,
-  TEXT: `text`,
 };
 
 const Env = {
@@ -62,6 +45,49 @@ const UserType = {
   USER: `user`,
 };
 
+const CategoryKey = {
+  ID: `id`,
+  NAME: `name`,
+};
+
+const CommentKey = {
+  ID: `id`,
+  CREATED_DATE: `createdDate`,
+  TEXT: `text`,
+  AUTHOR: `author`,
+  PUBLICATION_ID: `publicationId`,
+  USER_ID: `userId`,
+};
+
+const PublicationKey = {
+  ID: `id`,
+  TITLE: `title`,
+  PICTURE: `picture`,
+  CREATED_DATE: `createdDate`,
+  ANNOUNCE: `announce`,
+  FULL_TEXT: `fullText`,
+  CATEGORIES: `categories`,
+  COMMENTS: `comments`,
+  AUTHOR: `author`,
+  USER_ID: `userId`,
+};
+
+const UserKey = {
+  ID: `id`,
+  EMAIL: `email`,
+  FIRST_NAME: `firstName`,
+  LAST_NAME: `lastName`,
+  PASSWORD_HASH: `passwordHash`,
+  AVATAR: `avatar`,
+};
+
+const DateOffsetUnit = {
+  DAY: `day`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`,
+};
+
 module.exports = {
   ADDITIONAL_ARGV_SPLIT_INDEX,
   API_PORT,
@@ -72,11 +98,14 @@ module.exports = {
   MOCK_FILEPATH,
   RANDOM_SEPARATOR,
   APIUrl,
-  PublicationKey,
   CliCommand,
-  CommentKey,
   Env,
   ExitCode,
   HttpStatusCode,
   UserType,
+  CategoryKey,
+  CommentKey,
+  PublicationKey,
+  UserKey,
+  DateOffsetUnit,
 };

@@ -12,6 +12,21 @@ const FilePath = {
   TITLES: `./data/titles.txt`,
 };
 
+const MockCount = {
+  USERS: 10,
+  COMMENTS: 50,
+};
+
+const CategoriesRestrict = {
+  MIN: 1,
+  MAX: 5,
+};
+
+const CommentsRestrict = {
+  MIN: 1,
+  MAX: 5,
+};
+
 const PublicationCountRestrict = {
   MIN: 1,
   MAX: 1000,
@@ -20,5 +35,8 @@ const PublicationCountRestrict = {
 module.exports = {
   FileName,
   FilePath,
+  MockCount,
+  CategoriesRestrict,
+  CommentsRestrict,
   PublicationCountRestrict,
 };

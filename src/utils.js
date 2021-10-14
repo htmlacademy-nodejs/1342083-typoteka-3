@@ -2,7 +2,8 @@
 
 const {nanoid} = require(`nanoid`);
 const {DateTime} = require(`luxon`);
-const {DATE_FORMAT_PATTERN, RANDOM_SEPARATOR, MAX_ID_LENGTH} = require(`./constants`);
+const dayjs = require(`dayjs`);
+const {DATE_FORMAT_PATTERN, RANDOM_SEPARATOR, MAX_ID_LENGTH, DateOffsetUnit} = require(`./constants`);
 
 const compareDates = (firstDate, secondDate) => {
   return DateTime.fromFormat(secondDate, DATE_FORMAT_PATTERN) - DateTime.fromFormat(firstDate, DATE_FORMAT_PATTERN);
@@ -42,6 +43,12 @@ const getRandomId = (length = MAX_ID_LENGTH) => nanoid(length);
 
 const ensureArray = (value) => Array.isArray(value) ? value : [value];
 
+const getDate = (offsetValue = 0, offsetUnit = DateOffsetUnit.DAY, formatPattern = DATE_FORMAT_PATTERN) => {
+  return dayjs().add(offsetValue, offsetUnit).format(formatPattern);
+};
+
+const generateRandomEmail = () => `${nanoid()}@mail.com`;
+
 module.exports = {
   compareDates,
   getCurrentDate,
@@ -53,4 +60,6 @@ module.exports = {
   getRandomArrayItems,
   getRandomId,
   ensureArray,
+  getDate,
+  generateRandomEmail
 };

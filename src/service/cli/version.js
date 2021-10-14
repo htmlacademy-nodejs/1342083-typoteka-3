@@ -2,7 +2,10 @@
 
 const chulk = require(`chalk`);
 const packageJson = require(`../../../package.json`);
-const {CliCommand, ExitCode} = require(`../../constants`);
+const {
+  CliCommand,
+  ExitCode,
+} = require(`../../constants`);
 
 module.exports = {
   name: CliCommand.VERSION,
