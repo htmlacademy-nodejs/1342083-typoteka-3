@@ -5,7 +5,7 @@ const chalk = require(`chalk`);
 const {
   DATE_FORMAT_PATTERN,
   DEFAULT_ENCODING,
-  ArticleKey,
+  PublicationKey,
   CliCommand,
   ExitCode,
 } = require(`../../constants`);
@@ -51,31 +51,31 @@ const FilePath = {
   TITLES: `./data/titles.txt`,
 };
 
-const ArticlesCountRestrict = {
+const PublicationCountRestrict = {
   MIN: 1,
   MAX: 1000,
 };
 
-const articleGenerator = (count, titles, sentences, categories, comments) => {
+const publicationGenerator = (count, titles, sentences, categories, comments) => {
   return Array.from(new Array(count), () => {
     const hasPicture = Boolean(getRandomBoolean());
     const hasFullText = Boolean(getRandomBoolean());
 
     const article = {
-      [ArticleKey.ID]: getRandomId(),
-      [ArticleKey.TITLE]: getRandomArrayItem(titles),
-      [ArticleKey.CREATED_DATE]: getDate(PAST_MONTH_LIMIT, DATE_FORMAT_PATTERN),
-      [ArticleKey.ANNOUNCE]: getItems(sentences, AnounceRestrict.MIN, AnounceRestrict.MAX).join(` `),
-      [ArticleKey.CATEGORIES]: getItems(categories, CategoriesRestrict.MIN, CategoriesRestrict.MAX),
-      [ArticleKey.COMMENTS]: getComments(comments, CommentsRestrict.MIN, CommentsRestrict.MAX),
+      [PublicationKey.ID]: getRandomId(),
+      [PublicationKey.TITLE]: getRandomArrayItem(titles),
+      [PublicationKey.CREATED_DATE]: getDate(PAST_MONTH_LIMIT, DATE_FORMAT_PATTERN),
+      [PublicationKey.ANNOUNCE]: getItems(sentences, AnounceRestrict.MIN, AnounceRestrict.MAX).join(` `),
+      [PublicationKey.CATEGORIES]: getItems(categories, CategoriesRestrict.MIN, CategoriesRestrict.MAX),
+      [PublicationKey.COMMENTS]: getComments(comments, CommentsRestrict.MIN, CommentsRestrict.MAX),
     };
 
     if (hasPicture) {
-      article[ArticleKey.PICTURE] = getRandomArrayItem(PICTURES);
+      article[PublicationKey.PICTURE] = getRandomArrayItem(PICTURES);
     }
 
     if (hasFullText) {
-      article[ArticleKey.FULL_TEXT] = getItems(sentences, FULL_TEXT_MIN_SIZE, sentences.length - 1).join(` `);
+      article[PublicationKey.FULL_TEXT] = getItems(sentences, FULL_TEXT_MIN_SIZE, sentences.length - 1).join(` `);
     }
 
     return article;
@@ -96,24 +96,24 @@ module.exports = {
   name: CliCommand.GENERATE,
   async run(args) {
     const [count] = args;
-    const articleCount = Number.parseInt(count, 10) || ArticlesCountRestrict.MIN;
+    const publicationCount = Number.parseInt(count, 10) || PublicationCountRestrict.MIN;
 
     const titles = await readContent(FilePath.TITLES);
     const sentences = await readContent(FilePath.SENTENCES);
     const categories = await readContent(FilePath.CATEGORIES);
     const comments = await readContent(FilePath.COMMENTS);
 
-    if (articleCount > ArticlesCountRestrict.MAX) {
-      console.error(chalk.red(`Не больше ${ArticlesCountRestrict.MAX} публикаций.`));
+    if (publicationCount > PublicationCountRestrict.MAX) {
+      console.error(chalk.red(`Не больше ${PublicationCountRestrict.MAX} публикаций.`));
       process.exit(ExitCode.ERROR);
     }
 
-    const content = articleGenerator(articleCount, titles, sentences, categories, comments);
+    const content = publicationGenerator(publicationCount, titles, sentences, categories, comments);
     const articles = JSON.stringify(content, null, 2);
 
     try {
       await fs.writeFile(OUTPUT_FILE_NAME, articles);
-      console.info(chalk.green(`Публикации (${articleCount}) успешно сгенерированы.`));
+      console.info(chalk.green(`Публикации (${publicationCount}) успешно сгенерированы.`));
       process.exit(ExitCode.SUCCESS);
     } catch (err) {
       console.error(chalk.red(`Невозможно сохранить публикации.`));

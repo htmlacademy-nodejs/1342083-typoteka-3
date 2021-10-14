@@ -1,6 +1,6 @@
 'use strict';
 
-const {ArticleKey} = require(`../../constants`);
+const {PublicationKey} = require(`../../constants`);
 const {
   getRandomId,
 } = require(`../../utils`);
@@ -13,8 +13,8 @@ class ArticleService {
   create(article) {
     const newArticle = {
       ...article,
-      [ArticleKey.ID]: getRandomId(),
-      [ArticleKey.COMMENTS]: [],
+      [PublicationKey.ID]: getRandomId(),
+      [PublicationKey.COMMENTS]: [],
     };
 
     this._articles = [...this._articles, newArticle];

@@ -1,12 +1,12 @@
 'use strict';
 
-const {ArticleKey, HttpStatusCode} = require(`../../constants`);
+const {PublicationKey, HttpStatusCode} = require(`../../constants`);
 
 const requiredKeys = [
-  ArticleKey.TITLE,
-  ArticleKey.CREATED_DATE,
-  ArticleKey.ANNOUNCE,
-  ArticleKey.CATEGORIES,
+  PublicationKey.TITLE,
+  PublicationKey.CREATED_DATE,
+  PublicationKey.ANNOUNCE,
+  PublicationKey.CATEGORIES,
 ];
 
 module.exports = (req, res, next) => {

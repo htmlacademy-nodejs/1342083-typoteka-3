@@ -15,7 +15,7 @@ const APIUrl = {
   SEARCH: `/search`,
 };
 
-const ArticleKey = {
+const PublicationKey = {
   ID: `id`,
   TITLE: `title`,
   PICTURE: `picture`,
@@ -27,6 +27,7 @@ const ArticleKey = {
 };
 
 const CliCommand = {
+  FILL: `--fill`,
   GENERATE: `--generate`,
   HELP: `--help`,
   SERVER: `--server`,
@@ -71,7 +72,7 @@ module.exports = {
   MOCK_FILEPATH,
   RANDOM_SEPARATOR,
   APIUrl,
-  ArticleKey,
+  PublicationKey,
   CliCommand,
   CommentKey,
   Env,

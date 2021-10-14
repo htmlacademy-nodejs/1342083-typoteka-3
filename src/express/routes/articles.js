@@ -4,7 +4,7 @@ const {Router} = require(`express`);
 const {getAPI} = require(`../api`);
 const {upload} = require(`../storage`);
 const {
-  ArticleKey,
+  PublicationKey,
   UserType,
 } = require(`../../constants`);
 const {ensureArray} = require(`../../utils`);
@@ -83,12 +83,12 @@ articlesRouter.post(ArticleRoute.ADD, upload.single(FormKey.UPLOAD), async (req,
   const {body, file} = req;
 
   const article = {
-    [ArticleKey.TITLE]: body[FormKey.TITLE],
-    [ArticleKey.PICTURE]: file ? file[FormKey.PICTURE] : ``,
-    [ArticleKey.CREATED_DATE]: body[FormKey.CREATED_DATE],
-    [ArticleKey.ANNOUNCE]: body[FormKey.ANNOUNCE],
-    [ArticleKey.FULL_TEXT]: body[FormKey.FULL_TEXT],
-    [ArticleKey.CATEGORIES]: ensureArray(body[FormKey.CATEGORIES]),
+    [PublicationKey.TITLE]: body[FormKey.TITLE],
+    [PublicationKey.PICTURE]: file ? file[FormKey.PICTURE] : ``,
+    [PublicationKey.CREATED_DATE]: body[FormKey.CREATED_DATE],
+    [PublicationKey.ANNOUNCE]: body[FormKey.ANNOUNCE],
+    [PublicationKey.FULL_TEXT]: body[FormKey.FULL_TEXT],
+    [PublicationKey.CATEGORIES]: ensureArray(body[FormKey.CATEGORIES]),
   };
 
   try {
