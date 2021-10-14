@@ -58,7 +58,6 @@ const HttpStatusCode = {
 
 const UserType = {
   ADMIN: `admin`,
-  GUEST: `guest`,
   USER: `user`,
 };
 
