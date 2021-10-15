@@ -13,6 +13,7 @@ const {
   AppRoute,
   ArticleRoute,
   FormKey,
+  MainRoute,
 } = require(`../constants`);
 
 const articlesRouter = new Router();
@@ -53,18 +54,22 @@ articlesRouter.get(ArticleRoute.ADD, async (req, res) => {
 
 articlesRouter.get(ArticleRoute.EDIT, async (req, res) => {
   const {id} = req.params;
-  const [article, categories] = await Promise.all([
-    api.getArticle(id),
-    api.getCategories(),
-  ]);
+  try {
+    const [article, categories] = await Promise.all([
+      api.getArticle(id),
+      api.getCategories(),
+    ]);
 
-  res.render(AppPage.ADMIN_ARTICLE, {
-    article,
-    categories,
-    account: {
-      type: UserType.ADMIN,
-    },
-  });
+    res.render(AppPage.ADMIN_ARTICLE, {
+      article,
+      categories,
+      account: {
+        type: UserType.ADMIN,
+      },
+    });
+  } catch (error) {
+    res.redirect(MainRoute.NOT_FOUND);
+  }
 });
 
 articlesRouter.get(ArticleRoute.ARTICLE, async (req, res) => {
