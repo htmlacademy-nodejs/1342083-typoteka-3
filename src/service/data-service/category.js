@@ -7,11 +7,16 @@ class CategoryService {
 
   findAll() {
     const categories = this._articles.reduce((acc, article) => {
-      article.categories.forEach((category) => acc.add(category));
+      article.categories.forEach((current) => {
+        const containThisCategory = acc.find((saved) => saved.id === current.id);
+        if (!containThisCategory) {
+          acc.push(current);
+        }
+      });
       return acc;
-    }, new Set());
+    }, []);
 
-    return [...categories];
+    return categories;
   }
 }
 

@@ -2,7 +2,9 @@
 
 const express = require(`express`);
 const api = require(`../api`);
-const {getLogger} = require(`../lib/logger`);
+const {
+  getLogger,
+} = require(`../lib/logger`);
 const {
   API_PREFIX,
   CliCommand,

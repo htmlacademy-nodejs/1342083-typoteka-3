@@ -2,7 +2,7 @@ extends /layouts/default.pug
 
 block content
   main.articles-category
-    h1 #{currentCategory}
+    h1 #{currentCategory.name}
     section.articles-category__theme-list
       h2.visually-hidden Список тем
       include /partials/category/themes.pug

@@ -1,8 +1,11 @@
 'use strict';
 
-const {ArticleKey} = require(`../../constants`);
+const {
+  ArticleKey,
+} = require(`../../constants`);
 const {
   getRandomId,
+  compareDatesDescend,
 } = require(`../../utils`);
 
 class ArticleService {
@@ -57,7 +60,9 @@ class ArticleService {
   }
 
   findAll() {
-    return this._articles.slice();
+    return this._articles
+      .slice()
+      .sort((first, second) => compareDatesDescend(first[ArticleKey.CREATED_DATE], second[ArticleKey.CREATED_DATE]));
   }
 }
 

@@ -39,8 +39,8 @@ block content
                   each category in categories
                     - const isChecked = article.categories && article.categories.includes(category)
                     .new-publication__checkbox
-                      input(id=category type="checkbox" name="category" value=category checked=isChecked)
-                      label(for=category) #{category}
+                      input(id=category.id type="checkbox" name="category" value=category.name checked=isChecked)
+                      label(for=category.id) #{category.name}
                   a.new-publication__form-link.button.button--transparent(href="/categories") Добавить категорию
               .form__wrapper.form__wrapper--text
                 .form__field.form__field--publication-text

@@ -29,10 +29,13 @@ articlesRouter.get(ArticleRoute.CATEGORY, async (req, res) => {
     api.getCategories(),
   ]);
 
+  const currentCategory = categories.find((category) => category.id === id);
+  const sortedArticles = articles.filter((article) => article.categories.some((category) => category.id === id));
+
   res.render(AppPage.CATEGORY, {
-    articles,
+    articles: sortedArticles,
     categories,
-    currentCategory: id,
+    currentCategory,
     account: {
       type: UserType.USER,
     },
@@ -67,16 +70,21 @@ articlesRouter.get(ArticleRoute.EDIT, async (req, res) => {
   });
 });
 
-articlesRouter.get(ArticleRoute.ARTICLE, async (req, res) => {
+articlesRouter.get(ArticleRoute.ARTICLE, async (req, res, next) => {
   const {id} = req.params;
-  const article = await api.getArticle(id);
 
-  res.render(AppPage.ARTICLE, {
-    article,
-    account: {
-      type: UserType.USER,
-    },
-  });
+  try {
+    const article = await api.getArticle(id);
+    res.render(AppPage.ARTICLE, {
+      article,
+      account: {
+        type: UserType.USER,
+      },
+    });
+  } catch (error) {
+    next();
+  }
+
 });
 
 articlesRouter.post(ArticleRoute.ADD, upload.single(FormKey.UPLOAD), async (req, res) => {

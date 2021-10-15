@@ -3,7 +3,7 @@ mixin preview-item(article)
     ul.preview__breadcrumbs
       each category in article.categories
         li.preview__breadcrumbs-item
-          a.preview__breadcrumbs-link(href=`${AppRoute.CATEGORY}/${category}`) #{category}
+          a.preview__breadcrumbs-link(href=`${AppRoute.CATEGORY}/${category.id}`) #{category.name}
     if article.picture
       .preview__background
         img.preview__background-image(src=`/img/${article.picture}` width="460" height="240" alt=article.title)

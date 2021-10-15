@@ -1,8 +1,8 @@
-DROP TABLE IF EXISTS categories;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS publications;
-DROP TABLE IF EXISTS comments;
-DROP TABLE IF EXISTS publications_categories;
+DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS articles CASCADE;
+DROP TABLE IF EXISTS comments CASCADE;
+DROP TABLE IF EXISTS articles_categories CASCADE;
 
 CREATE TABLE categories(
   id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -18,15 +18,13 @@ CREATE TABLE users(
   avatar varchar(50)
 );
 
-CREATE TABLE publications(
+CREATE TABLE articles(
   id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   title varchar(250) NOT NULL,
   picture varchar(50),
   created_date timestamp DEFAULT current_timestamp,
   announce varchar(250) NOT NULL,
   full_text varchar(1000),
-  categories text NOT NULL,
-  comments text NOT NULL,
   user_id integer NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -35,18 +33,18 @@ CREATE TABLE comments(
   id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   text text NOT NULL,
   created_date timestamp DEFAULT current_timestamp,
-  publication_id integer NOT NULL,
+  article_id integer NOT NULL,
   user_id integer NOT NULL,
-  FOREIGN KEY (publication_id) REFERENCES publications(id),
+  FOREIGN KEY (article_id) REFERENCES articles(id),
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE publications_categories(
-  publication_id integer NOT NULL,
+CREATE TABLE articles_categories(
+  article_id integer NOT NULL,
   category_id integer NOT NULL,
-  PRIMARY KEY (publication_id, category_id),
-  FOREIGN KEY (publication_id) REFERENCES publications(id),
+  PRIMARY KEY (article_id, category_id),
+  FOREIGN KEY (article_id) REFERENCES articles(id),
   FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
-CREATE INDEX ON publications(title);
+CREATE INDEX ON articles(title);

@@ -3,7 +3,6 @@
 const {Router} = require(`express`);
 const {getAPI} = require(`../api`);
 const {
-  HttpStatusCode,
   UserType,
 } = require(`../../constants`);
 const {
@@ -64,22 +63,6 @@ mainRouter.get(MainRoute.CATEGORIES, async (req, res) => {
     categories,
     account: {
       type: UserType.ADMIN,
-    },
-  });
-});
-
-mainRouter.get(MainRoute.NOT_FOUND, (req, res) => {
-  res.render(AppPage.ERROR_404, {
-    account: {
-      error: HttpStatusCode.NOT_FOUND,
-    },
-  });
-});
-
-mainRouter.get(MainRoute.INTERNAL_SERVER_ERROR, (req, res) => {
-  res.render(AppPage.ERROR_500, {
-    account: {
-      error: HttpStatusCode.INTERNAL_SERVER_ERROR,
     },
   });
 });

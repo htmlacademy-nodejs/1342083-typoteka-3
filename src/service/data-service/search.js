@@ -1,6 +1,11 @@
 'use strict';
 
-const {compareDates} = require(`../../utils`);
+const {
+  ArticleKey,
+} = require(`../../constants`);
+const {
+  compareDatesDescend,
+} = require(`../../utils`);
 
 class SearchService {
   constructor(articles) {
@@ -10,7 +15,7 @@ class SearchService {
   findAll(searchText) {
     return this._articles
       .filter((article) => article.title.includes(searchText))
-      .sort((first, second) => compareDates(first.createdDate, second.createdDate));
+      .sort((first, second) => compareDatesDescend(first[ArticleKey.CREATED_DATE], second[ArticleKey.CREATED_DATE]));
   }
 }
 

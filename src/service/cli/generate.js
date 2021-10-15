@@ -3,116 +3,94 @@
 const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
 const {
-  DATE_FORMAT_PATTERN,
-  DEFAULT_ENCODING,
+  CategoryKey,
+  CommentKey,
   ArticleKey,
   CliCommand,
   ExitCode,
 } = require(`../../constants`);
 const {
+  MockCount,
+  CategoriesRestrict,
+  CommentsRestrict,
+  ArticleCountRestrict,
+  FilePath,
+  FileName,
+} = require(`./constants`);
+const {
+  getRandomId,
   getRandomArrayItem,
   getRandomBoolean,
-  getRandomId,
 } = require(`../../utils`);
 const {
-  getDate,
+  generateCategory,
+  generateUser,
+  generateComment,
+  generateArticle,
   getItems,
-  getComments,
+  readContent,
 } = require(`./utils`);
 
-const FULL_TEXT_MIN_SIZE = 1;
-const OUTPUT_FILE_NAME = `mock.json`;
-const PAST_MONTH_LIMIT = 3;
-const PICTURES = [
-  `forest.jpg`,
-  `sea.jpg`,
-  `skyscraper.jpg`,
-];
+const generateFullArticle = (count, mockTitles, mockSentences, mockCategories, mockComments) => {
+  const categories = mockCategories.map((name) => {
+    const category = generateCategory(name);
+    category[CategoryKey.ID] = getRandomId();
 
-const AnounceRestrict = {
-  MIN: 1,
-  MAX: 5,
-};
+    return category;
+  });
 
-const CategoriesRestrict = {
-  MIN: 1,
-  MAX: 3,
-};
+  const users = Array.from(new Array(MockCount.USERS), () => {
+    const user = generateUser();
 
-const CommentsRestrict = {
-  MIN: 1,
-  MAX: 5,
-};
+    return user;
+  });
 
-const FilePath = {
-  COMMENTS: `./data/comments.txt`,
-  CATEGORIES: `./data/categories.txt`,
-  SENTENCES: `./data/sentences.txt`,
-  TITLES: `./data/titles.txt`,
-};
+  const comments = mockComments.map((text) => {
+    const comment = generateComment(text);
+    comment[CommentKey.ID] = getRandomId();
+    comment[CommentKey.AUTHOR] = getRandomArrayItem(users);
 
-const ArticlesCountRestrict = {
-  MIN: 1,
-  MAX: 1000,
-};
+    return comment;
+  });
 
-const articleGenerator = (count, titles, sentences, categories, comments) => {
   return Array.from(new Array(count), () => {
-    const hasPicture = Boolean(getRandomBoolean());
-    const hasFullText = Boolean(getRandomBoolean());
+    const hasComments = getRandomBoolean();
 
     const article = {
       [ArticleKey.ID]: getRandomId(),
-      [ArticleKey.TITLE]: getRandomArrayItem(titles),
-      [ArticleKey.CREATED_DATE]: getDate(PAST_MONTH_LIMIT, DATE_FORMAT_PATTERN),
-      [ArticleKey.ANNOUNCE]: getItems(sentences, AnounceRestrict.MIN, AnounceRestrict.MAX).join(` `),
+      ...generateArticle(mockTitles, mockSentences),
       [ArticleKey.CATEGORIES]: getItems(categories, CategoriesRestrict.MIN, CategoriesRestrict.MAX),
-      [ArticleKey.COMMENTS]: getComments(comments, CommentsRestrict.MIN, CommentsRestrict.MAX),
+      [ArticleKey.COMMENTS]: hasComments ? getItems(comments, CommentsRestrict.MIN, CommentsRestrict.MAX) : [],
+      [ArticleKey.AUTHOR]: getRandomArrayItem(users),
     };
-
-    if (hasPicture) {
-      article[ArticleKey.PICTURE] = getRandomArrayItem(PICTURES);
-    }
-
-    if (hasFullText) {
-      article[ArticleKey.FULL_TEXT] = getItems(sentences, FULL_TEXT_MIN_SIZE, sentences.length - 1).join(` `);
-    }
 
     return article;
   });
-};
-
-const readContent = async (filePath) => {
-  try {
-    const content = await fs.readFile(filePath, DEFAULT_ENCODING);
-    return content.trim().split(`\n`);
-  } catch (err) {
-    console.error(chalk.red(err));
-    return [];
-  }
 };
 
 module.exports = {
   name: CliCommand.GENERATE,
   async run(args) {
     const [count] = args;
-    const articleCount = Number.parseInt(count, 10) || ArticlesCountRestrict.MIN;
+    const articleCount = Number.parseInt(count, 10) || ArticleCountRestrict.MIN;
 
-    const titles = await readContent(FilePath.TITLES);
-    const sentences = await readContent(FilePath.SENTENCES);
-    const categories = await readContent(FilePath.CATEGORIES);
-    const comments = await readContent(FilePath.COMMENTS);
+    const [titles, sentences, categories, comments] = await Promise.all([
+      readContent(FilePath.TITLES),
+      readContent(FilePath.SENTENCES),
+      readContent(FilePath.CATEGORIES),
+      readContent(FilePath.COMMENTS),
+    ]);
 
-    if (articleCount > ArticlesCountRestrict.MAX) {
-      console.error(chalk.red(`Не больше ${ArticlesCountRestrict.MAX} публикаций.`));
+    if (articleCount > ArticleCountRestrict.MAX) {
+      console.error(chalk.red(`Не больше ${ArticleCountRestrict.MAX} публикаций.`));
       process.exit(ExitCode.ERROR);
     }
 
-    const content = articleGenerator(articleCount, titles, sentences, categories, comments);
+    const content = generateFullArticle(articleCount, titles, sentences, categories, comments);
     const articles = JSON.stringify(content, null, 2);
 
     try {
-      await fs.writeFile(OUTPUT_FILE_NAME, articles);
+      await fs.writeFile(FileName.JSON, articles);
       console.info(chalk.green(`Публикации (${articleCount}) успешно сгенерированы.`));
       process.exit(ExitCode.SUCCESS);
     } catch (err) {
