@@ -13,7 +13,6 @@ const {
   AppRoute,
   ArticleRoute,
   FormKey,
-  MainRoute,
 } = require(`../constants`);
 
 const articlesRouter = new Router();
@@ -54,34 +53,35 @@ articlesRouter.get(ArticleRoute.ADD, async (req, res) => {
 
 articlesRouter.get(ArticleRoute.EDIT, async (req, res) => {
   const {id} = req.params;
-  try {
-    const [article, categories] = await Promise.all([
-      api.getArticle(id),
-      api.getCategories(),
-    ]);
+  const [article, categories] = await Promise.all([
+    api.getArticle(id),
+    api.getCategories(),
+  ]);
 
-    res.render(AppPage.ADMIN_ARTICLE, {
+  res.render(AppPage.ADMIN_ARTICLE, {
+    article,
+    categories,
+    account: {
+      type: UserType.ADMIN,
+    },
+  });
+});
+
+articlesRouter.get(ArticleRoute.ARTICLE, async (req, res, next) => {
+  const {id} = req.params;
+
+  try {
+    const article = await api.getArticle(id);
+    res.render(AppPage.ARTICLE, {
       article,
-      categories,
       account: {
-        type: UserType.ADMIN,
+        type: UserType.USER,
       },
     });
   } catch (error) {
-    res.redirect(MainRoute.NOT_FOUND);
+    next();
   }
-});
 
-articlesRouter.get(ArticleRoute.ARTICLE, async (req, res) => {
-  const {id} = req.params;
-  const article = await api.getArticle(id);
-
-  res.render(AppPage.ARTICLE, {
-    article,
-    account: {
-      type: UserType.USER,
-    },
-  });
 });
 
 articlesRouter.post(ArticleRoute.ADD, upload.single(FormKey.UPLOAD), async (req, res) => {
