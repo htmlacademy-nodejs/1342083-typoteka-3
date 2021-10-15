@@ -32,7 +32,7 @@ articlesRouter.get(ArticleRoute.CATEGORY, async (req, res) => {
   res.render(AppPage.CATEGORY, {
     articles,
     categories,
-    currentCategory: id,
+    currentCategory: categories.find((category) => category.id === id),
     account: {
       type: UserType.USER,
     },

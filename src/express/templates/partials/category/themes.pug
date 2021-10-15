@@ -3,9 +3,9 @@ ul.themes
     li.themes__item
       if category === currentCategory
         a.themes__item-link.themes__item-link--active
-          | #{category}
+          | #{category.name}
           sup &nbsp;22
       else
-        a.themes__item-link(href=`${AppRoute.CATEGORY}/${category}`)
-          | #{category}
+        a.themes__item-link(href=`${AppRoute.CATEGORY}/${category.id}`)
+          | #{category.name}
           sup &nbsp;22
