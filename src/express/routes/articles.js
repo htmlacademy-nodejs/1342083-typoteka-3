@@ -29,10 +29,13 @@ articlesRouter.get(ArticleRoute.CATEGORY, async (req, res) => {
     api.getCategories(),
   ]);
 
+  const currentCategory = categories.find((category) => category.id === id);
+  const sortedArticles = articles.filter((article) => article.categories.some((category) => category.id === id));
+
   res.render(AppPage.CATEGORY, {
-    articles,
+    articles: sortedArticles,
     categories,
-    currentCategory: categories.find((category) => category.id === id),
+    currentCategory,
     account: {
       type: UserType.USER,
     },
