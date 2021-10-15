@@ -11,7 +11,7 @@ const {
   DEFAULT_ENCODING,
 } = require(`../../constants`);
 const {
-  getDate,
+  getRandomDate,
   generateRandomEmail,
   getRandomIntInclusive,
   getRandomArrayItems,
@@ -73,7 +73,7 @@ const avatars = [
 const generateRandomDate = () => {
   const offsetValue = getRandomIntInclusive(-DATE_OFFSET, DATE_OFFSET);
   const offsetUnit = getRandomArrayItem([DateOffsetUnit.DAY, DateOffsetUnit.MONTH, DateOffsetUnit.WEEK]);
-  return getDate(offsetValue, offsetUnit);
+  return getRandomDate(offsetValue, offsetUnit);
 };
 
 const getItems = (items, min, max) => {
