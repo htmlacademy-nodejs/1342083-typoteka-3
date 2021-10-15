@@ -36,8 +36,19 @@ const getRandomId = (length = MAX_ID_LENGTH) => nanoid(length);
 
 const ensureArray = (value) => Array.isArray(value) ? value : [value];
 
-const compareDates = (firstDate, secondDate) => {
-  return dayjs(firstDate).isAfter(dayjs(secondDate));
+const compareDatesDescend = (firstDate, secondDate) => {
+  const parsedFirstDate = dayjs(firstDate);
+  const parsedSecondDate = dayjs(secondDate);
+
+  if (parsedFirstDate.isBefore(parsedSecondDate)) {
+    return 1;
+  }
+
+  if (parsedFirstDate.isAfter(parsedSecondDate)) {
+    return -1;
+  }
+
+  return 0;
 };
 
 const getCurrentDate = (formatPattern) => dayjs().format(formatPattern);
@@ -49,7 +60,7 @@ const getRandomDate = (offsetValue = 0, offsetUnit = DateOffsetUnit.DAY, formatP
 const generateRandomEmail = () => `${nanoid()}@mail.com`;
 
 module.exports = {
-  compareDates,
+  compareDatesDescend,
   getCurrentDate,
   getRandomIntInclusive,
   getRandomBoolean,

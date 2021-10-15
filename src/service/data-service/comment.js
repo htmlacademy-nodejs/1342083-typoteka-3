@@ -1,7 +1,14 @@
 'use strict';
 
-const {DATE_FORMAT_PATTERN, CommentKey} = require(`../../constants`);
-const {getRandomId, getCurrentDate} = require(`../../utils`);
+const {
+  DATE_FORMAT_PATTERN,
+  CommentKey,
+} = require(`../../constants`);
+const {
+  getRandomId,
+  getCurrentDate,
+  compareDatesDescend,
+} = require(`../../utils`);
 
 class CommentService {
   create(article, comment) {
@@ -48,7 +55,9 @@ class CommentService {
   }
 
   findAll(article) {
-    return article.comments;
+    return article.comments
+      .slice()
+      .sort((first, second) => compareDatesDescend(first[CommentKey.CREATED_DATE], second[CommentKey.CREATED_DATE]));
   }
 }
 
