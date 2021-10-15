@@ -21,8 +21,8 @@ INSERT INTO users(email, first_name, last_name, password_hash, avatar) VALUES
 ('l2BhajL9ulVQmcD00Yh5V@mail.com', 'Женя', 'Фролова', 'dbf2054308f848873a3f6a2a35817185', 'avatar-2.png'),
 ('a1HNCo2FZlz0MjADw4Ygq@mail.com', 'Женя', 'Фролова', '514a799c6f2d29cabe5ae12d512e1fb7', 'avatar-5.png');
 
-ALTER TABLE publications DISABLE TRIGGER ALL;
-INSERT INTO publications(title, picture, created_date, announce, full_text, user_id) VALUES
+ALTER TABLE articles DISABLE TRIGGER ALL;
+INSERT INTO articles(title, picture, created_date, announce, full_text, user_id) VALUES
 ('Как достигнуть успеха не вставая с кресла', 'sea.jpg', '2021-10-13', 'Этот смартфон — настоящая находка. Большой и яркий экран, мощнейший процессор — всё это в небольшом гаджете. Альбом стал настоящим открытием года. Мощные гитарные рифы и скоростные соло-партии не дадут заскучать. Вы можете достичь всего. Стоит тол...', 'Первая большая ёлка была установлена только в 1938 году. Собрать камни бесконечности легко, если ...', 9),
 ('Рок — это протест', 'sea.jpg', '2021-10-12', 'Бороться с прокрастинацией несложно. Просто действуйте. Маленькими шагами....', 'Это один из лучших рок-музыкантов. Ёлки — это не просто красивое дерево. Это прочная древесина. Д...', 5),
 ('Как перестать беспокоиться и начать жить', 'sea.jpg', '2021-10-16', 'Процессор заслуживает особого внимания. Он обязательно понравится геймерам со стажем. Он написал больше 30 хитов. Первая большая ёлка была установлена только в 1938 году....', 'Это один из лучших рок-музыкантов. Достичь успеха помогут ежедневные повторения. Освоить вёрстку ...', 4),
@@ -33,10 +33,10 @@ INSERT INTO publications(title, picture, created_date, announce, full_text, user
 ('Обзор новейшего смартфона', 'sea.jpg', '2021-10-29', 'Бороться с прокрастинацией несложно. Просто действуйте. Маленькими шагами. Этот смартфон — настоящая находка. Большой и яркий экран, мощнейший процессор — всё это в небольшом гаджете. Игры и программирование разные вещи. Не стоит идти в программис...', 'Бороться с прокрастинацией несложно. Просто действуйте. Маленькими шагами. Он написал больше 30 х...', 10),
 ('Лучшие рок-музыканты 20-века', 'skyscraper.jpg', '2021-07-15', 'Ёлки — это не просто красивое дерево. Это прочная древесина....', 'Собрать камни бесконечности легко, если вы прирожденный герой. Бороться с прокрастинацией несложн...', 8),
 ('Обзор новейшего смартфона', 'forest.jpg', '2021-10-15', 'Вы можете достичь всего. Стоит только немного постараться и запастись книгами. Этот смартфон — настоящая находка. Большой и яркий экран, мощнейший процессор — всё это в небольшом гаджете. Из под его пера вышло 8 платиновых альбомов. Альбом стал на...', 'Рок-музыка всегда ассоциировалась с протестами. Так ли это на самом деле?, Достичь успеха помогут...', 4);
-ALTER TABLE publications ENABLE TRIGGER ALL;
+ALTER TABLE articles ENABLE TRIGGER ALL;
 
 ALTER TABLE comments DISABLE TRIGGER ALL;
-INSERT INTO comments(text, created_date, publication_id, user_id) VALUES
+INSERT INTO comments(text, created_date, article_id, user_id) VALUES
 ('Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.', '2021-07-15', 7, 0),
 ('Плюсую, но слишком много буквы!', '2022-01-15', 4, 9),
 ('Согласен с автором!', '2021-10-08', 4, 6),
@@ -89,8 +89,8 @@ INSERT INTO comments(text, created_date, publication_id, user_id) VALUES
 ('Это где ж такие красоты?', '2021-10-13', 2, 0);
 ALTER TABLE comments ENABLE TRIGGER ALL;
 
-ALTER TABLE publications_categories DISABLE TRIGGER ALL;
-INSERT INTO publications_categories(publication_id, category_id) VALUES
+ALTER TABLE articles_categories DISABLE TRIGGER ALL;
+INSERT INTO articles_categories(article_id, category_id) VALUES
 (1, 4),
 (2, 9),
 (3, 7),
@@ -124,4 +124,4 @@ INSERT INTO publications_categories(publication_id, category_id) VALUES
 (10, 2),
 (10, 8),
 (10, 5);
-ALTER TABLE publications_categories ENABLE TRIGGER ALL;
+ALTER TABLE articles_categories ENABLE TRIGGER ALL;

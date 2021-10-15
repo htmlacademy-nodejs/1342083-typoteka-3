@@ -4,13 +4,13 @@ const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
 const {
   CommentKey,
-  PublicationKey,
+  ArticleKey,
   CliCommand,
   ExitCode,
 } = require(`../../constants`);
 const {
   MockCount,
-  PublicationCountRestrict,
+  ArticleCountRestrict,
   FilePath,
   FileName,
   CategoriesRestrict,
@@ -25,7 +25,7 @@ const {
   generateCategory,
   generateUser,
   generateComment,
-  generatePublication,
+  generateArticle,
   getItems,
   readContent,
 } = require(`./utils`);
@@ -39,29 +39,29 @@ const generateQuery = (count, mockTitles, mockSentences, mockCategories, mockCom
   const categories = mockCategories.map(generateCategory);
   const users = Array.from(new Array(MockCount.USERS), generateUser);
 
-  const publications = Array.from(new Array(count), () => {
-    const publication = generatePublication(mockTitles, mockSentences, true);
-    publication[PublicationKey.USER_ID] = getArrayRandomIndex(users) + 1;
-    return publication;
+  const articles = Array.from(new Array(count), () => {
+    const article = generateArticle(mockTitles, mockSentences, true);
+    article[ArticleKey.USER_ID] = getArrayRandomIndex(users) + 1;
+    return article;
   });
 
   const comments = Array.from(new Array(MockCount.COMMENTS), () => {
     const text = getRandomArrayItem(mockComments);
     const comment = generateComment(text);
-    comment[CommentKey.PUBLICATION_ID] = getArrayRandomIndex(publications);
+    comment[CommentKey.ARTICLE_ID] = getArrayRandomIndex(articles);
     comment[CommentKey.USER_ID] = getArrayRandomIndex(users);
 
     return comment;
   });
 
-  const publicationsСategories = publications.map((publication, index) => {
-    const publicationId = index + 1;
+  const articlesСategories = articles.map((article, index) => {
+    const articleId = index + 1;
     const categoriesCount = getRandomIntInclusive(0, categories.length);
     const selectedCategories = getItems(categories, CategoriesRestrict.MIN, categoriesCount);
 
     return selectedCategories.map((category) => {
       return {
-        publicationId,
+        articleId,
         categoryId: categories.indexOf(category) + 1,
       };
     });
@@ -74,27 +74,27 @@ ${wrapRows(categories)};
 INSERT INTO users(email, first_name, last_name, password_hash, avatar) VALUES
 ${wrapRows(users)};
 
-ALTER TABLE publications DISABLE TRIGGER ALL;
-INSERT INTO publications(title, picture, created_date, announce, full_text, user_id) VALUES
-${wrapRows(publications)};
-ALTER TABLE publications ENABLE TRIGGER ALL;
+ALTER TABLE articles DISABLE TRIGGER ALL;
+INSERT INTO articles(title, picture, created_date, announce, full_text, user_id) VALUES
+${wrapRows(articles)};
+ALTER TABLE articles ENABLE TRIGGER ALL;
 
 ALTER TABLE comments DISABLE TRIGGER ALL;
-INSERT INTO comments(text, created_date, publication_id, user_id) VALUES
+INSERT INTO comments(text, created_date, article_id, user_id) VALUES
 ${wrapRows(comments)};
 ALTER TABLE comments ENABLE TRIGGER ALL;
 
-ALTER TABLE publications_categories DISABLE TRIGGER ALL;
-INSERT INTO publications_categories(publication_id, category_id) VALUES
-${wrapRows(publicationsСategories)};
-ALTER TABLE publications_categories ENABLE TRIGGER ALL;`.trim();
+ALTER TABLE articles_categories DISABLE TRIGGER ALL;
+INSERT INTO articles_categories(article_id, category_id) VALUES
+${wrapRows(articlesСategories)};
+ALTER TABLE articles_categories ENABLE TRIGGER ALL;`.trim();
 };
 
 module.exports = {
   name: CliCommand.FILL,
   async run(args) {
     const [count] = args;
-    const publicationCount = Number.parseInt(count, 10) || PublicationCountRestrict.MIN;
+    const articleCount = Number.parseInt(count, 10) || ArticleCountRestrict.MIN;
 
     const [titles, sentences, categories, comments] = await Promise.all([
       readContent(FilePath.TITLES),
@@ -103,12 +103,12 @@ module.exports = {
       readContent(FilePath.COMMENTS),
     ]);
 
-    if (publicationCount > PublicationCountRestrict.MAX) {
-      console.error(chalk.red(`Не больше ${PublicationCountRestrict.MAX} публикаций.`));
+    if (articleCount > ArticleCountRestrict.MAX) {
+      console.error(chalk.red(`Не больше ${ArticleCountRestrict.MAX} публикаций.`));
       process.exit(ExitCode.ERROR);
     }
 
-    const content = generateQuery(publicationCount, titles, sentences, categories, comments);
+    const content = generateQuery(articleCount, titles, sentences, categories, comments);
 
     try {
       await fs.writeFile(FileName.SQL, content);

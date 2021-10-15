@@ -27,7 +27,7 @@ const CommentsRestrict = {
   MAX: 5,
 };
 
-const PublicationCountRestrict = {
+const ArticleCountRestrict = {
   MIN: 1,
   MAX: 1000,
 };
@@ -38,5 +38,5 @@ module.exports = {
   MockCount,
   CategoriesRestrict,
   CommentsRestrict,
-  PublicationCountRestrict,
+  ArticleCountRestrict,
 };

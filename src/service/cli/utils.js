@@ -7,7 +7,7 @@ const {
   CategoryKey,
   CommentKey,
   UserKey,
-  PublicationKey,
+  ArticleKey,
   DEFAULT_ENCODING,
 } = require(`../../constants`);
 const {
@@ -115,16 +115,16 @@ const truncateText = (text, length) => {
   return text.slice(0, length - ellipsis.length) + ellipsis;
 };
 
-const generatePublication = (titles, sentences, allKeys) => {
+const generateArticle = (titles, sentences, allKeys) => {
   const announce = getItems(sentences, AnounceRestrict.MIN, AnounceRestrict.MAX).join(` `);
   const fullText = getItems(sentences, FULL_TEXT_MIN_SIZE, sentences.length - 1).join(` `);
 
-  const publication = {
-    [PublicationKey.TITLE]: getRandomArrayItem(titles),
-    [PublicationKey.PICTURE]: getRandomArrayItem(pictures),
-    [PublicationKey.CREATED_DATE]: generateRandomDate(),
-    [PublicationKey.ANNOUNCE]: truncateText(announce, MaxLength.ANNOUNCE),
-    [PublicationKey.FULL_TEXT]: truncateText(fullText, MaxLength.FULL_TEXT),
+  const article = {
+    [ArticleKey.TITLE]: getRandomArrayItem(titles),
+    [ArticleKey.PICTURE]: getRandomArrayItem(pictures),
+    [ArticleKey.CREATED_DATE]: generateRandomDate(),
+    [ArticleKey.ANNOUNCE]: truncateText(announce, MaxLength.ANNOUNCE),
+    [ArticleKey.FULL_TEXT]: truncateText(fullText, MaxLength.FULL_TEXT),
   };
 
   if (!allKeys) {
@@ -132,15 +132,15 @@ const generatePublication = (titles, sentences, allKeys) => {
     const hasFullText = getRandomBoolean();
 
     if (!hasPicture) {
-      delete publication[PublicationKey.PICTURE];
+      delete article[ArticleKey.PICTURE];
     }
 
     if (!hasFullText) {
-      delete publication[PublicationKey.FULL_TEXT];
+      delete article[ArticleKey.FULL_TEXT];
     }
   }
 
-  return publication;
+  return article;
 };
 
 const readContent = async (filePath) => {
@@ -159,6 +159,6 @@ module.exports = {
   generateCategory,
   generateComment,
   generateUser,
-  generatePublication,
+  generateArticle,
   readContent,
 };

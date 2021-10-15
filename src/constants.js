@@ -55,11 +55,12 @@ const CommentKey = {
   CREATED_DATE: `createdDate`,
   TEXT: `text`,
   AUTHOR: `author`,
-  PUBLICATION_ID: `publicationId`,
+  ARTICLE: `article`,
+  ARTICLE_ID: `articleId`,
   USER_ID: `userId`,
 };
 
-const PublicationKey = {
+const ArticleKey = {
   ID: `id`,
   TITLE: `title`,
   PICTURE: `picture`,
@@ -105,7 +106,7 @@ module.exports = {
   UserType,
   CategoryKey,
   CommentKey,
-  PublicationKey,
+  ArticleKey,
   UserKey,
   DateOffsetUnit,
 };
