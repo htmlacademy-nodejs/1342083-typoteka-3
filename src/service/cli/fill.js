@@ -48,8 +48,8 @@ const generateQuery = (count, mockTitles, mockSentences, mockCategories, mockCom
   const comments = Array.from(new Array(MockCount.COMMENTS), () => {
     const text = getRandomArrayItem(mockComments);
     const comment = generateComment(text);
-    comment[CommentKey.ARTICLE_ID] = getArrayRandomIndex(articles);
-    comment[CommentKey.USER_ID] = getArrayRandomIndex(users);
+    comment[CommentKey.ARTICLE_ID] = getArrayRandomIndex(articles) + 1;
+    comment[CommentKey.USER_ID] = getArrayRandomIndex(users) + 1;
 
     return comment;
   });
