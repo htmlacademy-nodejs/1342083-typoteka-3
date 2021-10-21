@@ -3,6 +3,9 @@
 const {describe, expect, test} = require(`@jest/globals`);
 const CommentService = require(`./comment`);
 const {
+  getLastItem,
+} = require(`../../utils`);
+const {
   mockArticles,
 } = require(`../mock`);
 
@@ -34,10 +37,12 @@ describe(`CommentService создает новый комментарий`, () =
     expect(comments.length).toBe(5);
   });
 
-  test(`Текст последнего комментария равен "${text}"`, () => {
+  const mockLastComment = getLastItem(mockArticles[0].comments);
+
+  test(`Текст последнего комментария равен "${mockLastComment.text}"`, () => {
     const comments = service.findAll(articles[0]);
     const lastComment = comments[comments.length - 1];
-    expect(lastComment.text).toBe(text);
+    expect(lastComment.text).toBe(mockLastComment.text);
   });
 });
 
