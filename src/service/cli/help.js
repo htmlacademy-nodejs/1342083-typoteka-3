@@ -15,7 +15,9 @@ service.js <command>
 Команды:
 ${CliCommand.VERSION}            выводит номер версии
 ${CliCommand.HELP}               печатает этот текст
-${CliCommand.GENERATE} <count>   формирует файл mocks.json
+${CliCommand.GENERATE} <count>   формирует файл (mocks.json)
+${CliCommand.FILL} <count>       формирует файл c SQL-запросом на заполнение таблиц БД (fill-db.sql)
+${CliCommand.FILLDB} <count>     заполняет таблицы БД
 ${CliCommand.SERVER} <port>      запускает http-сервер
 `;
 
