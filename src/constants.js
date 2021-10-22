@@ -89,6 +89,28 @@ const DateOffsetUnit = {
   YEAR: `year`,
 };
 
+const ModelName = {
+  COMMENT: `Comment`,
+  CATEGORY: `Category`,
+  ARTICLE: `Article`,
+  USER: `User`,
+};
+
+const TableName = {
+  COMMENTS: `comments`,
+  CATEGORIES: `categories`,
+  ARTICLES: `articles`,
+  USERS: `users`,
+};
+
+const ModelAliase = {
+  ARTICLES: `articles`,
+  CATEGORIES: `categories`,
+  COMMENTS: `comments`,
+  USERS: `users`,
+  ARTICLES_CATEGORIES: `articles_categories`,
+};
+
 module.exports = {
   ADDITIONAL_ARGV_SPLIT_INDEX,
   API_PORT,
@@ -109,4 +131,7 @@ module.exports = {
   ArticleKey,
   UserKey,
   DateOffsetUnit,
+  ModelName,
+  TableName,
+  ModelAliase,
 };

@@ -2,6 +2,7 @@
 
 const {nanoid} = require(`nanoid`);
 const dayjs = require(`dayjs`);
+const {DataTypes} = require(`sequelize`);
 const {DATE_FORMAT_PATTERN, RANDOM_SEPARATOR, MAX_ID_LENGTH, DateOffsetUnit} = require(`./constants`);
 
 const getRandomIntInclusive = (min, max) => {
@@ -61,6 +62,11 @@ const generateRandomEmail = () => `${nanoid()}@mail.com`;
 
 const getLastItem = (items) => items[items.length - 1];
 
+const getLimitedSequelizeStringType = (size) => {
+  // eslint-disable-next-line new-cap
+  return size ? DataTypes.STRING(size) : DataTypes.STRING;
+};
+
 module.exports = {
   compareDatesDescend,
   getCurrentDate,
@@ -75,4 +81,5 @@ module.exports = {
   getRandomDate,
   generateRandomEmail,
   getLastItem,
+  getLimitedSequelizeStringType,
 };
