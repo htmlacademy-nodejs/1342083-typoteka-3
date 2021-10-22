@@ -31,7 +31,7 @@ const {
   readContent,
 } = require(`./utils`);
 
-const generateFullArticle = (count, mockTitles, mockSentences, mockCategories, mockComments) => {
+const generateFullArticles = (count, mockTitles, mockSentences, mockCategories, mockComments) => {
   const categories = mockCategories.map((name) => {
     const category = generateCategory(name);
     category[CategoryKey.ID] = getRandomId();
@@ -86,7 +86,7 @@ module.exports = {
       process.exit(ExitCode.ERROR);
     }
 
-    const content = generateFullArticle(articleCount, titles, sentences, categories, comments);
+    const content = generateFullArticles(articleCount, titles, sentences, categories, comments);
     const articles = JSON.stringify(content, null, 2);
 
     try {
