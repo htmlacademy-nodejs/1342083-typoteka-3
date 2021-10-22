@@ -1,25 +1,22 @@
 'use strict';
 
-const {Model} = require(`sequelize`);
 const defineCategory = require(`./category`);
 const defineUser = require(`./user`);
 const defineArticle = require(`./article`);
 const defineComment = require(`./comment`);
+const defineArticleCategory = require(`./article-category`);
 const {
   ModelAliase,
   CommentKey,
   ArticleKey,
 } = require(`../../constants`);
 
-class ArticleCategory extends Model {}
-
 module.exports = (sequelize) => {
   const Category = defineCategory(sequelize);
   const User = defineUser(sequelize);
   const Article = defineArticle(sequelize);
   const Comment = defineComment(sequelize);
-
-  ArticleCategory.init({}, {sequelize});
+  const ArticleCategory = defineArticleCategory(sequelize);
 
   Article.hasMany(Comment, {
     as: ModelAliase.COMMENTS,

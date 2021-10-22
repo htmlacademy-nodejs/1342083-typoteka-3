@@ -18,4 +18,5 @@ module.exports = (sequelize) => Category.init({
   sequelize,
   modelName: ModelName.CATEGORY,
   tableName: TableName.CATEGORIES,
+  timestamps: false,
 });

@@ -94,6 +94,7 @@ const ModelName = {
   CATEGORY: `Category`,
   ARTICLE: `Article`,
   USER: `User`,
+  ARTICLE_CATEGORY: `ArticleCategory`,
 };
 
 const TableName = {
@@ -101,6 +102,7 @@ const TableName = {
   CATEGORIES: `categories`,
   ARTICLES: `articles`,
   USERS: `users`,
+  ARTICLES_CATEGORIES: `articlesCategories`,
 };
 
 const ModelAliase = {

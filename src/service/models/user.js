@@ -39,4 +39,5 @@ module.exports = (sequelize) => User.init({
   sequelize,
   modelName: ModelName.USER,
   tableName: TableName.USERS,
+  timestamps: false,
 });

@@ -38,4 +38,5 @@ module.exports = (sequelize) => Article.init({
   sequelize,
   modelName: ModelName.ARTICLE,
   tableName: TableName.ARTICLES,
+  timestamps: false,
 });
