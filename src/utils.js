@@ -59,7 +59,7 @@ const getRandomDate = (offsetValue = 0, offsetUnit = DateOffsetUnit.DAY, formatP
 
 const generateRandomEmail = () => `${nanoid()}@mail.com`;
 
-const getLastItem = (collection) => collection[collection.length - 1];
+const getLastItem = (items) => items[items.length - 1];
 
 module.exports = {
   compareDatesDescend,
