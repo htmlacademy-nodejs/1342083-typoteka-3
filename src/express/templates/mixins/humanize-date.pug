@@ -1,0 +1,15 @@
+mixin humanize-date(dataStr, hasHours = false)
+  -
+    const date = new Date(dataStr);
+    const locale = 'ru-RU';
+    const formatedDate = date.toLocaleString(locale, {
+      day: 'numeric',
+      month: '2-digit',
+      year: 'numeric',
+    });
+    const formatedTime = date.toLocaleTimeString(locale, {
+      hour12: false,
+      timeStyle: 'short',
+    });
+
+  | #{formatedDate}#{hasHours ? `, ${formatedTime}` : ''}

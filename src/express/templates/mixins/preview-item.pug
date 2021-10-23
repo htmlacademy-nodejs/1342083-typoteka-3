@@ -7,9 +7,11 @@ mixin preview-item(article)
     if article.picture
       .preview__background
         img.preview__background-image(src=`/img/${article.picture}` width="460" height="240" alt=article.title)
-    time.preview__time(datetime=article.createdDate) #{article.createdDate}
+    time.preview__time(datetime=article.createdDate)
+      +humanize-date(article.createdDate)
     h3.preview__name
-      a.preview__name-link(href=`${AppRoute.ARTICLE}/${article.id}`) #{article.title}
+      a.preview__name-link(href=`${AppRoute.ARTICLE}/${article.id}`)
+        +truncate-string(article.title)
     if article.announce
       p.preview__text #{article.announce}
     a.preview__comment(href=`${AppRoute.ARTICLE}/${article.id}#comments`)

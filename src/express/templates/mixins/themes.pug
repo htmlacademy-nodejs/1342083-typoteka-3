@@ -1,0 +1,11 @@
+mixin themes(categories)
+  ul.themes&attributes(attributes)
+    each category in categories
+      -
+        const hasCount = Boolean(category.count);
+
+      li.themes__item
+        a.themes__item-link(href=`${AppRoute.CATEGORY}/${category.id}`)
+          | #{category.name}
+          if hasCount
+            sup &nbsp;#{category.count}

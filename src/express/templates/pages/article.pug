@@ -9,9 +9,10 @@ block content
         .post__wrapper
           .post__head
             a.post__backwards.button.button--backwards(href=AppRoute.MAIN) Назад
-            time.post__date(datetime=article.createdDate) #{article.createdDate}
+            time.post__date(datetime=article.createdDate)
+              +humanize-date(article.createdDate)
             h2.post__title.title.title--main #{article.title}
-            include /partials/article/themes.pug
+            +themes(article.categories).post__themes
           if article.picture
             .post__picture
               img(src=`/img/${article.picture}` alt=article.title)

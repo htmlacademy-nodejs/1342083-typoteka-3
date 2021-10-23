@@ -1,0 +1,6 @@
+mixin truncate-string(str, maxLength = 100)
+  -
+    const hasMore = str.length > maxLength;
+    const ending = '…';
+
+  | #{hasMore ? str.slice(0, maxLength - ending.length).trim().concat(ending) : str}
