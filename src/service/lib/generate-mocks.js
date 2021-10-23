@@ -28,6 +28,11 @@ const AnounceRestrict = {
   MAX: 5,
 };
 
+const CommentsRestrict = {
+  MIN: 0,
+  MAX: 10,
+};
+
 const CategoryRestrict = {
   MIN: 1,
   MAX: 5,
@@ -125,14 +130,18 @@ module.exports = async (count) => {
     };
   });
 
-  const comments = mockComments.map((text) => {
-    return {
-      [CommentKey.TEXT]: text,
-      [CommentKey.CREATED_DATE]: getRandomDate(),
-      [CommentKey.ARTICLE_ID]: getArrayRandomIndex(articles) + 1,
-      [CommentKey.USER_ID]: getArrayRandomIndex(users) + 1,
-    };
-  });
+  const comments = articles.map(() => {
+    const comentsCount = getRandomIntInclusive(CommentsRestrict.MIN, CommentsRestrict.MAX);
+    return Array.from(new Array(comentsCount), () => {
+      return {
+        [CommentKey.TEXT]: getRandomArrayItem(mockComments),
+        [CommentKey.CREATED_DATE]: getRandomDate(),
+        [CommentKey.ARTICLE_ID]: getArrayRandomIndex(articles) + 1,
+        [CommentKey.USER_ID]: getArrayRandomIndex(users) + 1,
+      };
+
+    });
+  }).flat();
 
   const categoriesIndexes = mockCategories.map((_category, index) => index);
   const articleCategories = articles.map((_article, articleIndex) => {
