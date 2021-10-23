@@ -1,11 +1,14 @@
 'use strict';
 
-const {DataTypes, Model} = require(`sequelize`);
+const {
+  DataTypes,
+  Model,
+} = require(`sequelize`);
 const {
   CategoryKey,
   ModelName,
   TableName,
-} = require(`../../constants`);
+} = require(`../../common/enums`);
 
 class Category extends Model {}
 

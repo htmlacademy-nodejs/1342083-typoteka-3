@@ -1,13 +1,12 @@
 'use strict';
 
 const {
-  Sequelize
-} = require(`sequelize`);
-const {
   CommentKey,
   ModelAlias,
   SortOrder,
-} = require(`../../constants`);
+  UserKey,
+  ArticleKey,
+} = require(`../../common/enums`);
 
 class CommentService {
   constructor(sequelize) {
@@ -15,7 +14,8 @@ class CommentService {
     this._Article = sequelize.models.Article;
     this._User = sequelize.models.User;
   }
-  async create(articleId, comment) {
+
+  create(articleId, comment) {
     return this._Comment.create({
       [CommentKey.ARTICLE_ID]: articleId,
       ...comment,
@@ -32,7 +32,7 @@ class CommentService {
   }
 
   async update(commentId, update) {
-    const [affectedRows] = this._Comment.update(update, {
+    const [affectedRows] = await this._Comment.update(update, {
       where: {
         [CommentKey.ID]: commentId,
       },
@@ -40,8 +40,8 @@ class CommentService {
     return Boolean(affectedRows);
   }
 
-  async findOne(commentId) {
-    return await this._Comment.findAll({
+  findOne(commentId) {
+    return this._Comment.findAll({
       where: {
         [CommentKey.ID]: commentId,
       },
@@ -50,34 +50,34 @@ class CommentService {
   }
 
   async findAll(limit) {
-    return await this._Comment.findAll({
-      attributes: [
-        CommentKey.ID,
-        CommentKey.CREATED_DATE,
-        CommentKey.TEXT,
-        [Sequelize.col(`articles.id`), `articleId`],
-        [Sequelize.col(`users.firstName`), `firstName`],
-        [Sequelize.col(`users.lastName`), `lastName`],
-        [Sequelize.col(`users.avatar`), `avatar`],
-      ],
+    const comments = await this._Comment.findAll({
       include: [
         {
           model: this._Article,
-          as: ModelAlias.ARTICLES,
-          attributes: [],
+          as: ModelAlias.ARTICLE,
+          attributes: [
+            ArticleKey.ID,
+            ArticleKey.TITLE,
+          ],
         },
         {
           model: this._User,
-          as: ModelAlias.USERS,
-          attributes: [],
-        },
+          as: ModelAlias.USER,
+          attributes: [
+            UserKey.FIRST_NAME,
+            UserKey.LAST_NAME,
+            UserKey.AVATAR,
+          ],
+        }
       ],
       order: [
         [CommentKey.CREATED_DATE, SortOrder.DESC],
+        [CommentKey.TEXT, SortOrder.ASC],
       ],
-      raw: true,
       limit,
     });
+
+    return comments.map((comment) => comment.get());
   }
 
   async findAllByArticle(articleId) {

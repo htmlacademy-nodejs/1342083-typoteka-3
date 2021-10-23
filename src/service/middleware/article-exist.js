@@ -1,6 +1,6 @@
 'use strict';
 
-const {HttpStatusCode} = require(`../../constants`);
+const {HttpStatusCode} = require(`../../common/enums`);
 
 module.exports = (service) => async (req, res, next) => {
   const {articleId} = req.params;
@@ -10,6 +10,6 @@ module.exports = (service) => async (req, res, next) => {
     return res.status(HttpStatusCode.NOT_FOUND).send(`Article with id "${articleId}" not found!`);
   }
 
-  res.locals.id = article.id;
+  res.locals.article = article;
   return next();
 };

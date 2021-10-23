@@ -4,7 +4,7 @@ const {Model} = require(`sequelize`);
 const {
   ModelName,
   TableName,
-} = require(`../../constants`);
+} = require(`../../common/enums`);
 
 class ArticleCategory extends Model {}
 

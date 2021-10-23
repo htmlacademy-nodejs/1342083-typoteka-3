@@ -1,6 +1,9 @@
 'use strict';
 
-const {CommentKey, HttpStatusCode} = require(`../../constants`);
+const {
+  CommentKey,
+  HttpStatusCode,
+} = require(`../../common/enums`);
 
 module.exports = (req, res, next) => {
   const comment = req.body;

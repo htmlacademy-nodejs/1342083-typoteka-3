@@ -1,39 +1,34 @@
 'use strict';
 
-const {DataTypes, Model} = require(`sequelize`);
+const {
+  DataTypes,
+  Model,
+} = require(`sequelize`);
 const {
   ArticleKey,
+  StringSize,
   ModelName,
   TableName,
-} = require(`../../constants`);
-const {
-  getLimitedSequelizeStringType,
-} = require(`../../utils`);
-
-const StringSize = {
-  [ArticleKey.TITLE]: 250,
-  [ArticleKey.PICTURE]: 50,
-  [ArticleKey.ANNOUNCE]: 250,
-  [ArticleKey.FULL_TEXT]: 1000,
-};
+} = require(`../../common/enums`);
+const {getSequelizeStringType} = require(`../../common/helpers`);
 
 class Article extends Model {}
 
 module.exports = (sequelize) => Article.init({
   [ArticleKey.TITLE]: {
-    type: getLimitedSequelizeStringType(StringSize[ArticleKey.TITLE]),
+    type: getSequelizeStringType(StringSize[ArticleKey.TITLE]),
     allowNull: false,
   },
-  [ArticleKey.PICTURE]: getLimitedSequelizeStringType(StringSize[ArticleKey.PICTURE]),
+  [ArticleKey.PICTURE]: getSequelizeStringType(StringSize[ArticleKey.PICTURE]),
   [ArticleKey.CREATED_DATE]: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
   [ArticleKey.ANNOUNCE]: {
-    type: getLimitedSequelizeStringType(StringSize[ArticleKey.ANNOUNCE]),
+    type: getSequelizeStringType(StringSize[ArticleKey.ANNOUNCE]),
     allowNull: false,
   },
-  [ArticleKey.FULL_TEXT]: getLimitedSequelizeStringType(StringSize[ArticleKey.FULL_TEXT]),
+  [ArticleKey.FULL_TEXT]: getSequelizeStringType(StringSize[ArticleKey.FULL_TEXT]),
 }, {
   sequelize,
   modelName: ModelName.ARTICLE,

@@ -1,18 +1,16 @@
 'use strict';
 
-const {DataTypes, Model} = require(`sequelize`);
+const {
+  DataTypes,
+  Model,
+} = require(`sequelize`);
 const {
   UserKey,
+  StringSize,
   ModelName,
   TableName,
-} = require(`../../constants`);
-const {
-  getLimitedSequelizeStringType
-} = require(`../../utils`);
-
-const StringSize = {
-  [UserKey.AVATAR]: 50,
-};
+} = require(`../../common/enums`);
+const {getSequelizeStringType} = require(`../../common/helpers`);
 
 class User extends Model {}
 
@@ -34,7 +32,7 @@ module.exports = (sequelize) => User.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  [UserKey.AVATAR]: getLimitedSequelizeStringType(StringSize[UserKey.AVATAR])
+  [UserKey.AVATAR]: getSequelizeStringType(StringSize[UserKey.AVATAR])
 }, {
   sequelize,
   modelName: ModelName.USER,

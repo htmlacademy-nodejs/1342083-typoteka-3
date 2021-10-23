@@ -1,12 +1,14 @@
 'use strict';
 
-const Sequelize = require(`sequelize`);
+const {Sequelize} = require(`sequelize`);
 const {
   CategoryKey,
-  ModelName,
+  TableName,
+  ArticleCategoryKey,
   ModelAlias,
+  ModelName,
   SortOrder,
-} = require(`../../constants`);
+} = require(`../../common/enums`);
 
 class CategoryService {
   constructor(sequelize) {
@@ -14,26 +16,35 @@ class CategoryService {
     this._ArticleCategory = sequelize.models.ArticleCategory;
   }
 
+  findOne(id) {
+    return this._Category.findByPk(id, {
+      raw: true,
+    });
+  }
+
   async findAll(needCount) {
     if (needCount) {
-      const result = await this._Category.findAll({
-        group: [Sequelize.col(`${ModelName.CATEGORY}.${CategoryKey.ID}`)],
+      const categories = await this._Category.findAll({
         attributes: [
           CategoryKey.ID,
           CategoryKey.NAME,
-          [Sequelize.fn(`COUNT`, `*`), CategoryKey.COUNT],
+          [Sequelize.fn(`COUNT`, `${TableName.ARTICLES_CATEGORIES}.${ArticleCategoryKey.ARTICLE_ID}`), CategoryKey.COUNT],
         ],
-        include: [{
+        include: {
           model: this._ArticleCategory,
           as: ModelAlias.ARTICLES_CATEGORIES,
           attributes: [],
-        }],
+        },
+        group: [
+          Sequelize.col(`${ModelName.CATEGORY}.${CategoryKey.ID}`),
+        ],
         order: [
           [CategoryKey.COUNT, SortOrder.DESC],
+          [CategoryKey.NAME, SortOrder.DESC],
         ],
       });
 
-      return result.map((item) => item.get());
+      return categories.map((category) => category.get());
     }
 
     return await this._Category.findAll({

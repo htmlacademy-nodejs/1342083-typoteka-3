@@ -6,59 +6,51 @@ const defineArticle = require(`./article`);
 const defineComment = require(`./comment`);
 const defineArticleCategory = require(`./article-category`);
 const {
+  ArticleCategoryKey,
   ModelAlias,
   CommentKey,
-  ArticleCategoryKey,
-} = require(`../../constants`);
+} = require(`../../common/enums`);
 
 module.exports = (sequelize) => {
-  const Category = defineCategory(sequelize);
-  const User = defineUser(sequelize);
   const Article = defineArticle(sequelize);
+  const Category = defineCategory(sequelize);
   const Comment = defineComment(sequelize);
+  const User = defineUser(sequelize);
   const ArticleCategory = defineArticleCategory(sequelize);
 
   Category.hasMany(ArticleCategory, {
-    as: ModelAlias.ARTICLES_CATEGORIES,
     foreignKey: ArticleCategoryKey.CATEGORY_ID,
-  });
-
-  Category.belongsToMany(Article, {
-    as: ModelAlias.ARTICLES,
-    through: ArticleCategory,
-    foreignKey: ArticleCategoryKey.CATEGORY_ID,
-  });
-
-  Article.hasMany(ArticleCategory, {
     as: ModelAlias.ARTICLES_CATEGORIES,
-    foreignKey: ArticleCategoryKey.ARTICLE_ID,
-    onDelete: `cascade`,
   });
 
   Article.hasMany(Comment, {
-    as: ModelAlias.COMMENTS,
     foreignKey: CommentKey.ARTICLE_ID,
+    as: ModelAlias.COMMENTS,
+  });
+  Article.hasMany(ArticleCategory, {
+    foreignKey: ArticleCategoryKey.ARTICLE_ID,
+    as: ModelAlias.ARTICLES_CATEGORIES,
     onDelete: `cascade`,
   });
 
   Article.belongsToMany(Category, {
-    as: ModelAlias.CATEGORIES,
     through: ArticleCategory,
     foreignKey: ArticleCategoryKey.ARTICLE_ID,
+    as: ModelAlias.CATEGORIES,
   });
-
-  User.hasMany(Comment, {
-    foreignKey: CommentKey.USER_ID,
-  });
-
-  Comment.belongsTo(Article, {
+  Category.belongsToMany(Article, {
+    through: ArticleCategory,
+    foreignKey: ArticleCategoryKey.CATEGORY_ID,
     as: ModelAlias.ARTICLES,
-    foreignKey: CommentKey.ARTICLE_ID,
   });
 
   Comment.belongsTo(User, {
-    as: ModelAlias.USERS,
     foreignKey: CommentKey.USER_ID,
+    as: ModelAlias.USER,
+  });
+  Comment.belongsTo(Article, {
+    foreignKey: CommentKey.ARTICLE_ID_ID,
+    as: ModelAlias.ARTICLE,
   });
 
   return {

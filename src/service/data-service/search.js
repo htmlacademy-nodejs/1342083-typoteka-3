@@ -2,8 +2,10 @@
 
 const {Op} = require(`sequelize`);
 const {
-  ArticleKey, ModelAlias, Order,
-} = require(`../../constants`);
+  ArticleKey,
+  ModelAlias,
+  SortOrder,
+} = require(`../../common/enums`);
 
 class SearchService {
   constructor(sequelize) {

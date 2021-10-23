@@ -1,14 +1,15 @@
 'use strict';
 
-const {getLogger} = require(`../lib/logger`);
+const chulk = require(`chalk`);
+const {getLogger} = require(`../../common/lib/logger`);
 const sequelize = require(`../lib/sequelize`);
+const generateMocks = require(`../lib/generate-mocks`);
 const initDb = require(`../lib/init-db`);
 const {
   CliCommand,
   ExitCode,
   ArticleCountRestrict,
-} = require(`../../constants`);
-const generateMocks = require(`../lib/generate-mocks`);
+} = require(`../../common/enums`);
 
 const logger = getLogger();
 
@@ -28,12 +29,11 @@ module.exports = {
     const articleCount = Number.parseInt(count, 10) || ArticleCountRestrict.MIN;
 
     if (articleCount > ArticleCountRestrict.MAX) {
-      logger.error(`Не больше ${ArticleCountRestrict.MAX} публикаций.`);
+      console.error(chulk.red(`Не больше ${ArticleCountRestrict.MAX} публикаций.`));
       process.exit(ExitCode.ERROR);
     }
 
     const mocks = await generateMocks(articleCount);
-    console.log(mocks);
     await initDb(sequelize, mocks);
   },
 };

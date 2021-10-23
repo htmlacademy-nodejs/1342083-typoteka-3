@@ -1,97 +1,37 @@
 'use strict';
 
 const {
-  CategoryKey,
-  ArticleKey,
-  ArticleCategoryKey,
-  CommentKey,
-  UserKey,
-} = require(`../../constants`);
+  FULL_TEXT_MIN_SIZE,
+  PICTURES,
+  FIRST_NAMES,
+  LAST_NAMES,
+  PASSWORD_HASHES,
+  AVATARS,
+} = require(`../../common/constants`);
 const {
-  getRandomArrayItem,
-  truncateText,
-  getRandomArrayItems,
-  getRandomIntInclusive,
+  FilePath,
+  CategoryKey,
+  AnnounceRestrict,
+  ArticleKey,
+  TextMaxLength,
+  MockItemCount,
+  UserKey,
+  CommentsRestrict,
+  CommentKey,
+  CategoriesRestrict,
+  ArticleCategoryKey,
+} = require(`../../common/enums`);
+const {
+  readContent,
+  getArrayRandomItem,
+  getArrayRandomItems,
   getRandomBoolean,
   getRandomDate,
-  generateRandomEmail,
-  getItems,
-  readContent,
-  generateRandomDate,
-  getArrayRandomIndex,
-} = require(`../../utils`);
-
-const FULL_TEXT_MIN_SIZE = 1;
-
-const AnounceRestrict = {
-  MIN: 1,
-  MAX: 5,
-};
-
-const CommentsRestrict = {
-  MIN: 0,
-  MAX: 10,
-};
-
-const CategoryRestrict = {
-  MIN: 1,
-  MAX: 5,
-};
-
-const FilePath = {
-  COMMENTS: `./data/comments.txt`,
-  CATEGORIES: `./data/categories.txt`,
-  SENTENCES: `./data/sentences.txt`,
-  TITLES: `./data/titles.txt`,
-};
-
-const MaxLength = {
-  ANNOUNCE: 250,
-  FULL_TEXT: 100,
-};
-
-const MockCount = {
-  USERS: 10,
-  COMMENTS: 50,
-};
-
-const pictures = [
-  `forest.jpg`,
-  `sea.jpg`,
-  `skyscraper.jpg`,
-];
-
-const firstNames = [
-  `Евгений`,
-  `Александр`,
-  `Алёна`,
-  `Мария`,
-  `Женя`,
-];
-
-const lastNames = [
-  `Петров`,
-  `Марков`,
-  `Фролова`,
-  `Светлова`,
-  `Кириченко`,
-];
-
-const passwordHashes = [
-  `514a799c6f2d29cabe5ae12d512e1fb7`,
-  `3d2b0e748f740ecd8d4d498a92dc52d6`,
-  `596dbaa5ec53b8a8b8c213c0136d7b7e`,
-  `dbf2054308f848873a3f6a2a35817185`,
-  `d6b370b94ea255f28e6e3c5df79d73c7`,
-];
-
-const avatars = [
-  `avatar-1.png`,
-  `avatar-2.png`,
-  `avatar-3.png`,
-  `avatar-4.png`,
-  `avatar-5.png`,
-];
+  truncateString,
+  getRandomEmail,
+  getRandomInt,
+  getArrayRandomIndex
+} = require(`../../common/helpers`);
 
 module.exports = async (count) => {
   const [mockTitles, mockSentences, mockCategories, mockComments] = await Promise.all([
@@ -108,33 +48,40 @@ module.exports = async (count) => {
   });
 
   const articles = Array.from(new Array(count), () => {
-    const announce = getItems(mockSentences, AnounceRestrict.MIN, AnounceRestrict.MAX).join(` `);
-    const fullText = getItems(mockSentences, FULL_TEXT_MIN_SIZE, mockSentences.length - 1).join(` `);
+    const announce = getArrayRandomItems(mockSentences, {
+      min: AnnounceRestrict.MIN,
+      max: AnnounceRestrict.MAX,
+    }).join(` `);
+
+    const fullText = getArrayRandomItems(mockSentences, {
+      min: FULL_TEXT_MIN_SIZE,
+      max: mockSentences.length - 1,
+    }).join(` `);
 
     return {
-      [ArticleKey.TITLE]: getRandomArrayItem(mockTitles),
-      [ArticleKey.PICTURE]: getRandomBoolean() ? getRandomArrayItem(pictures) : null,
-      [ArticleKey.CREATED_DATE]: generateRandomDate(),
-      [ArticleKey.ANNOUNCE]: truncateText(announce, MaxLength.ANNOUNCE),
-      [ArticleKey.FULL_TEXT]: getRandomBoolean() ? truncateText(fullText, MaxLength.FULL_TEXT) : null,
+      [ArticleKey.TITLE]: getArrayRandomItem(mockTitles),
+      [ArticleKey.PICTURE]: getRandomBoolean() ? getArrayRandomItem(PICTURES) : null,
+      [ArticleKey.CREATED_DATE]: getRandomDate(),
+      [ArticleKey.ANNOUNCE]: truncateString(announce, TextMaxLength.ANNOUNCE),
+      [ArticleKey.FULL_TEXT]: getRandomBoolean() ? truncateString(fullText, TextMaxLength.FULL_TEXT) : null,
     };
   });
 
-  const users = Array.from(new Array(MockCount.USERS), () => {
+  const users = Array.from(new Array(MockItemCount.USERS), () => {
     return {
-      [UserKey.EMAIL]: generateRandomEmail(),
-      [UserKey.FIRST_NAME]: getRandomArrayItem(firstNames),
-      [UserKey.LAST_NAME]: getRandomArrayItem(lastNames),
-      [UserKey.PASSWORD_HASH]: getRandomArrayItem(passwordHashes),
-      [UserKey.AVATAR]: getRandomArrayItem(avatars),
+      [UserKey.EMAIL]: getRandomEmail(),
+      [UserKey.FIRST_NAME]: getArrayRandomItem(FIRST_NAMES),
+      [UserKey.LAST_NAME]: getArrayRandomItem(LAST_NAMES),
+      [UserKey.PASSWORD_HASH]: getArrayRandomItem(PASSWORD_HASHES),
+      [UserKey.AVATAR]: getArrayRandomItem(AVATARS),
     };
   });
 
   const comments = articles.map(() => {
-    const comentsCount = getRandomIntInclusive(CommentsRestrict.MIN, CommentsRestrict.MAX);
+    const comentsCount = getRandomInt(CommentsRestrict.MIN, CommentsRestrict.MAX);
     return Array.from(new Array(comentsCount), () => {
       return {
-        [CommentKey.TEXT]: getRandomArrayItem(mockComments),
+        [CommentKey.TEXT]: getArrayRandomItem(mockComments),
         [CommentKey.CREATED_DATE]: getRandomDate(),
         [CommentKey.ARTICLE_ID]: getArrayRandomIndex(articles) + 1,
         [CommentKey.USER_ID]: getArrayRandomIndex(users) + 1,
@@ -145,8 +92,8 @@ module.exports = async (count) => {
 
   const categoriesIndexes = mockCategories.map((_category, index) => index);
   const articleCategories = articles.map((_article, articleIndex) => {
-    const categoriesCount = getRandomIntInclusive(CategoryRestrict.MIN, CategoryRestrict.MAX);
-    return getRandomArrayItems(categoriesIndexes, categoriesCount).sort().map((categoryIndex) => {
+    const categoriesCount = getRandomInt(CategoriesRestrict.MIN, CategoriesRestrict.MAX);
+    return getArrayRandomItems(categoriesIndexes, categoriesCount).sort().map((categoryIndex) => {
       return {
         [ArticleCategoryKey.ARTICLE_ID]: articleIndex + 1,
         [ArticleCategoryKey.CATEGORY_ID]: categoryIndex + 1,

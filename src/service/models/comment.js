@@ -1,11 +1,14 @@
 'use strict';
 
-const {DataTypes, Model} = require(`sequelize`);
+const {
+  DataTypes,
+  Model,
+} = require(`sequelize`);
 const {
   CommentKey,
   ModelName,
   TableName,
-} = require(`../../constants`);
+} = require(`../../common/enums`);
 
 class Comment extends Model {}
 
@@ -18,6 +21,8 @@ module.exports = (sequelize) => Comment.init({
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
+  [CommentKey.USER_ID]: DataTypes.INTEGER,
+  [CommentKey.ARTICLE_ID]: DataTypes.INTEGER,
 }, {
   sequelize,
   modelName: ModelName.COMMENT,

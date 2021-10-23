@@ -1,16 +1,12 @@
 'use strict';
 
-const fill = require(`./fill`);
 const filldb = require(`./fill-db`);
-const generate = require(`./generate`);
 const help = require(`./help`);
 const version = require(`./version`);
 const server = require(`./server`);
 
 module.exports = {
-  [fill.name]: fill,
   [filldb.name]: filldb,
-  [generate.name]: generate,
   [help.name]: help,
   [version.name]: version,
   [server.name]: server,

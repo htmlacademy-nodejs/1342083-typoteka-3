@@ -13,13 +13,13 @@ const {
   SearchService,
 } = require(`../data-service`);
 
-const app = new Router();
+const api = new Router();
 defineModels(sequelize);
 
 (async () => {
-  articles(app, new ArticleService(sequelize), new CommentService(sequelize));
-  categories(app, new CategoryService(sequelize));
-  search(app, new SearchService(sequelize));
+  await articles(api, new ArticleService(sequelize), new CommentService(sequelize));
+  await categories(api, new ArticleService(sequelize), new CategoryService(sequelize));
+  await search(api, new SearchService(sequelize));
 })();
 
-module.exports = app;
+module.exports = api;
