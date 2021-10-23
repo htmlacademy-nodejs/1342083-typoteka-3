@@ -14,8 +14,12 @@ const {
   AppPath,
   AppRoute,
 } = require(`./constants`);
+const {
+  getLogger,
+} = require(`../service/lib/logger`);
 
 const app = express();
+const logger = getLogger();
 
 app.set(`view engine`, `pug`);
 app.set(`views`, path.resolve(__dirname, AppPath.VIEWS_PATH));
@@ -36,7 +40,8 @@ app.use((req, res) => {
   });
 });
 
-app.use((_err, _req, res, _next) => {
+app.use((err, _req, res, _next) => {
+  logger.error(err);
   res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).render(AppPage.ERROR_500, {
     account: {
       error: HttpStatusCode.INTERNAL_SERVER_ERROR,

@@ -1,7 +1,11 @@
 'use strict';
 
-const {Router} = require(`express`);
-const {getAPI} = require(`../api`);
+const {
+  Router,
+} = require(`express`);
+const {
+  getAPI,
+} = require(`../api`);
 const {
   UserType,
 } = require(`../../constants`);
@@ -14,13 +18,30 @@ const {
 const mainRouter = new Router();
 const api = getAPI();
 
+const Limit = {
+  POPULAR: 4,
+  COMMENTS: 4,
+  PUBLUCATIONS: 8,
+};
+
 mainRouter.get(MainRoute.MAIN, async (req, res) => {
-  const articles = await api.getArticles();
-  const categories = await api.getCategories();
+  const [
+    categories,
+    popularArticles,
+    lastComments,
+    articles,
+  ] = await Promise.all([
+    api.getCategories(true),
+    api.getPopularArticles(Limit.POPULAR),
+    api.getAllComments(Limit.COMMENTS),
+    api.getArticles(Limit.PUBLUCATIONS),
+  ]);
 
   res.render(AppPage.MAIN, {
-    articles,
     categories,
+    popularArticles,
+    lastComments,
+    articles,
     account: {
       type: UserType.ADMIN,
     },

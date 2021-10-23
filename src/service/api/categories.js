@@ -8,7 +8,8 @@ module.exports = (app, service) => {
   app.use(APIUrl.CATEGORIES, route);
 
   route.get(`/`, async (req, res) => {
-    const categories = await service.findAll();
+    const {count} = req.query;
+    const categories = await service.findAll(count);
     res.status(HttpStatusCode.OK).json(categories);
   });
 };

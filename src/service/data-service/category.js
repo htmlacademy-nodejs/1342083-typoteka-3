@@ -1,22 +1,44 @@
 'use strict';
 
+const Sequelize = require(`sequelize`);
+const {
+  CategoryKey,
+  ModelName,
+  ModelAlias,
+  SortOrder,
+} = require(`../../constants`);
+
 class CategoryService {
-  constructor(articles) {
-    this._articles = articles;
+  constructor(sequelize) {
+    this._Category = sequelize.models.Category;
+    this._ArticleCategory = sequelize.models.ArticleCategory;
   }
 
-  findAll() {
-    const categories = this._articles.reduce((acc, article) => {
-      article.categories.forEach((current) => {
-        const containThisCategory = acc.find((saved) => saved.id === current.id);
-        if (!containThisCategory) {
-          acc.push(current);
-        }
+  async findAll(needCount) {
+    if (needCount) {
+      const result = await this._Category.findAll({
+        group: [Sequelize.col(`${ModelName.CATEGORY}.${CategoryKey.ID}`)],
+        attributes: [
+          CategoryKey.ID,
+          CategoryKey.NAME,
+          [Sequelize.fn(`COUNT`, `*`), CategoryKey.COUNT],
+        ],
+        include: [{
+          model: this._ArticleCategory,
+          as: ModelAlias.ARTICLES_CATEGORIES,
+          attributes: [],
+        }],
+        order: [
+          [CategoryKey.COUNT, SortOrder.DESC],
+        ],
       });
-      return acc;
-    }, []);
 
-    return categories;
+      return result.map((item) => item.get());
+    }
+
+    return await this._Category.findAll({
+      raw: true,
+    });
   }
 }
 

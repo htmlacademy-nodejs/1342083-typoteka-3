@@ -1,63 +1,92 @@
 'use strict';
 
 const {
-  DATE_FORMAT_PATTERN,
-  CommentKey,
-} = require(`../../constants`);
+  Sequelize
+} = require(`sequelize`);
 const {
-  getRandomId,
-  getCurrentDate,
-  compareDatesDescend,
-} = require(`../../utils`);
+  CommentKey,
+  ModelAlias,
+  SortOrder,
+} = require(`../../constants`);
 
 class CommentService {
-  create(article, comment) {
-    const newComment = {
+  constructor(sequelize) {
+    this._Comment = sequelize.models.Comment;
+    this._Article = sequelize.models.Article;
+    this._User = sequelize.models.User;
+  }
+  async create(articleId, comment) {
+    return this._Comment.create({
+      [CommentKey.ARTICLE_ID]: articleId,
       ...comment,
-      [CommentKey.ID]: getRandomId(),
-      [CommentKey.CREATED_DATE]: getCurrentDate(DATE_FORMAT_PATTERN),
-    };
-    article.comments = [...article.comments, newComment];
-    return newComment;
-  }
-
-  drop(article, id) {
-    const commentToDrop = this.findOne(article, id);
-
-    if (!commentToDrop) {
-      return null;
-    }
-
-    article.comments = article.comments.filter((comment) => comment.id !== id);
-    return commentToDrop;
-  }
-
-  update(article, id, update) {
-    const commentToUpdate = this.findOne(article, id);
-
-    if (!commentToUpdate) {
-      return null;
-    }
-
-    const updatedComment = {...commentToUpdate, ...update};
-    article.comments = article.comments.map((comment) => {
-      if (comment.id === id) {
-        return updatedComment;
-      }
-
-      return comment;
     });
-    return updatedComment;
   }
 
-  findOne(article, id) {
-    return article.comments.find((comment) => comment.id === id);
+  async drop(commentId) {
+    const deletedRows = await this._Comment.destroy({
+      where: {
+        [CommentKey.ID]: commentId,
+      },
+    });
+    return Boolean(deletedRows);
   }
 
-  findAll(article) {
-    return article.comments
-      .slice()
-      .sort((first, second) => compareDatesDescend(first[CommentKey.CREATED_DATE], second[CommentKey.CREATED_DATE]));
+  async update(commentId, update) {
+    const [affectedRows] = this._Comment.update(update, {
+      where: {
+        [CommentKey.ID]: commentId,
+      },
+    });
+    return Boolean(affectedRows);
+  }
+
+  async findOne(commentId) {
+    return await this._Comment.findAll({
+      where: {
+        [CommentKey.ID]: commentId,
+      },
+      raw: true,
+    });
+  }
+
+  async findAll(limit) {
+    return await this._Comment.findAll({
+      attributes: [
+        CommentKey.ID,
+        CommentKey.CREATED_DATE,
+        CommentKey.TEXT,
+        [Sequelize.col(`articles.id`), `articleId`],
+        [Sequelize.col(`users.firstName`), `firstName`],
+        [Sequelize.col(`users.lastName`), `lastName`],
+        [Sequelize.col(`users.avatar`), `avatar`],
+      ],
+      include: [
+        {
+          model: this._Article,
+          as: ModelAlias.ARTICLES,
+          attributes: [],
+        },
+        {
+          model: this._User,
+          as: ModelAlias.USERS,
+          attributes: [],
+        },
+      ],
+      order: [
+        [CommentKey.CREATED_DATE, SortOrder.DESC],
+      ],
+      raw: true,
+      limit,
+    });
+  }
+
+  async findAllByArticle(articleId) {
+    return await this._Comment.findAll({
+      where: {
+        [CommentKey.ARTICLE_ID]: articleId,
+      },
+      raw: true,
+    });
   }
 }
 

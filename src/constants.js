@@ -55,6 +55,7 @@ const UserType = {
 const CategoryKey = {
   ID: `id`,
   NAME: `name`,
+  COUNT: `count`,
 };
 
 const CommentKey = {
@@ -76,6 +77,7 @@ const ArticleKey = {
   FULL_TEXT: `fullText`,
   CATEGORIES: `categories`,
   COMMENTS: `comments`,
+  COMMENTS_COUNT: `commentsCount`,
   AUTHOR: `author`,
   USER_ID: `userId`,
 };
@@ -125,6 +127,11 @@ const ModelAlias = {
   ARTICLES_CATEGORIES: `articles_categories`,
 };
 
+const SortOrder = {
+  ASC: `ASC`,
+  DESC: `DESC`,
+};
+
 module.exports = {
   ADDITIONAL_ARGV_SPLIT_INDEX,
   API_PORT,
@@ -151,4 +158,5 @@ module.exports = {
   ModelName,
   TableName,
   ModelAlias,
+  SortOrder,
 };

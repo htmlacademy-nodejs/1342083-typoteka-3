@@ -22,22 +22,24 @@ class API {
     return response.data;
   }
 
-  getArticles() {
-    return this._load(`/articles`);
+  getArticles(limit) {
+    return this._load(`/articles`, {
+      params: {
+        limit,
+      },
+    });
+  }
+
+  getPopularArticles(limit) {
+    return this._load(`/articles/popular`, {
+      params: {
+        limit,
+      },
+    });
   }
 
   getArticle(id) {
     return this._load(`/articles/${id}`);
-  }
-
-  getCategories() {
-    return this._load(`/categories`);
-  }
-
-  search(query) {
-    return this._load(`/search`, {
-      params: {query},
-    });
   }
 
   updateArticle(id, update) {
@@ -51,6 +53,34 @@ class API {
     return this._load(`/articles`, {
       method: `POST`,
       data,
+    });
+  }
+
+  getAllComments(limit) {
+    return this._load(`/articles/comments`, {
+      params: {
+        limit,
+      },
+    });
+  }
+
+  getCommentsById(id) {
+    return this._load(`/articles/${id}/comments`);
+  }
+
+  getCategories(count) {
+    return this._load(`/categories`, {
+      params: {
+        count,
+      },
+    });
+  }
+
+  search(query) {
+    return this._load(`/search`, {
+      params: {
+        query,
+      },
     });
   }
 }
