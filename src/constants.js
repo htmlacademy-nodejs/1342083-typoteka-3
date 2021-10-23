@@ -4,6 +4,7 @@ const ADDITIONAL_ARGV_SPLIT_INDEX = 2;
 const API_PORT = 3000;
 const API_PREFIX = `/api`;
 const DATE_FORMAT_PATTERN = `YYYY-MM-DD`;
+const DATE_OFFSET = 3;
 const DEFAULT_ENCODING = `utf-8`;
 const MAX_ID_LENGTH = 6;
 const MOCK_FILEPATH = `./mock.json`;
@@ -15,8 +16,14 @@ const APIUrl = {
   SEARCH: `/search`,
 };
 
+const ArticleCountRestrict = {
+  MIN: 1,
+  MAX: 1000,
+};
+
 const CliCommand = {
   FILL: `--fill`,
+  FILLDB: `--filldb`,
   GENERATE: `--generate`,
   HELP: `--help`,
   SERVER: `--server`,
@@ -82,6 +89,11 @@ const UserKey = {
   AVATAR: `avatar`,
 };
 
+const ArticleCategoryKey = {
+  ARTICLE_ID: `articleId`,
+  CATEGORY_ID: `categoryId`,
+};
+
 const DateOffsetUnit = {
   DAY: `day`,
   WEEK: `week`,
@@ -105,7 +117,7 @@ const TableName = {
   ARTICLES_CATEGORIES: `articlesCategories`,
 };
 
-const ModelAliase = {
+const ModelAlias = {
   ARTICLES: `articles`,
   CATEGORIES: `categories`,
   COMMENTS: `comments`,
@@ -118,11 +130,13 @@ module.exports = {
   API_PORT,
   API_PREFIX,
   DATE_FORMAT_PATTERN,
+  DATE_OFFSET,
   DEFAULT_ENCODING,
   MAX_ID_LENGTH,
   MOCK_FILEPATH,
   RANDOM_SEPARATOR,
   APIUrl,
+  ArticleCountRestrict,
   CliCommand,
   Env,
   ExitCode,
@@ -132,8 +146,9 @@ module.exports = {
   CommentKey,
   ArticleKey,
   UserKey,
+  ArticleCategoryKey,
   DateOffsetUnit,
   ModelName,
   TableName,
-  ModelAliase,
+  ModelAlias,
 };
