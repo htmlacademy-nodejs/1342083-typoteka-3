@@ -1,6 +1,6 @@
 'use strict';
 
-const filldb = require(`./fill-db`);
+const filldb = require(`./filldb`);
 const help = require(`./help`);
 const version = require(`./version`);
 const server = require(`./server`);
