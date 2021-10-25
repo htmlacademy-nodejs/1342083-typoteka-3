@@ -7,22 +7,22 @@ block content
       .popup.popup--registration.popup--anti
         h2.popup__title Регистрация
         .popup__form.popup__form--active.form.form--register
-          form(action=FormAction.REGISTER method="get")
+          form(action=AppFormAction.REGISTER method="get")
             .form__field
               label
-                input(type="email" name="email" placeholder="Электронная почта" required)
+                input(type="email" name=FormElementKey.EMAIL placeholder="Электронная почта" required)
             .form__field
               label
-                input(type="text" name="name" placeholder="Имя" required)
+                input(type="text" name=FormElementKey.FIRST_NAME placeholder="Имя" required)
             .form__field
               label
-                input(type="text" name="surname" placeholder="Фамилия")
+                input(type="text" name=FormElementKey.LAST_NAME placeholder="Фамилия")
             .form__field
               label
-                input(type="password" name="password" placeholder="Пароль" required)
+                input(type="password" name=FormElementKey.PASSWORD placeholder="Пароль" required)
             .form__field
               label
-                input(type="password" name="repeat-password" placeholder="Повтор пароля" required)
+                input(type="password" name=FormElementKey.REPEAT_PASSWORD placeholder="Повтор пароля" required)
             .form__validation-error
               p.form__error-message При регистрации произошли ошибки:
               ul.form__errors

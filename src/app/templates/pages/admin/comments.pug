@@ -9,12 +9,15 @@ block content
           each comment in comments
             li.publication__list-item
               .publication__header
-                img.publication__list-image(src=`/img/${comment.author.avatar}` width="20" height="20" alt="Аватар пользователя")
-                b.publication__list-name #{comment.author.firstName} #{comment.author.lastName}
-                time.publication__item-time(datetime=comment.createdDate) #{comment.createdDate}
-              a.publication__item-text(href=`${AppRoute.ARTICLE}/${comment.article.id}`) #{comment.article.title}
-              p.publication__text-strong #{comment.text}
+                img.publication__list-image(src=`/img/${comment[CommentKey.USER][UserKey.AVATAR]}` width="20" height="20" alt="Аватар пользователя")
+                b.publication__list-name #{comment[CommentKey.USER][UserKey.FIRST_NAME]} #{comment[CommentKey.USER][UserKey.LAST_NAME]}
+                time.publication__item-time(datetime=comment[CommentKey.CREATED_DATE])
+                  | #{humanizeDate(comment[CommentKey.CREATED_DATE], true)}
+              a.publication__item-text(href=`${AppRoute.ARTICLES}/${comment[CommentKey.ARTICLE_ID]}#comment-${comment[CommentKey.ID]}`) #{comment[CommentKey.ARTICLE][ArticleKey.TITLE]}
+              p.publication__text-strong #{comment[CommentKey.TEXT]}
               button.publication__button.button.button--close-item(type="button")
                 span.visually-hidden Закрыть строку списка
+      .publication__toggle-wrapper
+        +pagination.publication__pagination
     else
       include /partials/common/empty.pug

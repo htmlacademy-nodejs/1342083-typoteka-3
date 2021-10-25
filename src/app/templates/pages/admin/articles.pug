@@ -8,9 +8,12 @@ block content
         ul.notes__list
           each article in articles
             li.notes__list-item
-              time.notes__item-time(datetime=article.createdDate) #{article.createdDate}
-              a.notes__item-text(href=`${AppRoute.ARTICLE}/${article.id}`) #{article.title}
+              time.notes__item-time(datetime=article[ArticleKey.CREATED_DATE])
+                | #{humanizeDate(article[ArticleKey.CREATED_DATE])}
+              a.notes__item-text(href=`${AppRoute.ARTICLES}/${article[ArticleKey.ID]}`) #{article[ArticleKey.TITLE]}
               button.notes__button.button.button--close-item(type="button")
                 span.visually-hidden Закрыть строку списка
+      .notes__toggle-wrapper
+        +pagination.notes__pagination
     else
       include /partials/common/empty.pug

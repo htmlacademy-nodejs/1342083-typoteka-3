@@ -15,14 +15,15 @@ block content
       .search-page__wrapper(class={"search-page__wrapper--empty": hasResult})
         h1 Поиск
         .search.search-page__form
-          form(action=FormAction.SEARCH method="get")
+          form(action=AppFormAction.SEARCH method="get")
             label
-              input(type="text" name="query" placeholder="Что ищем?" value=query)
+              input(type="text" name=FormElementKey.QUERY placeholder="Что ищем?" value=query)
             button.search__button.button.button--transparent(type="submit") Найти
           if results.length
             each article in results
               .search__result
-                time.search__date(datetime=article.createdDate) #{article.createdDate}
-                a.search__link(href=`${AppRoute.ARTICLE}/${article.id}`)!= formatResult(article.title, query)
+                time.search__date(datetime=article[ArticleKey.CREATED_DATE])
+                  | #{humanizeDate(article[ArticleKey.CREATED_DATE])}
+                a.search__link(href=`${AppRoute.ARTICLES}/${article[ArticleKey.ID]}`)!= formatResult(article[ArticleKey.TITLE], query)
         if hasResult
           p.search-page__empty Ничего не нашлось

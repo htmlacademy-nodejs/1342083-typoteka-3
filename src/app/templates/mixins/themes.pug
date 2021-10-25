@@ -1,11 +1,14 @@
-mixin themes(categories)
+mixin themes(categories, activeCategory)
   ul.themes&attributes(attributes)
     each category in categories
       -
-        const hasCount = Boolean(category.count);
+        const isActive = category[CategoryKey.ID] === activeCategory;
+        const hasCount = Boolean(category[CategoryKey.COUNT]);
 
       li.themes__item
-        a.themes__item-link(href=`${AppRoute.CATEGORY}/${category.id}`)
-          | #{category.name}
+        a.themes__item-link(
+          class={"themes__item-link--active": isActive}
+          href=`${AppRoute.CATEGORY}/${category[CategoryKey.ID]}`)
+          | #{category[CategoryKey.NAME]}
           if hasCount
-            sup &nbsp;#{category.count}
+            sup &nbsp;#{category[CategoryKey.COUNT]}

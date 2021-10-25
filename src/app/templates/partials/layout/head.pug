@@ -4,7 +4,8 @@ head
   meta(name="description" content=DESCRIPTION)
   meta(http-equiv="X-UA-Compatible" content="ie=edge")
   title #{TITLE}
-  each resource in PRELOAD
-    link(rel="preload" href=resource.href as=resource.as crossorigin="anonymous")
-  each style in STYLES
-    link(rel="stylesheet" href=style)
+  link(rel="preload" href="/fonts/Inter-Regular.woff2" as="font" crossorigin="anonymous")
+  link(rel="preload" href="/fonts/Inter-Medium.woff2" as="font" crossorigin="anonymous")
+  link(rel="preload" href="/fonts/SFProDisplay-Regular.woff2" as="font" crossorigin="anonymous")
+  link(rel="stylesheet" href="/css/style.min.css")
+  link(rel="stylesheet" href="/css/update.css")

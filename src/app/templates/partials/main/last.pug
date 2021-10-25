@@ -6,9 +6,9 @@ section.main-page__last.last
     ul.last__list
       each comment, index in lastComments
         li.last__list-item(class={"last__list-item--end": index === lastComments.length - 1})
-          img.last__list-image(src=`/img/${comment.avatar}` width="20" height="20" alt="Аватар пользователя")
-          b.last__list-name #{comment.firstName} #{comment.lastName}
-          a.last__list-link(href=`${AppRoute.ARTICLE}/${comment.articleId}#comment-${comment.id}`)
-            +truncate-string(comment.text)
+          img.last__list-image(src=`/img/${comment[CommentKey.USER][UserKey.AVATAR]}` width="20" height="20" alt="Аватар пользователя")
+          b.last__list-name #{comment[CommentKey.USER][UserKey.FIRST_NAME]} #{comment[CommentKey.USER][UserKey.LAST_NAME]}
+          a.last__list-link(href=`${AppRoute.ARTICLES}/${comment[CommentKey.ARTICLE_ID]}#comment-${comment[CommentKey.ID]}`)
+            | #{truncateString(comment[CommentKey.TEXT])}
   else
     p.last__empty Здесь пока ничего нет...

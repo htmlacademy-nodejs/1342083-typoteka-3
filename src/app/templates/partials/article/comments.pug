@@ -1,21 +1,22 @@
 section#comments.post__comments.comments
-  h2.comments__title.title.title--middle #{article.comments.length ? "Комментарии" : "Комментарии отсутствуют"}
-  if article.comments.length
+  h2.comments__title.title.title--middle #{article[ArticleKey.COMMENTS].length ? "Комментарии" : "Комментарии отсутствуют"}
+  if article[ArticleKey.COMMENTS].length
     ul.comments__list
-      each comment in article.comments
-        li.comments__comment
+      each comment in article[ArticleKey.COMMENTS]
+        li.comments__comment(id=`comment-${comment[CommentKey.ID]}`)
           .comments__avatar.avatar
-            img(src=`/img/${comment.author.avatar}` alt="аватар пользователя")
+            img(src=`/img/${comment[CommentKey.USER][UserKey.AVATAR]}` alt="аватар пользователя")
           .comments__text
             .comments__head
-              p #{comment.author.firstName} #{comment.author.lastName} •
-              time.comments__date(datetime=comment.createdDate) #{comment.createdDate}
-            p.comments__message #{comment.text}
+              p #{comment[CommentKey.USER][UserKey.FIRST_NAME]} #{comment[CommentKey.USER][UserKey.LAST_NAME]} •
+              time.comments__date(datetime=comment[CommentKey.CREATED_DATE])
+                | #{humanizeDate(comment[CommentKey.CREATED_DATE], true)}
+            p.comments__message #{comment[CommentKey.TEXT]}
   case account.type
     when UserType.ADMIN
     when UserType.USER
       .comments__footer.comments__footer--user
-        form(action=FormAction.ADD_COMMENT method="POST")
+        form(action=AppFormAction.ADD_COMMENT method="POST")
           .comments__avatar.avatar
             img(src="/img/avatar-2.png" alt="аватар пользователя")
           label

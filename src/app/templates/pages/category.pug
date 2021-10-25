@@ -2,13 +2,14 @@ extends /layouts/default.pug
 
 block content
   main.articles-category
-    h1 #{currentCategory.name}
+    h1 #{category[CategoryKey.NAME]}
     section.articles-category__theme-list
       h2.visually-hidden Список тем
-      include /partials/category/themes.pug
+      +themes(categories, category[CategoryKey.ID])
     section.articles-category__list.preview
       h2.visually-hidden Список превью статей
       ul.preview__list
-        include /mixins/preview-item.pug
-        each article in articles.slice(0, 8)
+        each article in articles
           +preview-item(article)
+      .preview__toggle-wrapper
+        +pagination.preview__pagination

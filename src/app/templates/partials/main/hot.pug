@@ -9,8 +9,8 @@ section.main-page__hot.hot
           "hot__list-item--margin": index === popularArticles.length - 2,
           "hot__list-item--end": index === popularArticles.length - 1,
         })
-          a.hot__list-link(href=`${AppRoute.ARTICLE}/${article.id}`)
-            +truncate-string(article.title)
-            sup.hot__link-sup &nbsp;#{article.count}
+          a.hot__list-link(href=`${AppRoute.ARTICLES}/${article[ArticleKey.ID]}`)
+            | #{truncateString(article[ArticleKey.ANNOUNCE])}
+            sup.hot__link-sup &nbsp;#{article[ArticleKey.COMMENTS_COUNT]}
   else
     p.hot__empty Здесь пока ничего нет...
