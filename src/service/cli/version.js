@@ -5,7 +5,7 @@ const packageJson = require(`../../../package.json`);
 const {
   CliCommand,
   ExitCode,
-} = require(`../../constants`);
+} = require(`../../common/enums`);
 
 module.exports = {
   name: CliCommand.VERSION,

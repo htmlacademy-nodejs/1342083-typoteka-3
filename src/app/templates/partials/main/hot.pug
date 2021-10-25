@@ -1,0 +1,16 @@
+section.main-page__hot.hot
+  h2.hot__name(class={"hot__name--empty": isPopularEmpty})
+    | Самое обсуждаемое&nbsp;
+    span.hot__icon.hot__icon--fire
+  if !isPopularEmpty
+    ul.hot__list
+      each article, index in popularArticles
+        li.hot__list-item(class={
+          "hot__list-item--margin": index === popularArticles.length - 2,
+          "hot__list-item--end": index === popularArticles.length - 1,
+        })
+          a.hot__list-link(href=`${AppRoute.ARTICLES}/${article[ArticleKey.ID]}`)
+            | #{truncateString(article[ArticleKey.ANNOUNCE])}
+            sup.hot__link-sup &nbsp;#{article[ArticleKey.COMMENTS_COUNT]}
+  else
+    p.hot__empty Здесь пока ничего нет...

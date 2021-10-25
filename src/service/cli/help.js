@@ -4,9 +4,9 @@ const chulk = require(`chalk`);
 const {
   CliCommand,
   ExitCode,
-} = require(`../../constants`);
+} = require(`../../common/enums`);
 
-const HELP_TEXT = `
+const helpText = `
 Программа запускает http-сервер и формирует файл с данными для API.
 
 Гайд:
@@ -15,14 +15,14 @@ service.js <command>
 Команды:
 ${CliCommand.VERSION}            выводит номер версии
 ${CliCommand.HELP}               печатает этот текст
-${CliCommand.GENERATE} <count>   формирует файл mocks.json
+${CliCommand.FILLDB} <count>     заполняет БД моковыми данными
 ${CliCommand.SERVER} <port>      запускает http-сервер
 `;
 
 module.exports = {
   name: CliCommand.HELP,
   run() {
-    console.info(chulk.gray(HELP_TEXT));
+    console.info(chulk.gray(helpText));
     process.exit(ExitCode.SUCCESS);
   },
 };

@@ -7,10 +7,11 @@
     "eslint": "eslint --ext .js src/",
     "jest": "jest",
     "test": "npm run eslint && npm run jest",
-    "start": "node ./src/service/service.js",
-    "start::dev": "nodemon ./src/service/service.js",
-    "start-front-server": "node ./src/express/express.js",
-    "start-front-server::dev": "nodemon ./src/express/express.js"
+    "initdb": "npm start -- --filldb 100",
+    "start": "node -r dotenv/config ./src/service/service.js",
+    "start::dev": "nodemon -r dotenv/config ./src/service/service.js",
+    "start-front-server": "node -r dotenv/config ./src/app/app.js",
+    "start-front-server::dev": "nodemon -r dotenv/config ./src/app/app.js"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,7 @@
     "nodemon": "2.0.7",
     "pino-pretty": "7.0.1",
     "pug-lint": "2.6.0",
+    "sqlite3": "5.0.2",
     "supertest": "6.1.6"
   }
 }

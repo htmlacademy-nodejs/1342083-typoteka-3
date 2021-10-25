@@ -1,14 +1,33 @@
 'use strict';
 
 const {Router} = require(`express`);
-const {APIUrl, HttpStatusCode} = require(`../../constants`);
+const {
+  ApiUrl,
+  ApiCategoriesRoute,
+  HttpStatusCode,
+} = require(`../../common/enums`);
 
-module.exports = (app, service) => {
+module.exports = (app, articleService, categoryService) => {
   const route = new Router();
-  app.use(APIUrl.CATEGORIES, route);
+  app.use(ApiUrl.CATEGORIES, route);
 
-  route.get(`/`, async (req, res) => {
-    const categories = await service.findAll();
+  route.get(ApiCategoriesRoute.MAIN, async (req, res) => {
+    const {count} = req.query;
+    const categories = await categoryService.findAll(count);
     res.status(HttpStatusCode.OK).json(categories);
+  });
+
+  route.get(ApiCategoriesRoute.CATEGORY, async (req, res) => {
+    const {categoryId} = req.params;
+    const category = await categoryService.findOne(categoryId);
+    res.status(HttpStatusCode.OK).json(category);
+  });
+
+  route.get(ApiCategoriesRoute.ARTICLES, async (req, res) => {
+    const {categoryId} = req.params;
+    const {limit} = req.query;
+
+    const articles = await articleService.findAllByCategory(categoryId, limit);
+    res.status(HttpStatusCode.OK).json(articles);
   });
 };

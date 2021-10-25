@@ -1,6 +1,9 @@
 'use strict';
 
-const {ArticleKey, HttpStatusCode} = require(`../../constants`);
+const {
+  ArticleKey,
+  HttpStatusCode,
+} = require(`../../common/enums`);
 
 const requiredKeys = [
   ArticleKey.TITLE,

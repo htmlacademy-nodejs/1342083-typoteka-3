@@ -1,0 +1,7 @@
+section.main-page__list.preview
+  h2.visually-hidden Список превью статей
+  ul.preview__list
+    each article in articles
+      +preview-item(article)
+  .preview__toggle-wrapper
+    +pagination.preview__pagination

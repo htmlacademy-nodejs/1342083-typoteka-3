@@ -3,21 +3,20 @@
 const express = require(`express`);
 const api = require(`../api`);
 const sequelize = require(`../lib/sequelize`);
-const {
-  getLogger,
-} = require(`../lib/logger`);
+const {getLogger} = require(`../../common/lib/logger`);
 const {
   API_PREFIX,
+  API_PORT,
+} = require(`../../common/constants`);
+const {
+  LoggerName,
+  HttpStatusCode,
   CliCommand,
   ExitCode,
-  HttpStatusCode,
-} = require(`../../constants`);
-
-const DEFAULT_PORT = 3000;
-const NOT_FOUND_TEXT = `404 - Not Found`;
+} = require(`../../common/enums`);
 
 const logger = getLogger({
-  name: `api`,
+  name: LoggerName.API,
 });
 
 const app = express();
@@ -35,7 +34,7 @@ app.use(API_PREFIX, api);
 
 app.use((req, res) => {
   logger.error(`Route not found: ${req.url}`);
-  res.status(HttpStatusCode.NOT_FOUND).send(NOT_FOUND_TEXT);
+  res.status(HttpStatusCode.NOT_FOUND).send(`404 - Not Found`);
 });
 
 app.use((err, _req, _res, _next) => {
@@ -55,7 +54,7 @@ module.exports = {
     logger.info(`Connection to database established`);
 
     const [userPort] = args;
-    const port = Number.parseInt(userPort, 10) || DEFAULT_PORT;
+    const port = Number.parseInt(userPort, 10) || process.env.API_PORT || API_PORT;
 
     try {
       app.listen(port, (err) => {

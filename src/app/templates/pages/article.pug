@@ -1,0 +1,23 @@
+extends /layouts/default.pug
+
+block content
+  main
+    section.post
+      h1.visually-hidden Пост
+      section.post__content
+        h2.visually-hidden Основное содержание
+        .post__wrapper
+          .post__head
+            a.post__backwards.button.button--backwards(href=backHref) Назад
+            time.post__date(datetime=article[ArticleKey.CREATED_DATE])
+              | #{humanizeDate(article[ArticleKey.CREATED_DATE])}
+            h2.post__title.title.title--main #{article[ArticleKey.TITLE]}
+            +themes(article[ArticleKey.CATEGORIES]).post__themes
+          if article[ArticleKey.PICTURE]
+            .post__picture
+              img(src=`/img/${article[ArticleKey.PICTURE]}` alt=article[ArticleKey.TITLE])
+          .post__text
+            p #{article[ArticleKey.ANNOUNCE]}
+            p #{article[ArticleKey.FULL_TEXT]}
+      .post__wrapper.post__wrapper--comments
+        include /partials/article/comments.pug

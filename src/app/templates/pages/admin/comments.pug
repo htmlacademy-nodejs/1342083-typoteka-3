@@ -1,0 +1,23 @@
+extends /layouts/admin.pug
+
+block content
+  main.main-page.main-page--padding
+    if comments.length
+      section.main-page__publication.publication
+        h1.publication__title Комментарии
+        ul.publication__list
+          each comment in comments
+            li.publication__list-item
+              .publication__header
+                img.publication__list-image(src=`/img/${comment[CommentKey.USER][UserKey.AVATAR]}` width="20" height="20" alt="Аватар пользователя")
+                b.publication__list-name #{comment[CommentKey.USER][UserKey.FIRST_NAME]} #{comment[CommentKey.USER][UserKey.LAST_NAME]}
+                time.publication__item-time(datetime=comment[CommentKey.CREATED_DATE])
+                  | #{humanizeDate(comment[CommentKey.CREATED_DATE], true)}
+              a.publication__item-text(href=`${AppRoute.ARTICLES}/${comment[CommentKey.ARTICLE_ID]}#comment-${comment[CommentKey.ID]}`) #{comment[CommentKey.ARTICLE][ArticleKey.TITLE]}
+              p.publication__text-strong #{comment[CommentKey.TEXT]}
+              button.publication__button.button.button--close-item(type="button")
+                span.visually-hidden Закрыть строку списка
+      .publication__toggle-wrapper
+        +pagination.publication__pagination
+    else
+      include /partials/common/empty.pug

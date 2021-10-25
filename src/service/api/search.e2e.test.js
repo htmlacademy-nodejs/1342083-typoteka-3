@@ -1,25 +1,33 @@
 'use strict';
 
 const {beforeAll, describe, expect, test} = require(`@jest/globals`);
+const Sequelize = require(`sequelize`);
 const express = require(`express`);
 const request = require(`supertest`);
 const search = require(`./search`);
 const {SearchService} = require(`../data-service`);
-const {HttpStatusCode} = require(`../../constants`);
-const {
-  mockArticles,
-} = require(`../mock`);
+const initDb = require(`../lib/init-db`);
+const {HttpStatusCode} = require(`../../common/enums`);
+const mocks = require(`../../common/mocks`);
+
+const mockDB = new Sequelize(`sqlite::memory:`, {
+  logging: false,
+});
 
 const app = express();
 app.use(express.json());
-search(app, new SearchService(mockArticles));
+
+beforeAll(async () => {
+  await initDb(mockDB, mocks);
+  search(app, new SearchService(mockDB));
+});
 
 describe(`API возвращает результаты поиска`, () => {
   let response;
 
   beforeAll(async () => {
     response = await request(app).get(`/search`).query({
-      query: mockArticles[0].title,
+      query: `Учим HTML`,
     });
   });
 
@@ -27,17 +35,17 @@ describe(`API возвращает результаты поиска`, () => {
     expect(response.statusCode).toBe(HttpStatusCode.OK);
   });
 
-  test(`Возвращает массив с двумя публикациями`, () => {
+  test(`Возвращает массив с одной публикациями`, () => {
     expect(Array.isArray(response.body)).toBeTruthy();
-    expect(response.body.length).toBe(2);
+    expect(response.body.length).toBe(1);
   });
 
-  test(`Заголовок найденной публикации равен ${mockArticles[0].title}`, () => {
-    expect(response.body[0].title).toBe(mockArticles[0].title);
+  test(`Заголовок найденной публикации равен "Учим HTML и CSS"`, () => {
+    expect(response.body[0].title).toBe(`Учим HTML и CSS`);
   });
 
-  test(`Id найденной публикации равен ${mockArticles[0].id}`, () => {
-    expect(response.body[0].id).toBe(mockArticles[0].id);
+  test(`Id найденной публикации равен 2`, () => {
+    expect(response.body[0].id).toBe(2);
   });
 });
 

@@ -1,21 +1,31 @@
 'use strict';
 
+const {Op} = require(`sequelize`);
 const {
   ArticleKey,
-} = require(`../../constants`);
-const {
-  compareDatesDescend,
-} = require(`../../utils`);
+  ModelAlias,
+  SortOrder,
+} = require(`../../common/enums`);
 
 class SearchService {
-  constructor(articles) {
-    this._articles = articles;
+  constructor(sequelize) {
+    this._Article = sequelize.models.Article;
   }
 
-  findAll(searchText) {
-    return this._articles
-      .filter((article) => article.title.includes(searchText))
-      .sort((first, second) => compareDatesDescend(first[ArticleKey.CREATED_DATE], second[ArticleKey.CREATED_DATE]));
+  async findAll(searchText) {
+    const articles = await this._Article.findAll({
+      where: {
+        [ArticleKey.TITLE]: {
+          [Op.substring]: searchText,
+        },
+      },
+      include: [ModelAlias.CATEGORIES],
+      order: [
+        [ArticleKey.CREATED_DATE, SortOrder.DESC],
+      ],
+    });
+
+    return articles.map((article) => article.get());
   }
 }
 
