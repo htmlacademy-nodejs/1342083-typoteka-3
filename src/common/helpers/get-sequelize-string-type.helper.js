@@ -3,8 +3,7 @@
 const {DataTypes} = require(`sequelize`);
 
 const getSequelizeStringType = (size) => {
-  // eslint-disable-next-line new-cap
-  return size ? DataTypes.STRING(size) : DataTypes.STRING;
+  return size ? new DataTypes.STRING(size) : DataTypes.STRING;
 };
 
 module.exports = {
