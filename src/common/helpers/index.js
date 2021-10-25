@@ -11,6 +11,7 @@ const {getRandomEmail} = require(`./get-random-email.helper`);
 const {getRandomId} = require(`./get-random-id.helper`);
 const {getRandomInt} = require(`./get-random-int.helper`);
 const {getSequelizeStringType} = require(`./get-sequelize-string-type.helper`);
+const {formatSearchResult} = require(`./format-search-results.helper`);
 const {humanizeDate} = require(`./humanize-date.helper`);
 const {readContent} = require(`./read-content.helper`);
 const {truncateString} = require(`./truncate-string.helper`);
@@ -27,6 +28,7 @@ module.exports = {
   getRandomId,
   getRandomInt,
   getSequelizeStringType,
+  formatSearchResult,
   humanizeDate,
   readContent,
   truncateString,

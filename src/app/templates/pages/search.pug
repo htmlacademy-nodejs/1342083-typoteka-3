@@ -1,15 +1,6 @@
 extends /layouts/default.pug
 
 block content
-  -
-    const hasResult = query && !results.length;
-
-    const formatResult = (result, query) => {
-      const startIndex = result.indexOf(query);
-      const endIndex = startIndex + query.length;
-      return `${result.slice(0, startIndex)} <b>${query}</b>${result.slice(endIndex)}`;
-    };
-
   main
     section.search-page
       .search-page__wrapper(class={"search-page__wrapper--empty": hasResult})
@@ -19,11 +10,13 @@ block content
             label
               input(type="text" name=FormElementKey.QUERY placeholder="Что ищем?" value=query)
             button.search__button.button.button--transparent(type="submit") Найти
+        if hasQuery
           if results.length
             each article in results
               .search__result
                 time.search__date(datetime=article[ArticleKey.CREATED_DATE])
                   | #{humanizeDate(article[ArticleKey.CREATED_DATE])}
-                a.search__link(href=`${AppRoute.ARTICLES}/${article[ArticleKey.ID]}`)!= formatResult(article[ArticleKey.TITLE], query)
-        if hasResult
-          p.search-page__empty Ничего не нашлось
+                a.search__link(href=`${AppRoute.ARTICLES}/${article[ArticleKey.ID]}`)
+                  | #{formatSearchResult(article[ArticleKey.TITLE], query)}
+          else
+            p.search-page__empty Ничего не нашлось

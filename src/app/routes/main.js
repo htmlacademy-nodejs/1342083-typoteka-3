@@ -58,7 +58,7 @@ mainRouter.get(AppMainRoute.SEARCH, async (req, res) => {
   const results = await api.search(query);
 
   res.render(AppPage.SEARCH, {
-    query,
+    hasQuery: typeof query === `string`,
     results,
     account: {
       type: UserType.USER,

@@ -26,6 +26,7 @@ const {
 const {
   truncateString,
   humanizeDate,
+  formatSearchResult,
 } = require(`../common/helpers`);
 
 const app = express();
@@ -41,6 +42,7 @@ app.locals = {
   basedir: path.join(__dirname, AppPath.VIEWS_PATH),
   truncateString,
   humanizeDate,
+  formatSearchResult,
   AppRoute,
   AppFormAction,
   ArticleKey,
