@@ -19,14 +19,6 @@ class API {
     });
   }
 
-  async _load(url, options) {
-    const response = await this._http.request({
-      url,
-      ...options
-    });
-    return response.data;
-  }
-
   getAllArticles(limit) {
     return this._load(ApiUrl.ARTICLES, {
       params: {
@@ -99,6 +91,14 @@ class API {
         query,
       },
     });
+  }
+
+  async _load(url, options) {
+    const response = await this._http.request({
+      url,
+      ...options
+    });
+    return response.data;
   }
 }
 
