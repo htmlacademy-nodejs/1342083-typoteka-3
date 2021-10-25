@@ -1,42 +1,46 @@
 'use strict';
 
 const {beforeAll, describe, expect, test} = require(`@jest/globals`);
+const Sequelize = require(`sequelize`);
 const express = require(`express`);
 const request = require(`supertest`);
 const articles = require(`./articles`);
-const {ArticleService, CommentService} = require(`../data-service`);
-const {HttpStatusCode} = require(`../../constants`);
 const {
-  mockArticles,
-} = require(`../mock`);
-
-const newArticle = {
-  title: `Как начать программировать`,
-  createdDate: `2021-08-03 17:14:17`,
-  announce: `Не стоит идти в программисты, если вам нравятся только игры.`,
-  categories: [`Деревья`, `Кино`],
-};
+  ArticleService,
+  CommentService,
+} = require(`../data-service`);
+const initDb = require(`../lib/init-db`);
+const {
+  ArticleKey,
+  HttpStatusCode,
+  CommentKey,
+} = require(`../../common/enums`);
+const mocks = require(`../../common/mocks`);
 
 const articleUpdate = {
-  title: `Обзор новейшего телефона`,
-  createdDate: `2021-07-14 19:16:23`,
-  announce: `Первая большая ёлка была установлена только в 1938 году.`,
-  categories: [`Без рамки`],
+  [ArticleKey.TITLE]: `Обзор новейшего телефона`,
+  [ArticleKey.CREATED_DATE]: `2021-10-26T22:09:58.240Z`,
+  [ArticleKey.ANNOUNCE]: `Первая большая ёлка была установлена только в 1938 году.`,
+  [ArticleKey.CATEGORIES]: [1],
 };
-
 const newComment = {
-  text: `Золотое сечение — соотношение двух величин, гармоническая пропорция`,
+  [CommentKey.TEXT]: `Золотое сечение — соотношение двух величин, гармоническая пропорция`,
 };
-
 const invalidComment = {
   description: newComment.text,
 };
 
 const createAPI = () => {
-  const data = JSON.parse(JSON.stringify(mockArticles));
+  const mockDB = new Sequelize(`sqlite::memory:`, {
+    logging: false,
+  });
   const app = express();
   app.use(express.json());
-  articles(app, new ArticleService(data), new CommentService());
+
+  beforeAll(async () => {
+    await initDb(mockDB, mocks);
+    articles(app, new ArticleService(mockDB), new CommentService(mockDB));
+  });
 
   return app;
 };
@@ -53,13 +57,13 @@ describe(`API вернет список публикаций`, () => {
     expect(response.statusCode).toBe(HttpStatusCode.OK);
   });
 
-  test(`Сервер вернет массив с ${mockArticles.length} публикациями`, () => {
+  test(`Сервер вернет массив с 3 публикациями`, () => {
     expect(Array.isArray(response.body)).toBeTruthy();
-    expect(response.body.length).toBe(mockArticles.length);
+    expect(response.body.length).toBe(3);
   });
 
-  test(`id первой публикации равен "${mockArticles[0].id}"`, () => {
-    expect(response.body[0].id).toBe(mockArticles[0].id);
+  test(`id первой публикации равен 1`, () => {
+    expect(response.body[0].id).toBe(1);
   });
 });
 
@@ -68,19 +72,19 @@ describe(`API вернет публикацию с определенным id`,
   let response;
 
   beforeAll(async () => {
-    response = await request(app).get(`/articles/${mockArticles[0].id}`);
+    response = await request(app).get(`/articles/1`);
   });
 
-  test(`Сервер вернет публикацию с id "${mockArticles[0].id}"`, async () => {
-    expect(response.body.id).toBe(mockArticles[0].id);
+  test(`Сервер вернет публикацию с id 1`, async () => {
+    expect(response.body.id).toBe(1);
   });
 
-  test(`Сервер вернет публикацию с заголовком "${mockArticles[0].title}"`, async () => {
-    expect(response.body.title).toBe(mockArticles[0].title);
+  test(`Сервер вернет публикацию с заголовком "Что такое золотое сечение"`, async () => {
+    expect(response.body.title).toBe(`Что такое золотое сечение`);
   });
 
   test(`Сервер вернет 404, если публикация не найдена`, async () => {
-    await request(app).get(`/articles/ohNo`).expect(HttpStatusCode.NOT_FOUND);
+    await request(app).get(`/articles/4`).expect(HttpStatusCode.NOT_FOUND);
   });
 });
 
@@ -89,53 +93,34 @@ describe(`API вернет список комментариев`, () => {
   let response;
 
   beforeAll(async () => {
-    response = await request(app).get(`/articles/${mockArticles[0].id}/comments`);
+    response = await request(app).get(`/articles/1/comments`);
   });
 
   test(`Сервер вернет 200`, () => {
     expect(response.statusCode).toBe(HttpStatusCode.OK);
   });
 
-  test(`Сервер вернет ${mockArticles[0].comments.length} комментария`, () => {
-    expect(response.body.length).toBe(mockArticles[0].comments.length);
+  test(`Сервер вернет 1 комментарий`, () => {
+    expect(response.body.length).toBe(1);
   });
 
-  test(`id первого комментария равен "${mockArticles[0].comments[0].id}"`, () => {
-    expect(response.body[0].id).toBe(mockArticles[0].comments[0].id);
+  test(`Текст первого комментария равен "Давно не пользуюсь стационарными компьютерами. Ноутбуки победили."`, () => {
+    expect(response.body[0].text).toBe(`Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.`);
   });
 
   test(`Сервер вернет 404, если публикация не найдена`, async () => {
-    await request(app).get(`/articles/ohNo/comments`).expect(HttpStatusCode.NOT_FOUND);
-  });
-});
-
-describe(`API вернет комментарий с определенным id`, () => {
-  const app = createAPI();
-  let response;
-
-  beforeAll(async () => {
-    response = await request(app).get(`/articles/${mockArticles[0].id}/comments/${mockArticles[0].comments[0].id}`);
-  });
-
-  test(`Сервер вернет 200`, () => {
-    expect(response.statusCode).toBe(HttpStatusCode.OK);
-  });
-
-  test(`id комментария равен "${mockArticles[0].comments[0].id}"`, () => {
-    expect(response.body.id).toBe(`${mockArticles[0].comments[0].id}`);
-  });
-
-  test(`Текст комментария равен "${mockArticles[0].comments[0].text}"`, () => {
-    expect(response.body.text).toBe(`${mockArticles[0].comments[0].text}`);
-  });
-
-  test(`Сервер вернет 404, если комментарий не найден`, async () => {
-    await request(app).get(`/articles/${mockArticles[0].id}/comments/notFound`).expect(HttpStatusCode.NOT_FOUND);
+    await request(app).get(`/articles/4/comments`).expect(HttpStatusCode.NOT_FOUND);
   });
 });
 
 describe(`API добавляет новую публикацию`, () => {
   const app = createAPI();
+  const newArticle = {
+    [ArticleKey.TITLE]: `Как начать программировать`,
+    [ArticleKey.CREATED_DATE]: `2021-10-26T18:48:58.239Z`,
+    [ArticleKey.ANNOUNCE]: `Не стоит идти в программисты, если вам нравятся только игры.`,
+    [ArticleKey.CATEGORIES]: [2],
+  };
   let response;
 
   beforeAll(async () => {
@@ -164,13 +149,65 @@ describe(`API добавляет новую публикацию`, () => {
   });
 });
 
-describe(`API добавляет новый комментарий`, () => {
+describe(`API обновляет публикацию`, () => {
   const app = createAPI();
 
+  test(`Сервер вернет 200`, async () => {
+    await request(app).put(`/articles/1`).send(articleUpdate).expect(HttpStatusCode.OK);
+  });
+
+  test(`Количество публикаций равно 3`, async () => {
+    await request(app).get(`/articles`).expect((res) => expect(res.body.length).toBe(3));
+  });
+
+  test(`Заголовок публикации с id 1 равен "Обзор новейшего телефона"`, async () => {
+    await request(app).get(`/articles/1`).expect((res) => expect(res.body.title).toBe(`Обзор новейшего телефона`));
+  });
+
+  test(`Сервер вернет 400, если обновление невалидно`, async () => {
+    for (const key of Object.keys(articleUpdate)) {
+      const invalidUpdate = {...articleUpdate};
+      delete invalidUpdate[key];
+      await request(app).put(`/articles/1`).send(invalidUpdate).expect(HttpStatusCode.BAD_REQUEST);
+    }
+  });
+
+  test(`Сервер вернет 404, если публикация не найдена`, async () => {
+    await request(app).put(`/articles/4`).send(articleUpdate).expect(HttpStatusCode.NOT_FOUND);
+  });
+});
+
+describe(`API удаляет публикацию`, () => {
+  const app = createAPI();
   let response;
 
   beforeAll(async () => {
-    response = await request(app).post(`/articles/${mockArticles[0].id}/comments`).send(newComment);
+    response = await request(app).delete(`/articles/1`);
+  });
+
+  test(`Сервер вернет 200`, () => {
+    expect(response.statusCode).toBe(HttpStatusCode.OK);
+  });
+
+  test(`Вернет булево truthy-значение после удаления`, () => {
+    expect(response.body).toBeTruthy();
+  });
+
+  test(`Количество публикаций равно 2`, async () => {
+    await request(app).get(`/articles`).expect((res) => expect(res.body.length).toBe(2));
+  });
+
+  test(`Сервер вернет 404 при обращении к удаленной публикации`, async () => {
+    await request(app).get(`/articles/1`).expect(HttpStatusCode.NOT_FOUND);
+  });
+});
+
+describe(`API добавляет новый комментарий`, () => {
+  const app = createAPI();
+  let response;
+
+  beforeAll(async () => {
+    response = await request(app).post(`/articles/1/comments`).send(newComment);
   });
 
   test(`Сервер вернет 200`, () => {
@@ -182,39 +219,7 @@ describe(`API добавляет новый комментарий`, () => {
   });
 
   test(`Сервер вернет 400, если новый комментарий невалидный`, async () => {
-    await request(app).post(`/articles/${mockArticles[0].id}/comments`).send(invalidComment).expect(HttpStatusCode.BAD_REQUEST);
-  });
-
-  test(`Сервер вернет 400, если публикации не существует`, async () => {
-    await request(app).post(`/articles/notFound/comments`).send(newComment).expect(HttpStatusCode.NOT_FOUND);
-  });
-});
-
-describe(`API обновляет публикацию`, () => {
-  const app = createAPI();
-
-  test(`Сервер вернет 200`, async () => {
-    await request(app).put(`/articles/${mockArticles[0].id}`).send(articleUpdate).expect(HttpStatusCode.OK);
-  });
-
-  test(`Количество публикаций равно 3`, async () => {
-    await request(app).get(`/articles`).expect((res) => expect(res.body.length).toBe(3));
-  });
-
-  test(`Заголовок публикации с id "${mockArticles[0].id}" равен "Обзор новейшего телефона"`, async () => {
-    await request(app).get(`/articles/${mockArticles[0].id}`).expect((res) => expect(res.body.title).toBe(`Обзор новейшего телефона`));
-  });
-
-  test(`Сервер вернет 400, если обновление невалидно`, async () => {
-    for (const key of Object.keys(articleUpdate)) {
-      const invalidUpdate = {...articleUpdate};
-      delete invalidUpdate[key];
-      await request(app).put(`/articles/${mockArticles[0].id}`).send(invalidUpdate).expect(HttpStatusCode.BAD_REQUEST);
-    }
-  });
-
-  test(`Сервер вернет 404, если публикация не найдена`, async () => {
-    await request(app).put(`/articles/notFound`).send(articleUpdate).expect(HttpStatusCode.NOT_FOUND);
+    await request(app).post(`/articles/1/comments`).send(invalidComment).expect(HttpStatusCode.BAD_REQUEST);
   });
 });
 
@@ -222,57 +227,15 @@ describe(`API обновляет комментарий`, () => {
   const app = createAPI();
 
   test(`Сервер вернет 200`, async () => {
-    await request(app).put(`/articles/${mockArticles[0].id}/comments/${mockArticles[0].comments[0].id}`).send(newComment).expect(HttpStatusCode.OK);
+    await request(app).put(`/articles/1/comments/1`).send(newComment).expect(HttpStatusCode.OK);
   });
 
-  test(`Количество комментариев равно 4`, async () => {
-    await request(app).get(`/articles/${mockArticles[0].id}/comments`).expect((res) => expect(res.body.length).toBe(4));
-  });
-
-  test(`Текст комментария с id "${mockArticles[0].comments[0].id}" равен "${newComment.text}"`, async () => {
-    await request(app).get(`/articles/${mockArticles[0].id}/comments/${mockArticles[0].comments[0].id}`)
-      .expect((res) => expect(res.body.text).toBe(newComment.text));
+  test(`Количество комментариев равно 1`, async () => {
+    await request(app).get(`/articles/1/comments`).expect((res) => expect(res.body.length).toBe(1));
   });
 
   test(`Сервер вернет 400, если обновление невалидно`, async () => {
-    await request(app).put(`/articles/${mockArticles[0].id}/comments/${mockArticles[0].comments[0].id}`).send(invalidComment).expect(HttpStatusCode.BAD_REQUEST);
-  });
-
-  test(`Сервер вернет 404, если комментарий не найден`, async () => {
-    await request(app).put(`/articles/${mockArticles[0].id}/comments/notFound`).send(articleUpdate).expect(HttpStatusCode.NOT_FOUND);
-  });
-
-  test(`Сервер вернет 404, если публикация не найдена`, async () => {
-    await request(app).put(`/articles/notFound/comments/${mockArticles[0].comments[0].id}`).send(articleUpdate).expect(HttpStatusCode.NOT_FOUND);
-  });
-});
-
-describe(`API удаляет публикацию`, () => {
-  const app = createAPI();
-  let response;
-
-  beforeAll(async () => {
-    response = await request(app).delete(`/articles/${mockArticles[0].id}`);
-  });
-
-  test(`Сервер вернет 200`, () => {
-    expect(response.statusCode).toBe(HttpStatusCode.OK);
-  });
-
-  test(`Заголовок удаленной публикации равен "${mockArticles[0].title}"`, () => {
-    expect(response.body.title).toBe(mockArticles[0].title);
-  });
-
-  test(`Количество публикаций равно 2`, async () => {
-    await request(app).get(`/articles`).expect((res) => expect(res.body.length).toBe(2));
-  });
-
-  test(`Сервер вернет 404 при обращении к удаленной публикации`, async () => {
-    await request(app).get(`/articles/${mockArticles[0].id}`).expect(HttpStatusCode.NOT_FOUND);
-  });
-
-  test(`Сервер вернет 404 при попытке удалить несуществующую публикацию`, async () => {
-    await request(app).delete(`/articles/notFound`).expect(HttpStatusCode.NOT_FOUND);
+    await request(app).put(`/articles/1/comments/1`).send(invalidComment).expect(HttpStatusCode.BAD_REQUEST);
   });
 });
 
@@ -281,26 +244,22 @@ describe(`API удаляет комментарий`, () => {
   let response;
 
   beforeAll(async () => {
-    response = await request(app).delete(`/articles/${mockArticles[0].id}/comments/${mockArticles[0].comments[0].id}`);
+    response = await request(app).delete(`/articles/1/comments/1`);
   });
 
   test(`Сервер вернет 200`, () => {
     expect(response.statusCode).toBe(HttpStatusCode.OK);
   });
 
-  test(`Текст удаленного комментария равен "${mockArticles[0].comments[0].text}"`, () => {
-    expect(response.body.text).toBe(mockArticles[0].comments[0].text);
+  test(`Возвращает truthy`, () => {
+    expect(response.body).toBeTruthy();
   });
 
-  test(`Количество комментариев равно 3`, async () => {
-    await request(app).get(`/articles/${mockArticles[0].id}/comments`).expect((res) => expect(res.body.length).toBe(3));
+  test(`Количество комментариев равно 0`, async () => {
+    await request(app).get(`/articles/1/comments`).expect((res) => expect(res.body.length).toBe(0));
   });
 
   test(`Сервер вернет 404 при обращении к удаленному комментарию`, async () => {
-    await request(app).get(`/articles/${mockArticles[0].id}/comments/${mockArticles[0].comments[0].id}`).expect(HttpStatusCode.NOT_FOUND);
-  });
-
-  test(`Сервер вернет 404 при попытке удалить несуществующий комментарий`, async () => {
-    await request(app).delete(`/articles/${mockArticles[0].id}/comments/notFound`).expect(HttpStatusCode.NOT_FOUND);
+    await request(app).get(`/articles/1/comments/1`).expect(HttpStatusCode.NOT_FOUND);
   });
 });

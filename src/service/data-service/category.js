@@ -16,6 +16,10 @@ class CategoryService {
     this._ArticleCategory = sequelize.models.ArticleCategory;
   }
 
+  create(categoryPayload) {
+    return this._Category.create(categoryPayload);
+  }
+
   findOne(id) {
     return this._Category.findByPk(id, {
       raw: true,

@@ -27,6 +27,4 @@ module.exports = async (sequelize, mocks) => {
   await Article.bulkCreate(articles);
   await Comment.bulkCreate(comments);
   await ArticleCategory.bulkCreate(articleCategories);
-
-  await sequelize.close();
 };

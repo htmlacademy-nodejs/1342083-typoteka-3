@@ -68,7 +68,7 @@ module.exports = (app, articleService, commentService) => {
   route.post(ApiArticlesRoute.$ARTICLE_COMMENTS, [articleExist(articleService), commentValidator], async (req, res) => {
     const {article} = res.locals;
     const comment = req.body;
-    const newComment = await commentService.create(article, comment);
+    const newComment = await commentService.create(article.id, comment);
     return res.status(HttpStatusCode.OK).json(newComment);
   });
 
@@ -85,8 +85,8 @@ module.exports = (app, articleService, commentService) => {
   });
 
   route.delete(ApiArticlesRoute.$ARTICLE_$COMMENT, [articleExist(articleService), commentExist(commentService)], async (_req, res) => {
-    const {article, comment} = res.locals;
-    const deletedComment = await commentService.drop(article, comment[CommentKey.ID]);
+    const {comment} = res.locals;
+    const deletedComment = await commentService.drop(comment[0][CommentKey.ID]);
     res.status(HttpStatusCode.OK).json(deletedComment);
   });
 };

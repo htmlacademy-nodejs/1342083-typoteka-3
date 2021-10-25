@@ -1,16 +1,12 @@
 'use strict';
 
-const {
-  ArticleKey,
-  HttpStatusCode,
-} = require(`../../common/enums`);
+const {HttpStatusCode} = require(`../../common/enums`);
 
 module.exports = (service) => async (req, res, next) => {
-  const {article} = res.locals;
   const {commentId} = req.params;
-  const comment = await service.findOne(article[ArticleKey.ID], commentId);
+  const comment = await service.findOne(commentId);
 
-  if (!comment) {
+  if (!comment.length) {
     return res.status(HttpStatusCode.NOT_FOUND).send(`Comment with id "${commentId}" not found!`);
   }
 
