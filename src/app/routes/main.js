@@ -13,15 +13,13 @@ const {
 const mainRouter = new Router();
 const api = getAPI();
 
-const ARTICLES_PER_PAGE = 8;
-
 mainRouter.get(AppMainRoute.MAIN, async (req, res) => {
   let {
     page = 1,
   } = req.query;
   page = parseInt(page, 10);
-  const limit = ARTICLES_PER_PAGE;
-  const offset = (page - 1) * ARTICLES_PER_PAGE;
+  const limit = ContentLimit.PREVIEW_LIST;
+  const offset = (page - 1) * ContentLimit.PREVIEW_LIST;
 
   const [
     categories,
@@ -38,7 +36,7 @@ mainRouter.get(AppMainRoute.MAIN, async (req, res) => {
     }),
   ]);
 
-  const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
+  const totalPages = Math.ceil(count / ContentLimit.PREVIEW_LIST);
 
   res.render(AppPage.MAIN, {
     categories,

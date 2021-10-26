@@ -10,6 +10,7 @@ const {
   UserType,
   FormElementKey,
   ArticleKey,
+  ContentLimit,
   DateFormatPattern,
 } = require(`../../common/enums`);
 const {
@@ -20,8 +21,6 @@ const {
 const articlesRouter = new Router();
 const api = getAPI();
 
-const ARTICLES_PER_PAGE = 8;
-
 articlesRouter.get(AppArticleRoute.MAIN, (_req, res) => {
   res.redirect(AppRoute.MAIN);
 });
@@ -31,8 +30,8 @@ articlesRouter.get(AppArticleRoute.CATEGORY, async (req, res) => {
     page = 1,
   } = req.query;
   page = parseInt(page, 10);
-  const limit = ARTICLES_PER_PAGE;
-  const offset = (page - 1) * ARTICLES_PER_PAGE;
+  const limit = ContentLimit.PREVIEW_LIST;
+  const offset = (page - 1) * ContentLimit.PREVIEW_LIST;
 
   const {id: categoryId} = req.params;
   const [
@@ -49,7 +48,7 @@ articlesRouter.get(AppArticleRoute.CATEGORY, async (req, res) => {
     }),
   ]);
 
-  const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
+  const totalPages = Math.ceil(count / ContentLimit.PREVIEW_LIST);
 
   res.render(AppPage.CATEGORY, {
     category,
