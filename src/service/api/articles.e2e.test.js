@@ -58,12 +58,12 @@ describe(`API вернет список публикаций`, () => {
   });
 
   test(`Сервер вернет массив с 3 публикациями`, () => {
-    expect(Array.isArray(response.body)).toBeTruthy();
-    expect(response.body.length).toBe(3);
+    expect(Array.isArray(response.body.articles)).toBeTruthy();
+    expect(response.body.count).toBe(3);
   });
 
   test(`id первой публикации равен 1`, () => {
-    expect(response.body[0].id).toBe(1);
+    expect(response.body.articles[0].id).toBe(1);
   });
 });
 
@@ -133,7 +133,7 @@ describe(`API добавляет новую публикацию`, () => {
 
   test(`Количество публикаций равно 4`, async () => {
     const customResponse = await request(app).get(`/articles`);
-    expect(customResponse.body.length).toBe(4);
+    expect(customResponse.body.count).toBe(4);
   });
 
   test(`Сервер вернет новую публикацию с заголовком "Как начать программировать"`, () => {
@@ -157,7 +157,7 @@ describe(`API обновляет публикацию`, () => {
   });
 
   test(`Количество публикаций равно 3`, async () => {
-    await request(app).get(`/articles`).expect((res) => expect(res.body.length).toBe(3));
+    await request(app).get(`/articles`).expect((res) => expect(res.body.count).toBe(3));
   });
 
   test(`Заголовок публикации с id 1 равен "Обзор новейшего телефона"`, async () => {
@@ -194,7 +194,7 @@ describe(`API удаляет публикацию`, () => {
   });
 
   test(`Количество публикаций равно 2`, async () => {
-    await request(app).get(`/articles`).expect((res) => expect(res.body.length).toBe(2));
+    await request(app).get(`/articles`).expect((res) => expect(res.body.count).toBe(2));
   });
 
   test(`Сервер вернет 404 при обращении к удаленной публикации`, async () => {
