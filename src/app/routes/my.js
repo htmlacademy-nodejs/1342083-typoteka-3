@@ -13,7 +13,7 @@ const myRouter = new Router();
 const api = getAPI();
 
 myRouter.get(AppMyRoute.MAIN, async (_req, res) => {
-  const articles = await api.getAllArticles(ContentLimit.ARTICLES_LIST);
+  const articles = await api.getArticles(ContentLimit.ARTICLES_LIST);
 
   res.render(AppPage.ADMIN_ARTICLES, {
     articles,
@@ -24,7 +24,7 @@ myRouter.get(AppMyRoute.MAIN, async (_req, res) => {
 });
 
 myRouter.get(AppMyRoute.COMMENTS, async (_req, res) => {
-  const comments = await api.getAllComments(ContentLimit.COMMENTS_LIST);
+  const comments = await api.getComents(ContentLimit.COMMENTS_LIST);
 
   res.render(AppPage.ADMIN_COMMENTS, {
     comments,

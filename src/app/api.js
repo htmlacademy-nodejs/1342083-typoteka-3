@@ -19,7 +19,7 @@ class API {
     });
   }
 
-  getAllArticles({limit, offset}) {
+  getArticles({limit, offset}) {
     return this._load(ApiUrl.ARTICLES, {
       params: {
         limit,
@@ -36,7 +36,7 @@ class API {
     });
   }
 
-  findPageByCategory(categoryId, limit) {
+  getArticlesByCategory(categoryId, limit) {
     return this._load(`${ApiUrl.CATEGORIES}/${categoryId}${ApiUrl.ARTICLES}`, {
       params: {
         limit,
@@ -62,7 +62,7 @@ class API {
     });
   }
 
-  getAllComments(limit) {
+  getComents(limit) {
     return this._load(`${ApiUrl.ARTICLES}${ApiUrl.COMMENTS}`, {
       params: {
         limit,
@@ -70,11 +70,11 @@ class API {
     });
   }
 
-  getCommentsById(id) {
+  getCommentsByArticle(id) {
     return this._load(`${ApiUrl.ARTICLES}/${id}${ApiUrl.COMMENTS}`);
   }
 
-  getCategoryById(id) {
+  getCategory(id) {
     return this._load(`${ApiUrl.CATEGORIES}/${id}`);
   }
 

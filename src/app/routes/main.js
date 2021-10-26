@@ -31,8 +31,8 @@ mainRouter.get(AppMainRoute.MAIN, async (req, res) => {
   ] = await Promise.all([
     api.getCategories(true),
     api.getPopularArticles(ContentLimit.POPULAR),
-    api.getAllComments(ContentLimit.LAST_COMMENTS),
-    api.getAllArticles({
+    api.getComents(ContentLimit.LAST_COMMENTS),
+    api.getArticles({
       limit,
       offset
     }),
