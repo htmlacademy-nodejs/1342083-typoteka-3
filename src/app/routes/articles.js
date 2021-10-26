@@ -34,7 +34,7 @@ articlesRouter.get(AppArticleRoute.CATEGORY, async (req, res) => {
   ] = await Promise.all([
     api.getCategoryById(activeCategoryId),
     api.getCategories(true),
-    api.findAllByCategory(activeCategoryId, ContentLimit.PREVIEW_LIST),
+    api.findPageByCategory(activeCategoryId, ContentLimit.PREVIEW_LIST),
   ]);
 
   res.render(AppPage.CATEGORY, {

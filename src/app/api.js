@@ -19,10 +19,11 @@ class API {
     });
   }
 
-  getAllArticles(limit) {
+  getAllArticles({limit, offset}) {
     return this._load(ApiUrl.ARTICLES, {
       params: {
         limit,
+        offset,
       },
     });
   }
@@ -35,7 +36,7 @@ class API {
     });
   }
 
-  findAllByCategory(categoryId, limit) {
+  findPageByCategory(categoryId, limit) {
     return this._load(`${ApiUrl.CATEGORIES}/${categoryId}${ApiUrl.ARTICLES}`, {
       params: {
         limit,

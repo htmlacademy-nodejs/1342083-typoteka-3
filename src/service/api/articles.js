@@ -20,8 +20,16 @@ module.exports = (app, articleService, commentService) => {
   app.use(ApiUrl.ARTICLES, route);
 
   route.get(ApiArticlesRoute.MAIN, async (req, res) => {
-    const {limit} = req.query;
-    const articles = await articleService.findAll(limit);
+    const {
+      limit,
+      offset,
+    } = req.query;
+
+    const articles = await articleService.findPage({
+      limit,
+      offset,
+    });
+
     res.status(HttpStatusCode.OK).json(articles);
   });
 

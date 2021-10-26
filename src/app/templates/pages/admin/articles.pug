@@ -14,6 +14,6 @@ block content
               button.notes__button.button.button--close-item(type="button")
                 span.visually-hidden Закрыть строку списка
       .notes__toggle-wrapper
-        +pagination.notes__pagination
+        +pagination(page, totalPages).notes__pagination
     else
       include /partials/common/empty.pug

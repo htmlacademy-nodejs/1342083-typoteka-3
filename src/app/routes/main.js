@@ -13,24 +13,40 @@ const {
 const mainRouter = new Router();
 const api = getAPI();
 
-mainRouter.get(AppMainRoute.MAIN, async (_req, res) => {
+const ARTICLES_PER_PAGE = 8;
+
+mainRouter.get(AppMainRoute.MAIN, async (req, res) => {
+  let {
+    page = 1,
+  } = req.query;
+  page = parseInt(page, 10);
+  const limit = ARTICLES_PER_PAGE;
+  const offset = (page - 1) * ARTICLES_PER_PAGE;
+
   const [
     categories,
     popularArticles,
     lastComments,
-    articles,
+    {count, articles},
   ] = await Promise.all([
     api.getCategories(true),
     api.getPopularArticles(ContentLimit.POPULAR),
     api.getAllComments(ContentLimit.LAST_COMMENTS),
-    api.getAllArticles(ContentLimit.PREVIEW_LIST),
+    api.getAllArticles({
+      limit,
+      offset
+    }),
   ]);
+
+  const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
   res.render(AppPage.MAIN, {
     categories,
     popularArticles,
     lastComments,
     articles,
+    page,
+    totalPages,
     account: {
       type: UserType.ADMIN,
     },

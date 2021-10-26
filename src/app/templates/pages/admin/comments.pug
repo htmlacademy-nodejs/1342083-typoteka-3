@@ -18,6 +18,6 @@ block content
               button.publication__button.button.button--close-item(type="button")
                 span.visually-hidden Закрыть строку списка
       .publication__toggle-wrapper
-        +pagination.publication__pagination
+        +pagination(page, totalPages).publication__pagination
     else
       include /partials/common/empty.pug
