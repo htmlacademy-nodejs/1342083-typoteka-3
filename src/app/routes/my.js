@@ -8,26 +8,28 @@ const {
   ContentLimit,
   UserType,
 } = require(`../../common/enums`);
+const {
+  calculatePagination,
+  getTotalPages,
+} = require(`../../common/helpers`);
 
 const myRouter = new Router();
 const api = getAPI();
 
 myRouter.get(AppMyRoute.MAIN, async (req, res) => {
-  let {
-    page = 1,
-  } = req.query;
-  page = parseInt(page, 10);
-  const limit = ContentLimit.ARTICLES_LIST;
-  const offset = (page - 1) * ContentLimit.ARTICLES_LIST;
+  const {
+    page,
+    offset
+  } = calculatePagination(ContentLimit.ARTICLES_LIST, req.query.page);
 
   const {
     count,
     articles,
   } = await api.getArticles({
-    limit,
+    limit: ContentLimit.ARTICLES_LIST,
     offset,
   });
-  const totalPages = Math.ceil(count / ContentLimit.ARTICLES_LIST);
+  const totalPages = getTotalPages(count, ContentLimit.ARTICLES_LIST);
 
   res.render(AppPage.ADMIN_ARTICLES, {
     articles,
@@ -41,21 +43,19 @@ myRouter.get(AppMyRoute.MAIN, async (req, res) => {
 });
 
 myRouter.get(AppMyRoute.COMMENTS, async (req, res) => {
-  let {
-    page = 1,
-  } = req.query;
-  page = parseInt(page, 10);
-  const limit = ContentLimit.COMMENTS_LIST;
-  const offset = (page - 1) * ContentLimit.COMMENTS_LIST;
+  const {
+    page,
+    offset
+  } = calculatePagination(ContentLimit.COMMENTS_LIST, req.query.page);
 
   const {
     count,
     comments,
   } = await api.getComents({
-    limit,
+    limit: ContentLimit.COMMENTS_LIST,
     offset,
   });
-  const totalPages = Math.ceil(count / ContentLimit.COMMENTS_LIST);
+  const totalPages = getTotalPages(count, ContentLimit.COMMENTS_LIST);
 
   res.render(AppPage.ADMIN_COMMENTS, {
     comments,

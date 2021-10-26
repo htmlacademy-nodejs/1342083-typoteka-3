@@ -9,17 +9,19 @@ const {
   UserType,
   AppRoute,
 } = require(`../../common/enums`);
+const {
+  calculatePagination,
+  getTotalPages,
+} = require(`../../common/helpers`);
 
 const mainRouter = new Router();
 const api = getAPI();
 
 mainRouter.get(AppMainRoute.MAIN, async (req, res) => {
-  let {
-    page = 1,
-  } = req.query;
-  page = parseInt(page, 10);
-  const limit = ContentLimit.PREVIEW_LIST;
-  const offset = (page - 1) * ContentLimit.PREVIEW_LIST;
+  const {
+    page,
+    offset
+  } = calculatePagination(ContentLimit.PREVIEW_LIST, req.query.page);
 
   const [
     categories,
@@ -33,12 +35,12 @@ mainRouter.get(AppMainRoute.MAIN, async (req, res) => {
       limit: ContentLimit.LAST_COMMENTS,
     }),
     api.getArticles({
-      limit,
+      limit: ContentLimit.PREVIEW_LIST,
       offset
     }),
   ]);
 
-  const totalPages = Math.ceil(count / ContentLimit.PREVIEW_LIST);
+  const totalPages = getTotalPages(count, ContentLimit.PREVIEW_LIST);
 
   res.render(AppPage.MAIN, {
     categories,
