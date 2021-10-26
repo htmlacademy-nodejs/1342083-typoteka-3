@@ -64,10 +64,11 @@ class API {
     });
   }
 
-  getComents(limit) {
+  getComents({limit, offset}) {
     return this._load(`${ApiUrl.ARTICLES}${ApiUrl.COMMENTS}`, {
       params: {
         limit,
+        offset,
       },
     });
   }

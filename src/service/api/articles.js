@@ -45,8 +45,14 @@ module.exports = (app, articleService, commentService) => {
   });
 
   route.get(ApiArticlesRoute.COMMENTS, async (req, res) => {
-    const {limit} = req.query;
-    const comments = await commentService.findAll(limit);
+    const {
+      limit,
+      offset,
+    } = req.query;
+    const comments = await commentService.findAll({
+      limit,
+      offset,
+    });
     res.status(HttpStatusCode.OK).json(comments);
   });
 
