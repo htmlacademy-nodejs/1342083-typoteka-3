@@ -19,18 +19,11 @@ class API {
     });
   }
 
-  async _load(url, options) {
-    const response = await this._http.request({
-      url,
-      ...options
-    });
-    return response.data;
-  }
-
-  getAllArticles(limit) {
+  getArticles({limit, offset}) {
     return this._load(ApiUrl.ARTICLES, {
       params: {
         limit,
+        offset,
       },
     });
   }
@@ -43,10 +36,12 @@ class API {
     });
   }
 
-  findAllByCategory(categoryId, limit) {
+  getArticlesByCategory({categoryId, limit, offset}) {
     return this._load(`${ApiUrl.CATEGORIES}/${categoryId}${ApiUrl.ARTICLES}`, {
       params: {
+        categoryId,
         limit,
+        offset,
       },
     });
   }
@@ -69,19 +64,20 @@ class API {
     });
   }
 
-  getAllComments(limit) {
+  getComents({limit, offset}) {
     return this._load(`${ApiUrl.ARTICLES}${ApiUrl.COMMENTS}`, {
       params: {
         limit,
+        offset,
       },
     });
   }
 
-  getCommentsById(id) {
+  getCommentsByArticle(id) {
     return this._load(`${ApiUrl.ARTICLES}/${id}${ApiUrl.COMMENTS}`);
   }
 
-  getCategoryById(id) {
+  getCategory(id) {
     return this._load(`${ApiUrl.CATEGORIES}/${id}`);
   }
 
@@ -99,6 +95,14 @@ class API {
         query,
       },
     });
+  }
+
+  async _load(url, options) {
+    const response = await this._http.request({
+      url,
+      ...options
+    });
+    return response.data;
   }
 }
 

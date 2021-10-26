@@ -158,8 +158,9 @@ class ArticleService {
     return articles.map((article) => article.get());
   }
 
-  async findAllByCategory(categoryId, limit) {
-    const articles = await this._Article.findAll({
+  async findAllByCategory({categoryId, limit, offset}) {
+    const {count, rows: articles} = await this._Article.findAndCountAll({
+      distinct: true,
       include: [
         {
           model: this._Comment,
@@ -194,9 +195,55 @@ class ArticleService {
         [ArticleKey.CREATED_DATE, SortOrder.DESC],
       ],
       limit,
+      offset,
     });
 
-    return articles.map((article) => article.get());
+    return {count, articles};
+  }
+
+  async findPage({limit, offset}) {
+    const {count, rows: articles} = await this._Article.findAndCountAll({
+      distinct: true,
+      include: [
+        {
+          model: this._Comment,
+          as: ModelAlias.COMMENTS,
+          attributes: [
+            CommentKey.ID,
+            CommentKey.TEXT,
+            CommentKey.CREATED_DATE,
+          ],
+          include: {
+            model: this._User,
+            as: ModelAlias.USER,
+            attributes: [
+              UserKey.ID,
+              UserKey.FIRST_NAME,
+              UserKey.LAST_NAME,
+              UserKey.AVATAR,
+            ],
+          },
+        },
+        {
+          model: this._Category,
+          as: ModelAlias.CATEGORIES,
+          attributes: [
+            CategoryKey.ID,
+            CategoryKey.NAME,
+          ],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+      order: [
+        [ArticleKey.CREATED_DATE, SortOrder.DESC],
+      ],
+      limit,
+      offset,
+    });
+
+    return {count, articles};
   }
 }
 

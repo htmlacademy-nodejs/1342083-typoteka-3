@@ -9,28 +9,46 @@ const {
   UserType,
   AppRoute,
 } = require(`../../common/enums`);
+const {
+  calculatePagination,
+  getTotalPages,
+} = require(`../../common/helpers`);
 
 const mainRouter = new Router();
 const api = getAPI();
 
-mainRouter.get(AppMainRoute.MAIN, async (_req, res) => {
+mainRouter.get(AppMainRoute.MAIN, async (req, res) => {
+  const {
+    page,
+    offset
+  } = calculatePagination(ContentLimit.PREVIEW_LIST, req.query.page);
+
   const [
     categories,
     popularArticles,
-    lastComments,
-    articles,
+    {comments: lastComments},
+    {count, articles},
   ] = await Promise.all([
     api.getCategories(true),
     api.getPopularArticles(ContentLimit.POPULAR),
-    api.getAllComments(ContentLimit.LAST_COMMENTS),
-    api.getAllArticles(ContentLimit.PREVIEW_LIST),
+    api.getComents({
+      limit: ContentLimit.LAST_COMMENTS,
+    }),
+    api.getArticles({
+      limit: ContentLimit.PREVIEW_LIST,
+      offset
+    }),
   ]);
+
+  const totalPages = getTotalPages(count, ContentLimit.PREVIEW_LIST);
 
   res.render(AppPage.MAIN, {
     categories,
     popularArticles,
     lastComments,
     articles,
+    page,
+    totalPages,
     account: {
       type: UserType.ADMIN,
     },
@@ -58,7 +76,7 @@ mainRouter.get(AppMainRoute.SEARCH, async (req, res) => {
   const results = await api.search(query);
 
   res.render(AppPage.SEARCH, {
-    query,
+    hasQuery: typeof query === `string`,
     results,
     account: {
       type: UserType.USER,

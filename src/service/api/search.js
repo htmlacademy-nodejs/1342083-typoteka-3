@@ -13,7 +13,12 @@ module.exports = (app, service) => {
 
   route.get(ApiSearchRoute.MAIN, async (req, res) => {
     const {query = ``} = req.query;
-    const resuls = await service.findAll(query);
-    return res.status(HttpStatusCode.OK).json(query.length ? resuls : []);
+
+    if (!query) {
+      return res.status(HttpStatusCode.OK).json([]);
+    }
+
+    const results = await service.findAll(query);
+    return res.status(HttpStatusCode.OK).json(results);
   });
 };

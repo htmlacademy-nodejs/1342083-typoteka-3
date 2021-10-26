@@ -49,8 +49,8 @@ class CommentService {
     });
   }
 
-  async findAll(limit) {
-    const comments = await this._Comment.findAll({
+  async findAll({limit, offset}) {
+    const {count, rows: comments} = await this._Comment.findAndCountAll({
       include: [
         {
           model: this._Article,
@@ -75,9 +75,10 @@ class CommentService {
         [CommentKey.TEXT, SortOrder.ASC],
       ],
       limit,
+      offset,
     });
 
-    return comments.map((comment) => comment.get());
+    return {count, comments};
   }
 
   async findAllByArticle(articleId) {

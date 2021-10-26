@@ -16,6 +16,8 @@ const {
 const {
   ensureArray,
   getCurrentDate,
+  calculatePagination,
+  getTotalPages,
 } = require(`../../common/helpers`);
 
 const articlesRouter = new Router();
@@ -26,21 +28,34 @@ articlesRouter.get(AppArticleRoute.MAIN, (_req, res) => {
 });
 
 articlesRouter.get(AppArticleRoute.CATEGORY, async (req, res) => {
-  const {id: activeCategoryId} = req.params;
+  const {
+    page,
+    offset
+  } = calculatePagination(ContentLimit.PREVIEW_LIST, req.query.page);
+
+  const {id: categoryId} = req.params;
   const [
     category,
     categories,
-    articles,
+    {count, articles},
   ] = await Promise.all([
-    api.getCategoryById(activeCategoryId),
+    api.getCategory(categoryId),
     api.getCategories(true),
-    api.findAllByCategory(activeCategoryId, ContentLimit.PREVIEW_LIST),
+    api.getArticlesByCategory({
+      categoryId,
+      limit: ContentLimit.PREVIEW_LIST,
+      offset,
+    }),
   ]);
+
+  const totalPages = getTotalPages(count, ContentLimit.PREVIEW_LIST);
 
   res.render(AppPage.CATEGORY, {
     category,
     articles,
     categories,
+    page,
+    totalPages,
     account: {
       type: UserType.USER,
     },

@@ -24,10 +24,21 @@ module.exports = (app, articleService, categoryService) => {
   });
 
   route.get(ApiCategoriesRoute.ARTICLES, async (req, res) => {
-    const {categoryId} = req.params;
-    const {limit} = req.query;
+    const {
+      categoryId,
+    } = req.params;
 
-    const articles = await articleService.findAllByCategory(categoryId, limit);
+    const {
+      limit,
+      offset,
+    } = req.query;
+
+    const articles = await articleService.findAllByCategory({
+      categoryId,
+      limit,
+      offset,
+    });
+
     res.status(HttpStatusCode.OK).json(articles);
   });
 };

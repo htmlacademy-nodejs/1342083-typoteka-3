@@ -51,7 +51,7 @@ class CategoryService {
       return categories.map((category) => category.get());
     }
 
-    return await this._Category.findAll({
+    return this._Category.findAll({
       raw: true,
     });
   }
