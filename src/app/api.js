@@ -36,10 +36,12 @@ class API {
     });
   }
 
-  getArticlesByCategory(categoryId, limit) {
+  getArticlesByCategory({categoryId, limit, offset}) {
     return this._load(`${ApiUrl.CATEGORIES}/${categoryId}${ApiUrl.ARTICLES}`, {
       params: {
+        categoryId,
         limit,
+        offset,
       },
     });
   }
