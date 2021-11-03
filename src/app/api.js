@@ -53,7 +53,7 @@ class API {
   updateArticle(id, update) {
     return this._load(`${ApiUrl.ARTICLES}/${id}`, {
       method: HttpRequestMethod.PUT,
-      body: update,
+      data: update,
     });
   }
 
