@@ -1,0 +1,9 @@
+mixin form-errors(errors, title = "Произошли следующие ошибки:")
+  -
+    errors = Object.values(errors).flat();
+  if errors.length
+    .form__validation-error
+      p.form__error-message #{title}
+      ul.form__errors
+        each error in errors
+          li.form__error #{error}

@@ -5,8 +5,8 @@ const Sequelize = require(`sequelize`);
 const express = require(`express`);
 const request = require(`supertest`);
 const search = require(`./search`);
-const {SearchService} = require(`../data-service`);
-const initDb = require(`../lib/init-db`);
+const {SearchService} = require(`../data-services`);
+const initDb = require(`../libs/init-db`);
 const {HttpStatusCode} = require(`../../common/enums`);
 const mocks = require(`../../common/mocks`);
 

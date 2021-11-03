@@ -1,6 +1,6 @@
 'use strict';
 
-const {Sequelize} = require(`sequelize`);
+const {Sequelize, Op} = require(`sequelize`);
 const {
   CategoryKey,
   TableName,
@@ -38,10 +38,15 @@ class CategoryService {
           model: this._ArticleCategory,
           as: ModelAlias.ARTICLES_CATEGORIES,
           attributes: [],
+          duplicating: false,
         },
         group: [
           Sequelize.col(`${ModelName.CATEGORY}.${CategoryKey.ID}`),
         ],
+        having: Sequelize.where(
+            Sequelize.fn(`COUNT`, Sequelize.col(`${TableName.ARTICLES_CATEGORIES}.${ArticleCategoryKey.CATEGORY_ID}`)),
+            {[Op.gte]: 1}
+        ),
         order: [
           [CategoryKey.COUNT, SortOrder.DESC],
           [CategoryKey.NAME, SortOrder.DESC],

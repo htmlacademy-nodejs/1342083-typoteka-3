@@ -8,8 +8,8 @@ const articles = require(`./articles`);
 const {
   ArticleService,
   CommentService,
-} = require(`../data-service`);
-const initDb = require(`../lib/init-db`);
+} = require(`../data-services`);
+const initDb = require(`../libs/init-db`);
 const {
   ArticleKey,
   HttpStatusCode,

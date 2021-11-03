@@ -1,11 +1,15 @@
 'use strict';
 
+const {assembleArticleErrors} = require(`./assemble-article-errors.helper`);
+const {assembleErrors} = require(`./assemble-errors.helper`);
+const {assembleRoute} = require(`./assemble-route.helper`);
 const {calculatePagination} = require(`./calculate-pagination.helper`);
 const {ensureArray} = require(`./ensure-array.helper`);
 const {formatSearchResult} = require(`./format-search-results.helper`);
 const {getArrayRandomIndex} = require(`./get-array-random-index.helper`);
 const {getArrayRandomItem} = require(`./get-array-random-item.helper`);
 const {getArrayRandomItems} = require(`./get-array-random-items.helper`);
+const {getArticleData} = require(`./get-article-data.helper`);
 const {getCurrentDate} = require(`./get-current-date.helper`);
 const {getRandomBoolean} = require(`./get-random-boolean.helper`);
 const {getRandomDate} = require(`./get-random-date.helper`);
@@ -19,12 +23,16 @@ const {readContent} = require(`./read-content.helper`);
 const {truncateString} = require(`./truncate-string.helper`);
 
 module.exports = {
+  assembleArticleErrors,
+  assembleErrors,
+  assembleRoute,
   calculatePagination,
   ensureArray,
   formatSearchResult,
   getArrayRandomIndex,
   getArrayRandomItem,
   getArrayRandomItems,
+  getArticleData,
   getCurrentDate,
   getRandomBoolean,
   getRandomDate,

@@ -2,43 +2,57 @@
 
 const {Router} = require(`express`);
 const {
+  validateRouteParams,
+  validateSchema,
+} = require(`../middlewares`);
+const {
   ApiUrl,
   ApiCategoriesRoute,
   HttpStatusCode,
 } = require(`../../common/enums`);
+const {categorySchema} = require(`../../common/schemas`);
 
 module.exports = (app, articleService, categoryService) => {
   const route = new Router();
   app.use(ApiUrl.CATEGORIES, route);
 
   route.get(ApiCategoriesRoute.MAIN, async (req, res) => {
-    const {count} = req.query;
-    const categories = await categoryService.findAll(count);
+    const categories = await categoryService.findAll(req.query.needCount);
     res.status(HttpStatusCode.OK).json(categories);
   });
 
-  route.get(ApiCategoriesRoute.CATEGORY, async (req, res) => {
-    const {categoryId} = req.params;
-    const category = await categoryService.findOne(categoryId);
-    res.status(HttpStatusCode.OK).json(category);
-  });
+  route.post(
+      ApiCategoriesRoute.MAIN,
+      validateSchema(categorySchema),
+      async (req, res) => {
+        const category = await categoryService.create(req.body);
+        res.status(HttpStatusCode.OK).json(category);
+      }
+  );
 
-  route.get(ApiCategoriesRoute.ARTICLES, async (req, res) => {
-    const {
-      categoryId,
-    } = req.params;
+  route.get(
+      ApiCategoriesRoute.$CATEGORY,
+      validateRouteParams,
+      async (req, res) => {
+        const category = await categoryService.findOne(req.params.categoryId);
+        res.status(HttpStatusCode.OK).json(category);
+      }
+  );
 
-    const {
-      limit,
-      offset,
-    } = req.query;
+  route.get(
+      ApiCategoriesRoute.$CATEGORY_ARTICLES,
+      validateRouteParams,
+      async (req, res) => {
+        const {categoryId} = req.params;
+        const {limit, offset} = req.query;
 
-    const articles = await articleService.findAllByCategory({
-      categoryId,
-      limit,
-      offset,
-    });
+        const articles = await articleService.findAllByCategory({
+          categoryId,
+          limit,
+          offset,
+        });
 
-    res.status(HttpStatusCode.OK).json(articles);
-  });
+        res.status(HttpStatusCode.OK).json(articles);
+      }
+  );
 };

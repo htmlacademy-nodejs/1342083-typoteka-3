@@ -9,8 +9,8 @@ block content
           each comment in comments
             li.publication__list-item
               .publication__header
-                img.publication__list-image(src=`/img/${comment[CommentKey.USER][UserKey.AVATAR]}` width="20" height="20" alt="Аватар пользователя")
-                b.publication__list-name #{comment[CommentKey.USER][UserKey.FIRST_NAME]} #{comment[CommentKey.USER][UserKey.LAST_NAME]}
+                img.publication__list-image(src=`/img/avatar-1.png` width="20" height="20" alt="Аватар пользователя")
+                b.publication__list-name Василиса Пупкина
                 time.publication__item-time(datetime=comment[CommentKey.CREATED_DATE])
                   | #{humanizeDate(comment[CommentKey.CREATED_DATE], true)}
               a.publication__item-text(href=`${AppRoute.ARTICLES}/${comment[CommentKey.ARTICLE_ID]}#comment-${comment[CommentKey.ID]}`) #{comment[CommentKey.ARTICLE][ArticleKey.TITLE]}

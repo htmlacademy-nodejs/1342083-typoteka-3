@@ -1,15 +1,19 @@
 extends /layouts/admin.pug
 
 block content
+  -
+    validationErrors = validationErrors || [];
+
   main.main-page.main-page--padding
     section.main-page__category.category
       h1.category__title Категории
-      .category__add-form
+      .category__add-form.form
         form(action=AppFormAction.ADD_CATEGORY method="POST")
-          input#add-form-add-category(type="text" name="add-category" placeholder="Новая категория")
-          label(for="add-form-add-category")
+          input#add-category(type="text" name="name" placeholder="Новая категория")
+          label(for="add-category")
             span.visually-hidden Добавить категорию
           button.category__button.button.button--category(type="submit") Добавить
+        +form-errors(validationErrors)
       if categories.length
         ul.category__list
           each category in categories

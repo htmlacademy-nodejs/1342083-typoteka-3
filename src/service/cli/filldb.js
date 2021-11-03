@@ -1,10 +1,10 @@
 'use strict';
 
 const chulk = require(`chalk`);
-const {getLogger} = require(`../../common/lib/logger`);
-const sequelize = require(`../lib/sequelize`);
-const generateMocks = require(`../lib/generate-mocks`);
-const initDb = require(`../lib/init-db`);
+const {getLogger} = require(`../../common/libs/logger`);
+const sequelize = require(`../libs/sequelize`);
+const generateMocks = require(`../libs/generate-mocks`);
+const initDb = require(`../libs/init-db`);
 const {
   CliCommand,
   ExitCode,
