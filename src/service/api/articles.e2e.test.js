@@ -18,10 +18,11 @@ const {
 const mocks = require(`../../common/mocks`);
 
 const articleUpdate = {
-  [ArticleKey.TITLE]: `Обзор новейшего телефона`,
+  [ArticleKey.TITLE]: `Обзор новейшего телефона. Золотое сечение — соотношение двух величин`,
+  [ArticleKey.PICTURE]: null,
   [ArticleKey.CREATED_DATE]: `2021-10-26T22:09:58.240Z`,
-  [ArticleKey.ANNOUNCE]: `Первая большая ёлка была установлена только в 1938 году.`,
-  [ArticleKey.CATEGORIES]: [1],
+  [ArticleKey.ANNOUNCE]: `Первая большая ёлка была установлена только в 1938 году. Золотое сечение — соотношение двух величин, гармоническая пропорция`,
+  [ArticleKey.CATEGORIES]: [{id: 2}],
 };
 const newComment = {
   [CommentKey.TEXT]: `Золотое сечение — соотношение двух величин, гармоническая пропорция`,
@@ -116,10 +117,11 @@ describe(`API вернет список комментариев`, () => {
 describe(`API добавляет новую публикацию`, () => {
   const app = createAPI();
   const newArticle = {
-    [ArticleKey.TITLE]: `Как начать программировать`,
+    [ArticleKey.TITLE]: `Как начать программировать, или пора бы сделать заголовок побольше и поактивнее`,
+    [ArticleKey.PICTURE]: null,
     [ArticleKey.CREATED_DATE]: `2021-10-26T18:48:58.239Z`,
-    [ArticleKey.ANNOUNCE]: `Не стоит идти в программисты, если вам нравятся только игры.`,
-    [ArticleKey.CATEGORIES]: [2],
+    [ArticleKey.ANNOUNCE]: `Не стоит идти в программисты, если вам нравятся только игры. Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.`,
+    [ArticleKey.CATEGORIES]: [{id: 2}],
   };
   let response;
 
@@ -136,8 +138,8 @@ describe(`API добавляет новую публикацию`, () => {
     expect(customResponse.body.count).toBe(4);
   });
 
-  test(`Сервер вернет новую публикацию с заголовком "Как начать программировать"`, () => {
-    expect(response.body.title).toBe(`Как начать программировать`);
+  test(`Сервер вернет новую публикацию с заголовком "Как начать программировать, или пора бы сделать заголовок побольше и поактивнее"`, () => {
+    expect(response.body.title).toBe(`Как начать программировать, или пора бы сделать заголовок побольше и поактивнее`);
   });
 
   test(`Сервер вернет 400, если новая публикация невалидна`, async () => {
