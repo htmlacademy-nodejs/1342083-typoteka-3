@@ -151,7 +151,7 @@ describe(`API добавляет новую публикацию`, () => {
   });
 });
 
-describe.skip(`API обновляет публикацию`, () => {
+describe(`API обновляет публикацию`, () => {
   const app = createAPI();
 
   test(`Сервер вернет 200`, async () => {

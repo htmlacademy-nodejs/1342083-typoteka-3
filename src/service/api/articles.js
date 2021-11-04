@@ -13,8 +13,6 @@ const {
   ApiUrl,
   ApiArticlesRoute,
   HttpStatusCode,
-  ArticleKey,
-  CommentKey,
 } = require(`../../common/enums`);
 const {commentSchema} = require(`../../common/schemas`);
 
@@ -62,8 +60,9 @@ module.exports = (app, articleService, commentService) => {
         validateRouteParams,
         articleExist(articleService),
       ],
-      (_req, res) => {
-        res.status(HttpStatusCode.OK).json(res.locals.article);
+      async (req, res) => {
+        const article = await articleService.findOne(req.params.articleId);
+        res.status(HttpStatusCode.OK).json(article);
       }
   );
 
@@ -75,8 +74,7 @@ module.exports = (app, articleService, commentService) => {
         articleValidator,
       ],
       async (req, res) => {
-        const {article} = res.locals;
-        const updatedArticle = await articleService.update(article[ArticleKey.ID], req.body);
+        const updatedArticle = await articleService.update(req.params.articleId, req.body);
         res.status(HttpStatusCode.OK).json(updatedArticle);
       }
   );
@@ -87,9 +85,8 @@ module.exports = (app, articleService, commentService) => {
         validateRouteParams,
         articleExist(articleService),
       ],
-      async (_req, res) => {
-        const {article} = res.locals;
-        const deletedArticle = await articleService.drop(article[ArticleKey.ID]);
+      async (req, res) => {
+        const deletedArticle = await articleService.drop(req.params.articleId);
         res.status(HttpStatusCode.OK).json(deletedArticle);
       }
   );
@@ -100,9 +97,8 @@ module.exports = (app, articleService, commentService) => {
         validateRouteParams,
         articleExist(articleService),
       ],
-      async (_req, res) => {
-        const {article} = res.locals;
-        const comments = await commentService.findAllByArticle(article[ArticleKey.ID]);
+      async (req, res) => {
+        const comments = await commentService.findAllByArticle(req.params.articleId);
         res.status(HttpStatusCode.OK).json(comments);
       }
   );
@@ -127,8 +123,9 @@ module.exports = (app, articleService, commentService) => {
         articleExist(articleService),
         commentExist(commentService),
       ],
-      (_req, res) => {
-        res.status(HttpStatusCode.OK).json(res.locals.comment);
+      async (req, res) => {
+        const comment = await commentService.findOne(req.params.commentId);
+        res.status(HttpStatusCode.OK).json(comment);
       }
   );
 
@@ -141,8 +138,7 @@ module.exports = (app, articleService, commentService) => {
         commentValidator,
       ],
       async (req, res) => {
-        const {article, comment} = res.locals;
-        const updatedComment = await commentService.update(article, comment[CommentKey.ID], req.body);
+        const updatedComment = await commentService.update(req.params.commentId, req.body);
         res.status(HttpStatusCode.OK).json(updatedComment);
       }
   );
@@ -154,9 +150,8 @@ module.exports = (app, articleService, commentService) => {
         articleExist(articleService),
         commentExist(commentService),
       ],
-      async (_req, res) => {
-        const {comment} = res.locals;
-        const deletedComment = await commentService.drop(comment[0][CommentKey.ID]);
+      async (req, res) => {
+        const deletedComment = await commentService.drop(req.params.commentId);
         res.status(HttpStatusCode.OK).json(deletedComment);
       }
   );

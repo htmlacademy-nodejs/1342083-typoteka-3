@@ -44,17 +44,15 @@ class ArticleService {
   }
 
   async update(id, update) {
-    const {categories, ...article} = update;
-    const [, updatedArticle] = await this._Article.update(article, {
+    const updatedArticle = await this._Article.update(update, {
       where: {
         [ArticleKey.ID]: id,
       },
-      returning: true,
       plain: true,
     });
 
-    updatedArticle.setCategories(categories.map((category) => category.id));
-
+    const article = await this.findOne(id);
+    article.setCategories(update.categories.map((category) => category.id));
     return Boolean(updatedArticle);
   }
 
