@@ -2,8 +2,8 @@
 
 const ApiCategoriesRoute = {
   MAIN: `/`,
-  CATEGORY: `/:categoryId`,
-  ARTICLES: `/:categoryId/articles`
+  $CATEGORY: `/:categoryId`,
+  $CATEGORY_ARTICLES: `/:categoryId/articles`
 };
 
 module.exports = {

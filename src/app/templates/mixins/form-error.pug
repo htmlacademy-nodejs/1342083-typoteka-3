@@ -1,0 +1,4 @@
+mixin form-error(errors)
+  if errors && errors.length
+    each error in errors
+      p.form__error.form__error-message #{error}

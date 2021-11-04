@@ -17,6 +17,6 @@ block content
                 time.search__date(datetime=article[ArticleKey.CREATED_DATE])
                   | #{humanizeDate(article[ArticleKey.CREATED_DATE])}
                 a.search__link(href=`${AppRoute.ARTICLES}/${article[ArticleKey.ID]}`)
-                  | #{formatSearchResult(article[ArticleKey.TITLE], query)}
+                  != formatSearchResult(article[ArticleKey.TITLE], query)
           else
             p.search-page__empty Ничего не нашлось

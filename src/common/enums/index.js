@@ -1,6 +1,7 @@
 'use strict';
 
 const {AnnounceRestrict} = require(`./announce-restrict.enum`);
+const {AnySchemaAlias} = require(`./any-schema-alias.enum`);
 const {ApiArticlesRoute} = require(`./api-articles-route.enum`);
 const {ApiCategoriesRoute} = require(`./api-categories-route.enum`);
 const {ApiSearchRoute} = require(`./api-search-route.enum`);
@@ -12,11 +13,18 @@ const {AppMyRoute} = require(`./app-my-route.enum`);
 const {AppPage} = require(`./app-page.enum`);
 const {AppPath} = require(`./app-path.enum`);
 const {AppRoute} = require(`./app-route.enum`);
+const {ArraySchemaAlias} = require(`./array-schema-alias.enum`);
+const {ArticleAnnounceSizeRestrict} = require(`./article-announce-restrict.enum`);
+const {ArticleCategoriesSizeRestrict} = require(`./article-categories-restrict.enum`);
 const {ArticleCategoryKey} = require(`./article-category-key.enum`);
+const {ArticleFullTextSizeRestrict} = require(`./article-full-text-size-restrict.enum`);
 const {ArticleKey} = require(`./article-key.enum`);
+const {ArticlePictureNameSizeRestrict} = require(`./article-picture-name-size-restrict.enum`);
+const {ArticleTitleSizeRestrict} = require(`./article-title-size-restrict.enum`);
 const {ArticleCountRestrict} = require(`./articles-count-restrict.enum`);
 const {CategoriesRestrict} = require(`./categories-restrict.enum`);
 const {CategoryKey} = require(`./category-key.enum`);
+const {CategoryNameSizeRestrict} = require(`./category-name-size-restrict.enum`);
 const {CliCommand} = require(`./cli-command.enum`);
 const {CommentKey} = require(`./comment-key.enum`);
 const {CommentsRestrict} = require(`./comments-restrict.enum`);
@@ -34,8 +42,10 @@ const {LoggerName} = require(`./logger-name.enum`);
 const {MockItemCount} = require(`./mock-item-count.enum`);
 const {ModelAlias} = require(`./model-alias.enum`);
 const {ModelName} = require(`./model-name.enum`);
+const {NumberSchemaAlias} = require(`./number-schema-alias.enum`);
+const {RouteParam} = require(`./route-param.enum`);
 const {SortOrder} = require(`./sort-order.enum`);
-const {StringSize} = require(`./string-size.enum`);
+const {StringSchemaAlias} = require(`./string-schema-alias.enum`);
 const {TableName} = require(`./table-name.enum`);
 const {TextMaxLength} = require(`./text-max-length.enum`);
 const {UserKey} = require(`./user-key.enum`);
@@ -43,6 +53,7 @@ const {UserType} = require(`./user-type.enum`);
 
 module.exports = {
   AnnounceRestrict,
+  AnySchemaAlias,
   ApiArticlesRoute,
   ApiCategoriesRoute,
   ApiSearchRoute,
@@ -54,11 +65,18 @@ module.exports = {
   AppPage,
   AppPath,
   AppRoute,
+  ArraySchemaAlias,
+  ArticleAnnounceSizeRestrict,
+  ArticleCategoriesSizeRestrict,
   ArticleCategoryKey,
+  ArticleFullTextSizeRestrict,
   ArticleKey,
+  ArticlePictureNameSizeRestrict,
+  ArticleTitleSizeRestrict,
   ArticleCountRestrict,
   CategoriesRestrict,
   CategoryKey,
+  CategoryNameSizeRestrict,
   CliCommand,
   CommentKey,
   CommentsRestrict,
@@ -76,8 +94,10 @@ module.exports = {
   MockItemCount,
   ModelAlias,
   ModelName,
+  NumberSchemaAlias,
+  RouteParam,
   SortOrder,
-  StringSize,
+  StringSchemaAlias,
   TableName,
   TextMaxLength,
   UserKey,

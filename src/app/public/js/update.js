@@ -3,7 +3,5 @@
 const dateSelect = document.getElementById('publication-date');
 
 if (dateSelect && window.flatpickr) {
-  window.flatpickr(dateSelect, {
-    defaultDate: dateSelect.dataset.value,
-  });
+  dateSelect._flatpickr.setDate(dateSelect.dataset.value);
 }

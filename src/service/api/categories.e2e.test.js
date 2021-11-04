@@ -8,8 +8,8 @@ const categories = require(`./categories`);
 const {
   ArticleService,
   CategoryService,
-} = require(`../data-service`);
-const initDb = require(`../lib/init-db`);
+} = require(`../data-services`);
+const initDb = require(`../libs/init-db`);
 const {HttpStatusCode} = require(`../../common/enums`);
 const mocks = require(`../../common/mocks`);
 

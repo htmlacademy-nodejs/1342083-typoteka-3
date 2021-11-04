@@ -6,11 +6,12 @@ const {
 } = require(`sequelize`);
 const {
   UserKey,
-  StringSize,
   ModelName,
   TableName,
 } = require(`../../common/enums`);
 const {getSequelizeStringType} = require(`../../common/helpers`);
+
+const AVATAR_NAME_MAX_SIZE = 50;
 
 class User extends Model {}
 
@@ -32,7 +33,7 @@ module.exports = (sequelize) => User.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  [UserKey.AVATAR]: getSequelizeStringType(StringSize[UserKey.AVATAR])
+  [UserKey.AVATAR]: getSequelizeStringType(AVATAR_NAME_MAX_SIZE)
 }, {
   sequelize,
   modelName: ModelName.USER,

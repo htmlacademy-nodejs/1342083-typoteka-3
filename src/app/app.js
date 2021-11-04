@@ -7,7 +7,7 @@ const {
   myRoutes,
   articlesRoutes,
 } = require(`./routes`);
-const {getLogger} = require(`../common/lib/logger`);
+const {getLogger} = require(`../common/libs/logger`);
 const {APP_PORT} = require(`../common/constants`);
 const {
   LoggerName,
@@ -30,6 +30,9 @@ const {
 } = require(`../common/helpers`);
 
 const app = express();
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
+
 const logger = getLogger({
   name: LoggerName.APP,
 });
@@ -60,7 +63,8 @@ app.use(AppRoute.ARTICLES, articlesRoutes);
 app.use(AppRoute.MY, myRoutes);
 app.use(AppRoute.MAIN, mainRoutes);
 
-app.use((_req, res) => {
+app.use((req, res) => {
+  logger.error(req);
   res.status(HttpStatusCode.NOT_FOUND).render(AppPage.ERROR_404, {
     account: {
       error: HttpStatusCode.NOT_FOUND,

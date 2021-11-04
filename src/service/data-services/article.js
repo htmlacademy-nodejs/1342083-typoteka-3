@@ -26,8 +26,10 @@ class ArticleService {
   }
 
   async create(articleData) {
-    const article = await this._Article.create(articleData);
-    await article.addCategories(articleData[ArticleKey.CATEGORIES]);
+    const {categories, ...newArticle} = articleData;
+    const article = await this._Article.create(newArticle);
+    await article.addCategories(categories.map((category) => category.id));
+
     return article.get();
   }
 
@@ -42,12 +44,16 @@ class ArticleService {
   }
 
   async update(id, update) {
-    const [affectedRows] = await this._Article.update(update, {
+    const updatedArticle = await this._Article.update(update, {
       where: {
         [ArticleKey.ID]: id,
       },
+      plain: true,
     });
-    return Boolean(affectedRows);
+
+    const article = await this.findOne(id);
+    article.setCategories(update.categories.map((category) => category.id));
+    return Boolean(updatedArticle);
   }
 
   findOne(id) {

@@ -2,17 +2,16 @@ extends /layouts/admin.pug
 
 block content
   -
-    const isEdit = Boolean(article[ArticleKey.ID]);
-    const action = isEditMode ? `${AppRoute.ARTICLES}/${article[ArticleKey.ID]}` : AppFormAction.ADD_ARTICLE;
-    const method = isEditMode ? "PUT" : "POST";
+    const action = isEditMode ? `${AppRoute.ARTICLES}/edit/${article[ArticleKey.ID]}` : AppFormAction.ADD_ARTICLE;
     const title = isEditMode ? "Редактирование публикации" : "Новая публикация";
     const submitButtonText = isEditMode ? "Сохранить" : "Опубликовать";
+    validationError = validationError || {};
 
   main
     section
       .popup.popup--new-publication.popup--anti
         .new-publication
-          form(action=action method=method enctype="multipart/form-data")
+          form(action=action method="POST" enctype="multipart/form-data")
             .new-publication__header
               h1 #{title}
               .new-publication__date-form
@@ -28,6 +27,7 @@ block content
                 .form__field
                   label
                     input(type="text" name=FormElementKey.TITLE placeholder="Заголовок" value=article[ArticleKey.TITLE])
+                +form-error(validationError[FormElementKey.TITLE])
                 .form__field.form__field--post-image
                   label
                     input#image-name-field(type="text" name=FormElementKey.PICTURE placeholder="Фотография" value=article[ArticleKey.PICTURE] readonly)
@@ -35,18 +35,14 @@ block content
                     label
                       input.visually-hidden(type="file" name=FormElementKey.UPLOAD)
                       | Обзор
-                .new-publication__category-wrapper
-                  each category in categories
-                    - const isChecked = article[ArticleKey.CATEGORIES] && article[ArticleKey.CATEGORIES].some((it) => it.id === article[ArticleKey.COUNT])
-                    .new-publication__checkbox
-                      - const elId = `${FormElementKey.CATEGORY}-${category[CategoryKey.ID]}`;
-                      input(id=elId type="checkbox" name=FormElementKey.CATEGORY value=category[CategoryKey.ID] checked=isChecked)
-                      label(for=elId) #{category[CategoryKey.NAME]}
-                  a.new-publication__form-link.button.button--transparent(href=AppRoute.CATEGORIES) Добавить категорию
+                include /partials/admin/article/categories.pug
               .form__wrapper.form__wrapper--text
                 .form__field.form__field--publication-text
                   label
                     textarea(rows="5" name=FormElementKey.ANNOUNCE placeholder="Анонс публикации") #{article[ArticleKey.ANNOUNCE]}
+                +form-error(validationError[FormElementKey.ANNOUNCE])
                 .form__field.form__field--publication-text
                   label
                     textarea(rows="10" name=FormElementKey.FULL_TEXT placeholder="Полный текст публикации") #{article[ArticleKey.FULL_TEXT]}
+                  +form-error(validationError[FormElementKey.FULL_TEXT])
+              +form-errors(validationError)

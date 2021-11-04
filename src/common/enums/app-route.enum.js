@@ -3,6 +3,7 @@
 const AppRoute = {
   ARTICLES: `/articles`,
   ARTICLES_ADD: `/articles/add`,
+  ARTICLE: `/articles/:articleId`,
   CATEGORY: `/articles/category`,
   CATEGORIES: `/categories`,
   COMMENTS: `/my/comments`,

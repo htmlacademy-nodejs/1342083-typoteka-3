@@ -76,6 +76,7 @@ mainRouter.get(AppMainRoute.SEARCH, async (req, res) => {
   const results = await api.search(query);
 
   res.render(AppPage.SEARCH, {
+    query,
     hasQuery: typeof query === `string`,
     results,
     account: {
@@ -94,5 +95,26 @@ mainRouter.get(AppMainRoute.CATEGORIES, async (_req, res) => {
     },
   });
 });
+
+mainRouter.post(
+    AppMainRoute.CATEGORIES,
+    async (req, res) => {
+      try {
+        await api.createCategory(req.body);
+        res.redirect(AppRoute.CATEGORIES);
+      } catch (err) {
+        const validationErrors = err.response.data;
+        const categories = await api.getCategories();
+
+        res.render(AppPage.ADMIN_CATEGORIES, {
+          categories,
+          account: {
+            type: UserType.ADMIN,
+          },
+          validationErrors,
+        });
+      }
+    }
+);
 
 module.exports = mainRouter;

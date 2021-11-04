@@ -6,7 +6,10 @@ const {
 } = require(`sequelize`);
 const {
   ArticleKey,
-  StringSize,
+  ArticleTitleSizeRestrict,
+  ArticleAnnounceSizeRestrict,
+  ArticleFullTextSizeRestrict,
+  ArticlePictureNameSizeRestrict,
   ModelName,
   TableName,
 } = require(`../../common/enums`);
@@ -16,19 +19,19 @@ class Article extends Model {}
 
 module.exports = (sequelize) => Article.init({
   [ArticleKey.TITLE]: {
-    type: getSequelizeStringType(StringSize[ArticleKey.TITLE]),
+    type: getSequelizeStringType(ArticleTitleSizeRestrict.MAX),
     allowNull: false,
   },
-  [ArticleKey.PICTURE]: getSequelizeStringType(StringSize[ArticleKey.PICTURE]),
+  [ArticleKey.PICTURE]: getSequelizeStringType(ArticlePictureNameSizeRestrict.MAX),
   [ArticleKey.CREATED_DATE]: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
   [ArticleKey.ANNOUNCE]: {
-    type: getSequelizeStringType(StringSize[ArticleKey.ANNOUNCE]),
+    type: getSequelizeStringType(ArticleAnnounceSizeRestrict.MAX),
     allowNull: false,
   },
-  [ArticleKey.FULL_TEXT]: getSequelizeStringType(StringSize[ArticleKey.FULL_TEXT]),
+  [ArticleKey.FULL_TEXT]: getSequelizeStringType(ArticleFullTextSizeRestrict.MAX),
 }, {
   sequelize,
   modelName: ModelName.ARTICLE,

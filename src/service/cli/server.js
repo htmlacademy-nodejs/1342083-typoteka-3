@@ -2,8 +2,7 @@
 
 const express = require(`express`);
 const api = require(`../api`);
-const sequelize = require(`../lib/sequelize`);
-const {getLogger} = require(`../../common/lib/logger`);
+const sequelize = require(`../libs/sequelize`);
 const {
   API_PREFIX,
   API_PORT,
@@ -14,12 +13,14 @@ const {
   CliCommand,
   ExitCode,
 } = require(`../../common/enums`);
+const {getLogger} = require(`../../common/libs/logger`);
 
 const logger = getLogger({
   name: LoggerName.API,
 });
 
 const app = express();
+app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 app.use((req, res, next) => {
