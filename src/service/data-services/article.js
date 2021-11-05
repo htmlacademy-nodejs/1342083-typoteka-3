@@ -77,12 +77,17 @@ class ArticleService {
           include: {
             model: this._User,
             as: ModelAlias.USERS,
-            attributes: [
-              UserKey.ID,
-              UserKey.FIRST_NAME,
-              UserKey.LAST_NAME,
-              UserKey.AVATAR,
-            ],
+            attributes: {
+              include: [
+                UserKey.ID,
+                UserKey.FIRST_NAME,
+                UserKey.LAST_NAME,
+                UserKey.AVATAR,
+              ],
+              exclude: [
+                UserKey.PASSWORD_HASH,
+              ],
+            },
           },
         },
       ],
@@ -103,12 +108,17 @@ class ArticleService {
           include: {
             model: this._User,
             as: ModelAlias.USERS,
-            attributes: [
-              UserKey.ID,
-              UserKey.FIRST_NAME,
-              UserKey.LAST_NAME,
-              UserKey.AVATAR,
-            ],
+            attributes: {
+              include: [
+                UserKey.ID,
+                UserKey.FIRST_NAME,
+                UserKey.LAST_NAME,
+                UserKey.AVATAR,
+              ],
+              exclude: [
+                UserKey.PASSWORD_HASH,
+              ],
+            },
           },
         },
         {
@@ -222,12 +232,17 @@ class ArticleService {
           include: {
             model: this._User,
             as: ModelAlias.USERS,
-            attributes: [
-              UserKey.ID,
-              UserKey.FIRST_NAME,
-              UserKey.LAST_NAME,
-              UserKey.AVATAR,
-            ],
+            attributes: {
+              include: [
+                UserKey.ID,
+                UserKey.FIRST_NAME,
+                UserKey.LAST_NAME,
+                UserKey.AVATAR,
+              ],
+              exclude: [
+                UserKey.PASSWORD_HASH,
+              ],
+            },
           },
         },
         {

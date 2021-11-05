@@ -63,11 +63,16 @@ class CommentService {
         {
           model: this._User,
           as: ModelAlias.USERS,
-          attributes: [
-            UserKey.FIRST_NAME,
-            UserKey.LAST_NAME,
-            UserKey.AVATAR,
-          ],
+          attributes: {
+            include: [
+              UserKey.FIRST_NAME,
+              UserKey.LAST_NAME,
+              UserKey.AVATAR,
+            ],
+            exclude: [
+              UserKey.PASSWORD_HASH,
+            ],
+          },
         }
       ],
       order: [
