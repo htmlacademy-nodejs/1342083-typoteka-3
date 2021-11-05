@@ -76,7 +76,7 @@ class ArticleService {
           ],
           include: {
             model: this._User,
-            as: ModelAlias.USER,
+            as: ModelAlias.USERS,
             attributes: [
               UserKey.ID,
               UserKey.FIRST_NAME,
@@ -102,7 +102,7 @@ class ArticleService {
           ],
           include: {
             model: this._User,
-            as: ModelAlias.USER,
+            as: ModelAlias.USERS,
             attributes: [
               UserKey.ID,
               UserKey.FIRST_NAME,
@@ -221,7 +221,7 @@ class ArticleService {
           ],
           include: {
             model: this._User,
-            as: ModelAlias.USER,
+            as: ModelAlias.USERS,
             attributes: [
               UserKey.ID,
               UserKey.FIRST_NAME,

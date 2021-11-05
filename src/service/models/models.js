@@ -9,6 +9,7 @@ const {
   ArticleCategoryKey,
   ModelAlias,
   CommentKey,
+  ArticleKey,
 } = require(`../../common/enums`);
 
 module.exports = (sequelize) => {
@@ -18,19 +19,13 @@ module.exports = (sequelize) => {
   const User = defineUser(sequelize);
   const ArticleCategory = defineArticleCategory(sequelize);
 
-  Category.hasMany(ArticleCategory, {
-    foreignKey: ArticleCategoryKey.CATEGORY_ID,
-    as: ModelAlias.ARTICLES_CATEGORIES,
-  });
-
   Article.hasMany(Comment, {
     foreignKey: CommentKey.ARTICLE_ID,
     as: ModelAlias.COMMENTS,
   });
-  Article.hasMany(ArticleCategory, {
-    foreignKey: ArticleCategoryKey.ARTICLE_ID,
-    as: ModelAlias.ARTICLES_CATEGORIES,
-    onDelete: `cascade`,
+  Comment.belongsTo(Article, {
+    foreignKey: CommentKey.ARTICLE_ID,
+    as: ModelAlias.ARTICLES,
   });
 
   Article.belongsToMany(Category, {
@@ -44,13 +39,32 @@ module.exports = (sequelize) => {
     as: ModelAlias.ARTICLES,
   });
 
+  Article.hasMany(ArticleCategory, {
+    foreignKey: ArticleCategoryKey.ARTICLE_ID,
+    as: ModelAlias.ARTICLES_CATEGORIES,
+    onDelete: `cascade`,
+  });
+  Category.hasMany(ArticleCategory, {
+    foreignKey: ArticleCategoryKey.CATEGORY_ID,
+    as: ModelAlias.ARTICLES_CATEGORIES,
+  });
+
+  User.hasMany(Article, {
+    foreignKey: ArticleKey.USER_ID,
+    as: ModelAlias.USERS,
+  });
+  Article.belongsTo(User, {
+    foreignKey: ArticleKey.USER_ID,
+    as: ModelAlias.USERS,
+  });
+
+  User.hasMany(Comment, {
+    foreignKey: CommentKey.USER_ID,
+    as: ModelAlias.COMMENTS,
+  });
   Comment.belongsTo(User, {
     foreignKey: CommentKey.USER_ID,
-    as: ModelAlias.USER,
-  });
-  Comment.belongsTo(Article, {
-    foreignKey: CommentKey.ARTICLE_ID_ID,
-    as: ModelAlias.ARTICLE,
+    as: ModelAlias.USERS,
   });
 
   return {
