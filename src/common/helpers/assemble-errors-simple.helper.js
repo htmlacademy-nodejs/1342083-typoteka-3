@@ -1,9 +1,9 @@
 'use strict';
 
-const assembleErrors = (error) => {
+const assembleErrorsSimple = (error) => {
   return error.details.map((err) => err.message);
 };
 
 module.exports = {
-  assembleErrors,
+  assembleErrorsSimple,
 };

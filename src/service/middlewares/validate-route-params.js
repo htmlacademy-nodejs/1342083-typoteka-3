@@ -5,7 +5,7 @@ const {
   HttpStatusCode,
   LoggerName,
 } = require(`../../common/enums`);
-const {assembleErrors} = require(`../../common/helpers`);
+const {assembleErrorsSimple} = require(`../../common/helpers`);
 const {routeParamsSchema} = require(`../../common/schemas`);
 
 const logger = getLogger({
@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
   });
 
   if (error) {
-    const errors = assembleErrors(error);
+    const errors = assembleErrorsSimple(error);
     logger.warn(errors);
     return res.status(HttpStatusCode.BAD_REQUEST).send(errors);
   }

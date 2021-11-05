@@ -15,7 +15,7 @@ const articleKeyToFieldKey = {
   [ArticleKey.COMMENTS]: FormElementKey.ANNOUNCE,
 };
 
-const assembleArticleErrors = (error) => {
+const assembleErrorsExtended = (error) => {
   return error.details.reduce((acc, err) => {
     const field = articleKeyToFieldKey[err.context.key];
 
@@ -29,5 +29,5 @@ const assembleArticleErrors = (error) => {
 };
 
 module.exports = {
-  assembleArticleErrors,
+  assembleErrorsExtended,
 };

@@ -1,7 +1,7 @@
 'use strict';
 
-const {assembleArticleErrors} = require(`./assemble-article-errors.helper`);
-const {assembleErrors} = require(`./assemble-errors.helper`);
+const {assembleErrorsExtended} = require(`./assemble-errors-extended.helper`);
+const {assembleErrorsSimple} = require(`./assemble-errors-simple.helper`);
 const {assembleRoute} = require(`./assemble-route.helper`);
 const {calculatePagination} = require(`./calculate-pagination.helper`);
 const {ensureArray} = require(`./ensure-array.helper`);
@@ -23,8 +23,8 @@ const {readContent} = require(`./read-content.helper`);
 const {truncateString} = require(`./truncate-string.helper`);
 
 module.exports = {
-  assembleArticleErrors,
-  assembleErrors,
+  assembleErrorsExtended,
+  assembleErrorsSimple,
   assembleRoute,
   calculatePagination,
   ensureArray,
