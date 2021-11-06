@@ -3,8 +3,9 @@
 const path = require(`path`);
 const multer = require(`multer`);
 const {
-  UPLOAD_DIR,
+  FILE_TYPES,
   RANDOM_NAME_LENGTH,
+  UPLOAD_DIR,
 } = require(`../common/constants`);
 const {getRandomId} = require(`../common/helpers`);
 
@@ -17,7 +18,15 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({storage});
+const fileFilter = (_req, file, cb) => {
+  if (FILE_TYPES.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const upload = multer({storage, fileFilter});
 
 module.exports = {
   upload,
