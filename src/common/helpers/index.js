@@ -13,7 +13,6 @@ const {getArticleData} = require(`./get-article-data.helper`);
 const {getCurrentDate} = require(`./get-current-date.helper`);
 const {getRandomBoolean} = require(`./get-random-boolean.helper`);
 const {getRandomDate} = require(`./get-random-date.helper`);
-const {getRandomEmail} = require(`./get-random-email.helper`);
 const {getRandomId} = require(`./get-random-id.helper`);
 const {getRandomInt} = require(`./get-random-int.helper`);
 const {getSequelizeStringType} = require(`./get-sequelize-string-type.helper`);
@@ -36,7 +35,6 @@ module.exports = {
   getCurrentDate,
   getRandomBoolean,
   getRandomDate,
-  getRandomEmail,
   getRandomId,
   getRandomInt,
   getSequelizeStringType,

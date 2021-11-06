@@ -40,7 +40,6 @@ const {HttpRequestMethod} = require(`./http-request-method.enum`);
 const {HttpStatusCode} = require(`./http-status-code.enum`);
 const {LogLevel} = require(`./log-level.enum`);
 const {LoggerName} = require(`./logger-name.enum`);
-const {MockItemCount} = require(`./mock-item-count.enum`);
 const {ModelAlias} = require(`./model-alias.enum`);
 const {ModelName} = require(`./model-name.enum`);
 const {NumberSchemaAlias} = require(`./number-schema-alias.enum`);
@@ -93,7 +92,6 @@ module.exports = {
   HttpStatusCode,
   LogLevel,
   LoggerName,
-  MockItemCount,
   ModelAlias,
   ModelName,
   NumberSchemaAlias,

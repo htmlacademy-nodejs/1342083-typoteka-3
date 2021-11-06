@@ -34,10 +34,6 @@ const {
 const {
   FULL_TEXT_MIN_SIZE,
   PICTURES,
-  FIRST_NAMES,
-  LAST_NAMES,
-  PASSWORD_HASHES,
-  AVATARS,
 } = require(`./mock.constants`);
 
 const {
@@ -66,10 +62,6 @@ module.exports = {
   LOG_FILE,
   FULL_TEXT_MIN_SIZE,
   PICTURES,
-  FIRST_NAMES,
-  LAST_NAMES,
-  PASSWORD_HASHES,
-  AVATARS,
   RANDOM_SEPARATOR,
   RANDOM_NAME_LENGTH,
   UPLOAD_DIR,
