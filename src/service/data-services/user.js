@@ -6,12 +6,12 @@ class UserService {
   }
 
   async create(userData) {
-    const user = this._User.create(userData);
+    const user = await this._User.create(userData);
     return user.get();
   }
 
   async findByEmail(email) {
-    const user = this._User.findOne({
+    const user = await this._User.findOne({
       where: {email},
     });
     return user ? user.get() : null;

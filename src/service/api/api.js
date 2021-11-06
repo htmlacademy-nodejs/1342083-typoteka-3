@@ -6,7 +6,7 @@ const defineModels = require(`../models`);
 const articles = require(`./articles`);
 const categories = require(`./categories`);
 const search = require(`./search`);
-const user = require(`./user`);
+const users = require(`./users`);
 const {
   ArticleService,
   CategoryService,
@@ -22,7 +22,7 @@ defineModels(sequelize);
   await articles(api, new ArticleService(sequelize), new CommentService(sequelize));
   await categories(api, new ArticleService(sequelize), new CategoryService(sequelize));
   await search(api, new SearchService(sequelize));
-  await user(api, new UserService(sequelize));
+  await users(api, new UserService(sequelize));
 })();
 
 module.exports = api;

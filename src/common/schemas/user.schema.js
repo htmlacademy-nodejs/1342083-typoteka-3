@@ -2,7 +2,8 @@
 
 const Joi = require(`joi`);
 const {
-  UserKey, StringSchemaAlias, AnySchemaAlias,
+  UserKey,
+  StringSchemaAlias,
 } = require(`../enums`);
 
 const MIN_PASSWORD_LENGTH = 6;
@@ -14,7 +15,6 @@ const RegisterMessage = {
   EMAIL: `Некорректный электронный адрес`,
   PASSWORD: `Пароль содержит меньше ${MIN_PASSWORD_LENGTH}-ти символов`,
   PASSWORD_REPEATED: `Пароли не совпадают`,
-  AVATAR: `Изображение не выбрано или тип изображения не поддерживается`
 };
 
 const userSchema = Joi.object({
@@ -61,10 +61,8 @@ const userSchema = Joi.object({
 
   [UserKey.AVATAR]: Joi
     .string()
-    .required()
-    .messages({
-      [AnySchemaAlias.ONLY]: RegisterMessage.AVATAR
-    }),
+    .allow(null)
+    .required(),
 
 });
 
