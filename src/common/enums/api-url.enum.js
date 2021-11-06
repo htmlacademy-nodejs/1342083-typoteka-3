@@ -15,6 +15,8 @@ const ApiUrl = {
   CATEGORIES_$CATEGORY_ARTICLES: `/categories/:categoryId/articles`,
 
   SEARCH: `/search`,
+
+  USER: `/user`,
 };
 
 module.exports = {

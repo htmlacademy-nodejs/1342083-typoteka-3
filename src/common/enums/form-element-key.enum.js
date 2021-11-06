@@ -13,7 +13,7 @@ const FormElementKey = {
   FIRST_NAME: `first-name`,
   LAST_NAME: `last-name`,
   PASSWORD: `password`,
-  REPEAT_PASSWORD: `repeat-password`,
+  PASSWORD_REPEATED: `password-repeated`,
   QUERY: `query`,
 };
 

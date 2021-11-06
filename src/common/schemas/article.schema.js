@@ -10,6 +10,7 @@ const {
   AnySchemaAlias,
   ArraySchemaAlias,
   StringSchemaAlias,
+  NumberSchemaAlias,
 } = require(`../../common/enums`);
 
 const REQUIRED_MESSAGE = `Обязательное поле`;
@@ -32,6 +33,10 @@ const FullTextMessage = {
 
 const CategoriesMessage = {
   MIN: `Нужно выбрать минимум ${ArticleCategoriesSizeRestrict.MIN} категорию`,
+};
+
+const UserIdMessage = {
+  BASE: `Некорректный идентификатор пользователя`,
 };
 
 const articleSchema = Joi.object({
@@ -84,6 +89,15 @@ const articleSchema = Joi.object({
     .messages({
       [ArraySchemaAlias.MIN]: CategoriesMessage.MIN,
       [AnySchemaAlias.REQUIRED]: REQUIRED_MESSAGE,
+    }),
+
+  [ArticleKey.USER_ID]: Joi
+    .number()
+    .integer()
+    .positive()
+    .required()
+    .messages({
+      [NumberSchemaAlias.BASE]: UserIdMessage.BASE,
     }),
 });
 

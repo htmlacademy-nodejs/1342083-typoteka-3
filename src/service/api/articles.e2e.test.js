@@ -23,9 +23,11 @@ const articleUpdate = {
   [ArticleKey.CREATED_DATE]: `2021-10-26T22:09:58.240Z`,
   [ArticleKey.ANNOUNCE]: `Первая большая ёлка была установлена только в 1938 году. Золотое сечение — соотношение двух величин, гармоническая пропорция`,
   [ArticleKey.CATEGORIES]: [{id: 2}],
+  [ArticleKey.USER_ID]: 2,
 };
 const newComment = {
   [CommentKey.TEXT]: `Золотое сечение — соотношение двух величин, гармоническая пропорция`,
+  [CommentKey.USER_ID]: 1,
 };
 const invalidComment = {
   description: newComment.text,
@@ -122,6 +124,7 @@ describe(`API добавляет новую публикацию`, () => {
     [ArticleKey.CREATED_DATE]: `2021-10-26T18:48:58.239Z`,
     [ArticleKey.ANNOUNCE]: `Не стоит идти в программисты, если вам нравятся только игры. Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.`,
     [ArticleKey.CATEGORIES]: [{id: 2}],
+    [ArticleKey.USER_ID]: 1,
   };
   let response;
 

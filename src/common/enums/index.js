@@ -6,6 +6,7 @@ const {ApiArticlesRoute} = require(`./api-articles-route.enum`);
 const {ApiCategoriesRoute} = require(`./api-categories-route.enum`);
 const {ApiSearchRoute} = require(`./api-search-route.enum`);
 const {ApiUrl} = require(`./api-url.enum`);
+const {ApiUserRoute} = require(`./api-user-route.enum`);
 const {AppArticleRoute} = require(`./app-article-route.enum`);
 const {AppFormAction} = require(`./app-form-action.enum`);
 const {AppMainRoute} = require(`./app-main-route.enum`);
@@ -39,7 +40,6 @@ const {HttpRequestMethod} = require(`./http-request-method.enum`);
 const {HttpStatusCode} = require(`./http-status-code.enum`);
 const {LogLevel} = require(`./log-level.enum`);
 const {LoggerName} = require(`./logger-name.enum`);
-const {MockItemCount} = require(`./mock-item-count.enum`);
 const {ModelAlias} = require(`./model-alias.enum`);
 const {ModelName} = require(`./model-name.enum`);
 const {NumberSchemaAlias} = require(`./number-schema-alias.enum`);
@@ -58,6 +58,7 @@ module.exports = {
   ApiCategoriesRoute,
   ApiSearchRoute,
   ApiUrl,
+  ApiUserRoute,
   AppArticleRoute,
   AppFormAction,
   AppMainRoute,
@@ -91,7 +92,6 @@ module.exports = {
   HttpStatusCode,
   LogLevel,
   LoggerName,
-  MockItemCount,
   ModelAlias,
   ModelName,
   NumberSchemaAlias,

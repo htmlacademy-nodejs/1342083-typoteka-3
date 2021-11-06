@@ -54,7 +54,7 @@ class CommentService {
       include: [
         {
           model: this._Article,
-          as: ModelAlias.ARTICLE,
+          as: ModelAlias.ARTICLES,
           attributes: [
             ArticleKey.ID,
             ArticleKey.TITLE,
@@ -62,12 +62,17 @@ class CommentService {
         },
         {
           model: this._User,
-          as: ModelAlias.USER,
-          attributes: [
-            UserKey.FIRST_NAME,
-            UserKey.LAST_NAME,
-            UserKey.AVATAR,
-          ],
+          as: ModelAlias.USERS,
+          attributes: {
+            include: [
+              UserKey.FIRST_NAME,
+              UserKey.LAST_NAME,
+              UserKey.AVATAR,
+            ],
+            exclude: [
+              UserKey.PASSWORD_HASH,
+            ],
+          },
         }
       ],
       order: [

@@ -1,12 +1,9 @@
 'use strict';
 
+const passwordUtils = require(`../libs/password`);
 const {
   FULL_TEXT_MIN_SIZE,
   PICTURES,
-  FIRST_NAMES,
-  LAST_NAMES,
-  PASSWORD_HASHES,
-  AVATARS,
 } = require(`../../common/constants`);
 const {
   FilePath,
@@ -14,7 +11,6 @@ const {
   AnnounceRestrict,
   ArticleKey,
   TextMaxLength,
-  MockItemCount,
   UserKey,
   CommentsRestrict,
   CommentKey,
@@ -28,7 +24,6 @@ const {
   getRandomBoolean,
   getRandomDate,
   truncateString,
-  getRandomEmail,
   getRandomInt,
   getArrayRandomIndex
 } = require(`../../common/helpers`);
@@ -47,6 +42,44 @@ module.exports = async (count) => {
     };
   });
 
+  const users = [
+    {
+      [UserKey.EMAIL]: `jerde@example.com`,
+      [UserKey.FIRST_NAME]: `Kendall`,
+      [UserKey.LAST_NAME]: `Jerde`,
+      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`jerde`),
+      [UserKey.AVATAR]: `avatar01.png`,
+    },
+    {
+      [UserKey.EMAIL]: `medhurst@example.com`,
+      [UserKey.FIRST_NAME]: `Shanna`,
+      [UserKey.LAST_NAME]: `Medhurst`,
+      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`medhurst`),
+      [UserKey.AVATAR]: `avatar02.png`,
+    },
+    {
+      [UserKey.EMAIL]: `johnson@example.com`,
+      [UserKey.FIRST_NAME]: `Eva`,
+      [UserKey.LAST_NAME]: `Johnson`,
+      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`johnson`),
+      [UserKey.AVATAR]: `avatar03.png`,
+    },
+    {
+      [UserKey.EMAIL]: `kautzer@example.com`,
+      [UserKey.FIRST_NAME]: `Lera`,
+      [UserKey.LAST_NAME]: `Kautzer`,
+      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`kautzer`),
+      [UserKey.AVATAR]: `avatar04.png`,
+    },
+    {
+      [UserKey.EMAIL]: `ebert@example.com`,
+      [UserKey.FIRST_NAME]: `Foster`,
+      [UserKey.LAST_NAME]: `Ebert`,
+      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`ebert`),
+      [UserKey.AVATAR]: `avatar05.png`,
+    },
+  ];
+
   const articles = Array.from(new Array(count), () => {
     const announce = getArrayRandomItems(mockSentences, {
       min: AnnounceRestrict.MIN,
@@ -64,16 +97,7 @@ module.exports = async (count) => {
       [ArticleKey.CREATED_DATE]: getRandomDate(),
       [ArticleKey.ANNOUNCE]: truncateString(announce, TextMaxLength.ANNOUNCE),
       [ArticleKey.FULL_TEXT]: getRandomBoolean() ? truncateString(fullText, TextMaxLength.FULL_TEXT) : null,
-    };
-  });
-
-  const users = Array.from(new Array(MockItemCount.USERS), () => {
-    return {
-      [UserKey.EMAIL]: getRandomEmail(),
-      [UserKey.FIRST_NAME]: getArrayRandomItem(FIRST_NAMES),
-      [UserKey.LAST_NAME]: getArrayRandomItem(LAST_NAMES),
-      [UserKey.PASSWORD_HASH]: getArrayRandomItem(PASSWORD_HASHES),
-      [UserKey.AVATAR]: getArrayRandomItem(AVATARS),
+      [ArticleKey.USER_ID]: getArrayRandomIndex(users) + 1,
     };
   });
 

@@ -76,13 +76,18 @@ class ArticleService {
           ],
           include: {
             model: this._User,
-            as: ModelAlias.USER,
-            attributes: [
-              UserKey.ID,
-              UserKey.FIRST_NAME,
-              UserKey.LAST_NAME,
-              UserKey.AVATAR,
-            ],
+            as: ModelAlias.USERS,
+            attributes: {
+              include: [
+                UserKey.ID,
+                UserKey.FIRST_NAME,
+                UserKey.LAST_NAME,
+                UserKey.AVATAR,
+              ],
+              exclude: [
+                UserKey.PASSWORD_HASH,
+              ],
+            },
           },
         },
       ],
@@ -102,13 +107,18 @@ class ArticleService {
           ],
           include: {
             model: this._User,
-            as: ModelAlias.USER,
-            attributes: [
-              UserKey.ID,
-              UserKey.FIRST_NAME,
-              UserKey.LAST_NAME,
-              UserKey.AVATAR,
-            ],
+            as: ModelAlias.USERS,
+            attributes: {
+              include: [
+                UserKey.ID,
+                UserKey.FIRST_NAME,
+                UserKey.LAST_NAME,
+                UserKey.AVATAR,
+              ],
+              exclude: [
+                UserKey.PASSWORD_HASH,
+              ],
+            },
           },
         },
         {
@@ -221,13 +231,18 @@ class ArticleService {
           ],
           include: {
             model: this._User,
-            as: ModelAlias.USER,
-            attributes: [
-              UserKey.ID,
-              UserKey.FIRST_NAME,
-              UserKey.LAST_NAME,
-              UserKey.AVATAR,
-            ],
+            as: ModelAlias.USERS,
+            attributes: {
+              include: [
+                UserKey.ID,
+                UserKey.FIRST_NAME,
+                UserKey.LAST_NAME,
+                UserKey.AVATAR,
+              ],
+              exclude: [
+                UserKey.PASSWORD_HASH,
+              ],
+            },
           },
         },
         {

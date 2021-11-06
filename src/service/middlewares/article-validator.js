@@ -5,8 +5,8 @@ const {
   LoggerName,
 } = require(`../../common/enums`);
 const {
-  assembleErrors,
-  assembleArticleErrors,
+  assembleErrorsSimple,
+  assembleErrorsExtended,
 } = require(`../../common/helpers`);
 const {getLogger} = require(`../../common/libs/logger`);
 const {articleSchema} = require(`../../common/schemas`);
@@ -21,8 +21,8 @@ module.exports = (req, res, next) => {
   });
 
   if (error) {
-    logger.warn(assembleErrors(error));
-    const errors = assembleArticleErrors(error);
+    logger.warn(assembleErrorsSimple(error));
+    const errors = assembleErrorsExtended(error);
     return res.status(HttpStatusCode.BAD_REQUEST).send(errors);
   }
 
