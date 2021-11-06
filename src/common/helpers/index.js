@@ -17,6 +17,7 @@ const {getRandomId} = require(`./get-random-id.helper`);
 const {getRandomInt} = require(`./get-random-int.helper`);
 const {getSequelizeStringType} = require(`./get-sequelize-string-type.helper`);
 const {getTotalPages} = require(`./get-total-pages.helper`);
+const {getUserData} = require(`./get-user-data`);
 const {humanizeDate} = require(`./humanize-date.helper`);
 const {readContent} = require(`./read-content.helper`);
 const {truncateString} = require(`./truncate-string.helper`);
@@ -39,6 +40,7 @@ module.exports = {
   getRandomInt,
   getSequelizeStringType,
   getTotalPages,
+  getUserData,
   humanizeDate,
   readContent,
   truncateString,

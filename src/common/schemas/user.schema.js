@@ -4,17 +4,36 @@ const Joi = require(`joi`);
 const {
   UserKey,
   StringSchemaAlias,
+  AnySchemaAlias,
 } = require(`../enums`);
 
 const MIN_PASSWORD_LENGTH = 6;
 const NAME_PATTERN = /^[A-Za-z]+$/;
 
-const RegisterMessage = {
-  FIRST_NAME: `Имя содержит некорректные символы`,
-  LAST_NAME: `Фамилия содержит некорректные символы`,
+const EmailMessage = {
+  EMPTY: `Укажите электронный адрес`,
   EMAIL: `Некорректный электронный адрес`,
-  PASSWORD: `Пароль содержит меньше ${MIN_PASSWORD_LENGTH}-ти символов`,
-  PASSWORD_REPEATED: `Пароли не совпадают`,
+};
+
+const FirstNameMessage = {
+  EMPTY: `Укажите имя`,
+  PATTERN_BASE: `Имя содержит некорректные символы`,
+};
+
+const LastNameMessage = {
+  EMPTY: `Укажите фамилию`,
+  PATTERN_BASE: `Фамилия содержит некорректные символы`,
+};
+
+const PasswordMessage = {
+  EMPTY: `Укажите пароль`,
+  MIN: `Пароль содержит меньше ${MIN_PASSWORD_LENGTH}-ти символов`,
+};
+
+const PasswordRepeatedMessage = {
+  EMPTY: `Повторите пароль`,
+  MIN: `Повторный пароль содержит меньше ${MIN_PASSWORD_LENGTH}-ти символов`,
+  ONLY: `Пароли не совпадают`,
 };
 
 const userSchema = Joi.object({
@@ -23,7 +42,8 @@ const userSchema = Joi.object({
     .email()
     .required()
     .messages({
-      [StringSchemaAlias.EMAIL]: RegisterMessage.EMAIL
+      [StringSchemaAlias.EMPTY]: EmailMessage.EMPTY,
+      [StringSchemaAlias.EMAIL]: EmailMessage.EMAIL,
     }),
 
   [UserKey.FIRST_NAME]: Joi
@@ -31,7 +51,8 @@ const userSchema = Joi.object({
     .pattern(NAME_PATTERN)
     .required()
     .messages({
-      [StringSchemaAlias.PATTERN_BASE]: RegisterMessage.FIRST_NAME
+      [StringSchemaAlias.EMPTY]: FirstNameMessage.EMPTY,
+      [StringSchemaAlias.PATTERN_BASE]: FirstNameMessage.PATTERN_BASE,
     }),
 
   [UserKey.LAST_NAME]: Joi
@@ -39,7 +60,8 @@ const userSchema = Joi.object({
     .pattern(NAME_PATTERN)
     .required()
     .messages({
-      [StringSchemaAlias.PATTERN_BASE]: RegisterMessage.LAST_NAME
+      [StringSchemaAlias.EMPTY]: LastNameMessage.EMPTY,
+      [StringSchemaAlias.PATTERN_BASE]: LastNameMessage.PATTERN_BASE,
     }),
 
   [UserKey.PASSWORD]: Joi
@@ -47,16 +69,20 @@ const userSchema = Joi.object({
     .min(MIN_PASSWORD_LENGTH)
     .required()
     .messages({
-      [StringSchemaAlias.MIN]: RegisterMessage.PASSWORD
+      [StringSchemaAlias.EMPTY]: PasswordMessage.EMPTY,
+      [StringSchemaAlias.MIN]: PasswordMessage.MIN,
     }),
 
   [UserKey.PASSWORD_REPEATED]: Joi
     .string()
     .min(MIN_PASSWORD_LENGTH)
+    .required()
     .valid(Joi.ref(UserKey.PASSWORD))
     .required()
     .messages({
-      [StringSchemaAlias.MIN]: RegisterMessage.PASSWORD_REPEATED
+      [StringSchemaAlias.EMPTY]: PasswordRepeatedMessage.EMPTY,
+      [StringSchemaAlias.MIN]: PasswordRepeatedMessage.MIN,
+      [AnySchemaAlias.ONLY]: PasswordRepeatedMessage.ONLY,
     }),
 
   [UserKey.AVATAR]: Joi

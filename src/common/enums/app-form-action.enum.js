@@ -6,7 +6,7 @@ const AppFormAction = {
   ADD_CATEGORY: `/categories`,
   EDIT_CATEGORY: `#`,
   LOGIN: `#`,
-  REGISTER: `#`,
+  REGISTER: `/register`,
   SEARCH: `/search`,
 };
 

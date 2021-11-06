@@ -2,20 +2,28 @@
 
 const {Router} = require(`express`);
 const {getAPI} = require(`../api`);
+const {upload} = require(`../storage`);
 const {
   AppMainRoute,
   ContentLimit,
   AppPage,
   UserType,
   AppRoute,
+  FormElementKey,
+  LoggerName,
 } = require(`../../common/enums`);
 const {
   calculatePagination,
   getTotalPages,
+  getUserData,
 } = require(`../../common/helpers`);
+const {getLogger} = require(`../../common/libs/logger`);
 
 const mainRouter = new Router();
 const api = getAPI();
+const logger = getLogger({
+  name: LoggerName.APP,
+});
 
 mainRouter.get(AppMainRoute.MAIN, async (req, res) => {
   const {
@@ -58,8 +66,33 @@ mainRouter.get(AppMainRoute.MAIN, async (req, res) => {
 mainRouter.get(AppMainRoute.REGISTER, (_req, res) => {
   res.render(AppPage.REGISTER, {
     account: {},
+    userData: {},
   });
 });
+
+mainRouter.post(
+    AppMainRoute.REGISTER,
+    upload.single(FormElementKey.UPLOAD),
+    async (req, res) => {
+      const {body, file} = req;
+      const userData = getUserData(body, file);
+
+      try {
+        await api.createUser(userData);
+        res.redirect(AppRoute.LOGIN);
+      } catch (err) {
+        logger.error(err.message);
+        const validationError = err.response.data;
+        res.render(AppPage.REGISTER, {
+          account: {},
+          userData: {
+            ...userData
+          },
+          validationError
+        });
+      }
+    }
+);
 
 mainRouter.get(AppMainRoute.LOGIN, (_req, res) => {
   res.render(AppPage.LOGIN, {

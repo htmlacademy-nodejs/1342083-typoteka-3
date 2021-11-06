@@ -136,6 +136,13 @@ class API {
     });
   }
 
+  createUser(user) {
+    return this._load(ApiUrl.USER, {
+      method: HttpRequestMethod.POST,
+      data: user,
+    });
+  }
+
   async _load(url, options) {
     const response = await this._http.request({
       url,

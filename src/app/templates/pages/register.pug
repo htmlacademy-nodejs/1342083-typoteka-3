@@ -7,31 +7,28 @@ block content
       .popup.popup--registration.popup--anti
         h2.popup__title Регистрация
         .popup__form.popup__form--active.form.form--register
-          form(action=AppFormAction.REGISTER method="get")
+          form(action=AppFormAction.REGISTER method="POST")
             .form__field
               label
-                input(type="email" name=FormElementKey.EMAIL placeholder="Электронная почта" required)
+                input(type="email" name=FormElementKey.EMAIL placeholder="Электронная почта" value=userData[UserKey.EMAIL])
             .form__field
               label
-                input(type="text" name=FormElementKey.FIRST_NAME placeholder="Имя" required)
+                input(type="text" name=FormElementKey.FIRST_NAME placeholder="Имя" value=userData[UserKey.FIRST_NAME])
             .form__field
               label
-                input(type="text" name=FormElementKey.LAST_NAME placeholder="Фамилия")
+                input(type="text" name=FormElementKey.LAST_NAME placeholder="Фамилия" value=userData[UserKey.LAST_NAME])
             .form__field
               label
-                input(type="password" name=FormElementKey.PASSWORD placeholder="Пароль" required)
+                input(type="password" name=FormElementKey.PASSWORD placeholder="Пароль")
             .form__field
               label
-                input(type="password" name=FormElementKey.REPEAT_PASSWORD placeholder="Повтор пароля" required)
-            .form__validation-error
-              p.form__error-message При регистрации произошли ошибки:
-              ul.form__errors
-                li.form__error Пароль не может состоять из двух букв
-                li.form__error Фамилия не должна быть смешной
+                input(type="password" name=FormElementKey.PASSWORD_REPEATED placeholder="Повтор пароля")
+            if validationError
+              +form-errors(validationError, "При регистрации произошли ошибки:")
             .form__image-loader
               a.form__avatar.avatar
                 img(src="/img/icons/smile.svg" alt="аватар пользователя")
               label
-                input.visually-hidden(type="file" name="upload")
+                input.visually-hidden(type="file" name=FormElementKey.UPLOAD)
                 | Загрузить фото профиля
             button.form__submit-btn.form__submit-btn--register.button.button--colored(type="submit") Зарегистрироваться
