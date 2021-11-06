@@ -6,6 +6,7 @@ const {ApiArticlesRoute} = require(`./api-articles-route.enum`);
 const {ApiCategoriesRoute} = require(`./api-categories-route.enum`);
 const {ApiSearchRoute} = require(`./api-search-route.enum`);
 const {ApiUrl} = require(`./api-url.enum`);
+const {ApiUserRoute} = require(`./api-user-route.enum`);
 const {AppArticleRoute} = require(`./app-article-route.enum`);
 const {AppFormAction} = require(`./app-form-action.enum`);
 const {AppMainRoute} = require(`./app-main-route.enum`);
@@ -58,6 +59,7 @@ module.exports = {
   ApiCategoriesRoute,
   ApiSearchRoute,
   ApiUrl,
+  ApiUserRoute,
   AppArticleRoute,
   AppFormAction,
   AppMainRoute,
