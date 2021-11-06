@@ -5,5 +5,5 @@ const ApiUserRoute = {
 };
 
 module.exports = {
-  ApiSearchRoute: ApiUserRoute,
+  ApiUserRoute,
 };
