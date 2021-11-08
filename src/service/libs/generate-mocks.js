@@ -1,6 +1,6 @@
 'use strict';
 
-const passwordUtils = require(`../libs/password`);
+const passwordUtils = require(`../../common/libs/password`);
 const {
   FULL_TEXT_MIN_SIZE,
   PICTURES,

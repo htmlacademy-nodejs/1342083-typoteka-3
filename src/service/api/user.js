@@ -2,7 +2,7 @@
 
 const {Router} = require(`express`);
 const {userValidator} = require(`../middlewares`);
-const passwordUtils = require(`../libs/password`);
+const passwordUtils = require(`../../common/libs/password`);
 const {
   ApiUrl,
   ApiUserRoute,

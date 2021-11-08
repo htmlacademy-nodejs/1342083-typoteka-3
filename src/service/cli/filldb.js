@@ -2,7 +2,7 @@
 
 const chulk = require(`chalk`);
 const {getLogger} = require(`../../common/libs/logger`);
-const sequelize = require(`../libs/sequelize`);
+const sequelize = require(`../../common/libs/sequelize`);
 const generateMocks = require(`../libs/generate-mocks`);
 const initDb = require(`../libs/init-db`);
 const {

@@ -1,7 +1,7 @@
 'use strict';
 
 const {Router} = require(`express`);
-const sequelize = require(`../libs/sequelize`);
+const sequelize = require(`../../common/libs/sequelize`);
 const defineModels = require(`../models`);
 const articles = require(`./articles`);
 const categories = require(`./categories`);

@@ -2,7 +2,7 @@
 
 const express = require(`express`);
 const api = require(`../api`);
-const sequelize = require(`../libs/sequelize`);
+const sequelize = require(`../../common/libs/sequelize`);
 const {
   API_PREFIX,
   API_PORT,
