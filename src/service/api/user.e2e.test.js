@@ -4,7 +4,7 @@ const {beforeAll, describe, expect, test} = require(`@jest/globals`);
 const Sequelize = require(`sequelize`);
 const express = require(`express`);
 const request = require(`supertest`);
-const users = require(`./users`);
+const user = require(`./user`);
 const {UserService} = require(`../data-services`);
 const initDb = require(`../libs/init-db`);
 const {
@@ -31,7 +31,7 @@ const createAPI = () => {
 
   beforeAll(async () => {
     await initDb(mockDB, mocks);
-    users(app, new UserService(mockDB));
+    user(app, new UserService(mockDB));
   });
 
   return app;
@@ -120,5 +120,48 @@ describe(`API не создает нового пользователя, есл�
     };
     const response = await request(app).post(`/user`).send(invalidUser);
     expect(response.statusCode).toBe(HttpStatusCode.BAD_REQUEST);
+  });
+});
+
+describe(`API позволяет аутентифицироваться, если данные валидны`, () => {
+  const app = createAPI();
+  let response;
+
+  beforeAll(async () => {
+    const validAuthData = {
+      email: `jerde@example.com`,
+      password: `jerde`,
+    };
+    response = await request(app).post(`/user/auth`).send(validAuthData);
+  });
+
+  test(`Сервер вернет 200`, () => {
+    expect(response.statusCode).toBe(HttpStatusCode.OK);
+  });
+
+  test(`Имя пользователя - Kendall`, () => {
+    expect(response.body[UserKey.FIRST_NAME]).toBe(`Kendall`);
+  });
+});
+
+describe(`API не позволяет аутентифицироваться, если данные невалидны`, () => {
+  const app = createAPI();
+
+  test(`Сервер вернет 401, если email неверный`, async () => {
+    const validAuthData = {
+      email: `jerde@htmlacademy.com`,
+      password: `jerde`,
+    };
+    const response = await request(app).post(`/user/auth`).send(validAuthData);
+    expect(response.statusCode).toBe(HttpStatusCode.UNAUTHORIZED);
+  });
+
+  test(`Сервер вернет 401, если пароль неверный`, async () => {
+    const validAuthData = {
+      email: `jerde@example.com`,
+      password: `htmlacademy`,
+    };
+    const response = await request(app).post(`/user/auth`).send(validAuthData);
+    expect(response.statusCode).toBe(HttpStatusCode.UNAUTHORIZED);
   });
 });
