@@ -18,6 +18,8 @@ const {
   getUserData,
 } = require(`../../common/helpers`);
 const {getLogger} = require(`../../common/libs/logger`);
+const checkAuth = require(`../middlewares/check-auth`);
+const checkIsAdmin = require(`../middlewares/check-is-admin`);
 
 const mainRouter = new Router();
 const api = getAPI();
@@ -143,14 +145,13 @@ mainRouter.get(AppMainRoute.SEARCH, async (req, res) => {
   });
 });
 
-mainRouter.get(AppMainRoute.CATEGORIES, async (_req, res) => {
+mainRouter.get(AppMainRoute.CATEGORIES, [checkAuth, checkIsAdmin], async (req, res) => {
+  const {user} = req.session;
   const categories = await api.getCategories();
 
   res.render(AppPage.ADMIN_CATEGORIES, {
     categories,
-    account: {
-      type: UserType.ADMIN,
-    },
+    user,
   });
 });
 

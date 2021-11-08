@@ -2,7 +2,6 @@
 
 const Sequelize = require(`sequelize`);
 const {DEFAULT_DB_DIALECT} = require(`../../common/constants`);
-const {LogLevel} = require(`../../common/enums`);
 const {
   DB_HOST,
   DB_PORT,
@@ -10,7 +9,6 @@ const {
   DB_USER,
   DB_PASSWORD,
   DB_DIALECT,
-  LOG_LEVEL,
 } = process.env;
 
 const somethingIsNotDefined = [
@@ -35,5 +33,5 @@ module.exports = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
     acquire: 10000,
     idle: 10000
   },
-  logging: LOG_LEVEL === LogLevel.DEBUG,
+  logging: false,
 });

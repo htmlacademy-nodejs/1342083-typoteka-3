@@ -44,11 +44,20 @@ module.exports = async (count) => {
 
   const users = [
     {
+      [UserKey.EMAIL]: `admin@admin.com`,
+      [UserKey.FIRST_NAME]: `Admin`,
+      [UserKey.LAST_NAME]: `Admin`,
+      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`admin@admin.com`),
+      [UserKey.AVATAR]: null,
+      [UserKey.IS_ADMIN]: true,
+    },
+    {
       [UserKey.EMAIL]: `jerde@example.com`,
       [UserKey.FIRST_NAME]: `Kendall`,
       [UserKey.LAST_NAME]: `Jerde`,
       [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`jerde@example.com`),
       [UserKey.AVATAR]: `avatar-1.png`,
+      [UserKey.IS_ADMIN]: false,
     },
     {
       [UserKey.EMAIL]: `medhurst@example.com`,
@@ -56,6 +65,7 @@ module.exports = async (count) => {
       [UserKey.LAST_NAME]: `Medhurst`,
       [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`medhurst@example.com`),
       [UserKey.AVATAR]: `avatar-2.png`,
+      [UserKey.IS_ADMIN]: false,
     },
     {
       [UserKey.EMAIL]: `johnson@example.com`,
@@ -63,6 +73,7 @@ module.exports = async (count) => {
       [UserKey.LAST_NAME]: `Johnson`,
       [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`johnson@example.com`),
       [UserKey.AVATAR]: `avatar-3.png`,
+      [UserKey.IS_ADMIN]: false,
     },
     {
       [UserKey.EMAIL]: `kautzer@example.com`,
@@ -70,6 +81,7 @@ module.exports = async (count) => {
       [UserKey.LAST_NAME]: `Kautzer`,
       [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`kautzer@example.com`),
       [UserKey.AVATAR]: `avatar-4.png`,
+      [UserKey.IS_ADMIN]: false,
     },
     {
       [UserKey.EMAIL]: `ebert@example.com`,
@@ -77,6 +89,7 @@ module.exports = async (count) => {
       [UserKey.LAST_NAME]: `Ebert`,
       [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`ebert@example.com`),
       [UserKey.AVATAR]: `avatar-5.png`,
+      [UserKey.IS_ADMIN]: false,
     },
   ];
 

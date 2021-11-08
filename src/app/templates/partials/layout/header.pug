@@ -3,26 +3,30 @@ header.header
     img.logo__image(src="/img/icons/logo-image-only.svg" alt="логотип Тайпотеки")
     span.logo__name Типотека #{error && `/ ${error}`}
   if user
-    //- a.button.button--colored.header__button-new(href=AppRoute.ARTICLES_ADD) Новая запись
-    //- .header__dropdown
-    //-   a.button.button--burger.header__burger(href="#") Открыть меню
-    //-   ul.navigation.header__navigation
-    //-     li.navigation__item
-    //-       a(href=AppRoute.MAIN) Главная
-    //-     li.navigation__item
-    //-       a(href=AppRoute.MY) Мои записи
-    //-     li.navigation__item
-    //-       a(href=AppRoute.COMMENTS) Комментарии
-    //-     li.navigation__item
-    //-       a(href=AppRoute.CATEGORIES) Категории
-    nav.header__nav
-      ul.header__nav-list
-        li.header__list-item
-          p #{user[UserKey.FIRST_NAME]} #{user[UserKey.LAST_NAME]}
-        li.header__list-item
-          a.header__exit(href=AppRoute.LOGOUT) Выйти
-    a.header__avatar.avatar
-      img(src=`/img/${user[UserKey.AVATAR]}` alt="аватар пользователя")
+    if user.isAdmin
+      a.button.button--colored.header__button-new(href=AppRoute.ARTICLES_ADD) Новая запись
+      .header__dropdown
+        a.button.button--burger.header__burger(href="#") Открыть меню
+        ul.navigation.header__navigation
+          li.navigation__item
+            a(href=AppRoute.MAIN) Главная
+          li.navigation__item
+            a(href=AppRoute.MY) Мои записи
+          li.navigation__item
+            a(href=AppRoute.COMMENTS) Комментарии
+          li.navigation__item
+            a(href=AppRoute.CATEGORIES) Категории
+          li.navigation__item
+            a(href=AppRoute.LOGOUT) Выйти
+    else
+      nav.header__nav
+        ul.header__nav-list
+          li.header__list-item
+            p #{user[UserKey.FIRST_NAME]} #{user[UserKey.LAST_NAME]}
+          li.header__list-item
+            a.header__exit(href=AppRoute.LOGOUT) Выйти
+      a.header__avatar.avatar
+        img(src=`/img/${user[UserKey.AVATAR]}` alt="аватар пользователя")
   else
     nav.header__nav
       ul.header__nav-list

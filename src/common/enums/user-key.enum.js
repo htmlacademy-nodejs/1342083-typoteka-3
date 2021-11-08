@@ -9,6 +9,7 @@ const UserKey = {
   PASSWORD_REPEATED: `passwordRepeated`,
   PASSWORD_HASH: `passwordHash`,
   AVATAR: `avatar`,
+  IS_ADMIN: `isAdmin`,
 };
 
 module.exports = {

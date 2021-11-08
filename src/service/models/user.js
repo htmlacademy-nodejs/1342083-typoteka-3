@@ -33,7 +33,13 @@ module.exports = (sequelize) => User.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  [UserKey.AVATAR]: getSequelizeStringType(AVATAR_NAME_MAX_SIZE)
+
+  [UserKey.AVATAR]: getSequelizeStringType(AVATAR_NAME_MAX_SIZE),
+
+  [UserKey.IS_ADMIN]: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
 }, {
   sequelize,
   modelName: ModelName.USER,

@@ -2,6 +2,7 @@
 
 const {Router} = require(`express`);
 const checkAuth = require(`../middlewares/check-auth`);
+const checkIsAdmin = require(`../middlewares/check-is-admin`);
 const {getAPI} = require(`../api`);
 const {
   AppMyRoute,
@@ -16,7 +17,7 @@ const {
 const myRouter = new Router();
 const api = getAPI();
 
-myRouter.get(AppMyRoute.MAIN, checkAuth, async (req, res) => {
+myRouter.get(AppMyRoute.MAIN, [checkAuth, checkIsAdmin], async (req, res) => {
   const {user} = req.session;
   const {
     page,
@@ -41,7 +42,7 @@ myRouter.get(AppMyRoute.MAIN, checkAuth, async (req, res) => {
   });
 });
 
-myRouter.get(AppMyRoute.COMMENTS, checkAuth, async (req, res) => {
+myRouter.get(AppMyRoute.COMMENTS, [checkAuth, checkIsAdmin], async (req, res) => {
   const {user} = req.session;
   const {
     page,
