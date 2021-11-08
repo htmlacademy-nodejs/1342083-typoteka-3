@@ -1,7 +1,11 @@
 'use strict';
 
+const {SESSION_SECRET} = process.env;
 const path = require(`path`);
 const express = require(`express`);
+const session = require(`express-session`);
+const sequelize = require(`../common/libs/sequelize`);
+const SequelizeStore = require(`connect-session-sequelize`)(session.Store);
 const {
   mainRoutes,
   myRoutes,
@@ -29,9 +33,35 @@ const {
   formatSearchResult,
 } = require(`../common/helpers`);
 
+const SessionStore = {
+  EXPIRATION: 180000,
+  EXPIRATION_INTERVAL: 60000,
+};
+
+if (!SESSION_SECRET) {
+  throw new Error(`SESSION_SECRET environment variable is not defined`);
+}
+
+const sessionStore = new SequelizeStore({
+  db: sequelize,
+  expiration: SessionStore.EXPIRATION,
+  checkExpirationInterval: SessionStore.EXPIRATION_INTERVAL,
+});
+
+sequelize.sync({force: false});
+
 const app = express();
 app.use(express.urlencoded({extended: false}));
-app.use(express.json());
+app.use(session({
+  secret: SESSION_SECRET,
+  store: sessionStore,
+  resave: false,
+  proxy: true,
+  saveUninitialized: false,
+  cookie: {
+    sameSite: `strict`,
+  },
+}));
 
 const logger = getLogger({
   name: LoggerName.APP,

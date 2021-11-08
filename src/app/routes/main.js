@@ -26,6 +26,7 @@ const logger = getLogger({
 });
 
 mainRouter.get(AppMainRoute.MAIN, async (req, res) => {
+  const {user} = req.session;
   const {
     page,
     offset
@@ -57,15 +58,14 @@ mainRouter.get(AppMainRoute.MAIN, async (req, res) => {
     articles,
     page,
     totalPages,
-    account: {
-      type: UserType.ADMIN,
-    },
+    user,
   });
 });
 
-mainRouter.get(AppMainRoute.REGISTER, (_req, res) => {
+mainRouter.get(AppMainRoute.REGISTER, (req, res) => {
+  const {user} = req.session;
   res.render(AppPage.REGISTER, {
-    account: {},
+    user,
     userData: {},
   });
 });
@@ -75,6 +75,7 @@ mainRouter.post(
     upload.single(FormElementKey.UPLOAD),
     async (req, res) => {
       const {body, file} = req;
+      const {user} = req.session;
       const userData = getUserData(body, file);
 
       try {
@@ -84,7 +85,7 @@ mainRouter.post(
         logger.error(err.message);
         const validationError = err.response.data;
         res.render(AppPage.REGISTER, {
-          account: {},
+          user,
           userData: {
             ...userData
           },
@@ -94,17 +95,43 @@ mainRouter.post(
     }
 );
 
-mainRouter.get(AppMainRoute.LOGIN, (_req, res) => {
+mainRouter.get(AppMainRoute.LOGIN, (req, res) => {
+  const {user} = req.session;
+
+  if (user) {
+    res.redirect(AppRoute.MAIN);
+  }
+
   res.render(AppPage.LOGIN, {
-    account: {},
+    user,
   });
 });
 
-mainRouter.get(AppMainRoute.LOGOUT, (_req, res) => {
+mainRouter.post(AppMainRoute.LOGIN, async (req, res) => {
+  try {
+    const user = await api.login(
+        req.body[FormElementKey.EMAIL],
+        req.body[FormElementKey.PASSWORD],
+    );
+    req.session.user = user;
+    req.session.save(() => res.redirect(AppRoute.MAIN));
+  } catch (err) {
+    const {user} = req.session;
+    const validationError = [err.response.data];
+    res.render(AppPage.LOGIN, {
+      user,
+      validationError,
+    });
+  }
+});
+
+mainRouter.get(AppMainRoute.LOGOUT, (req, res) => {
+  delete req.session.user;
   res.redirect(AppRoute.MAIN);
 });
 
 mainRouter.get(AppMainRoute.SEARCH, async (req, res) => {
+  const {user} = req.session;
   const {query} = req.query;
   const results = await api.search(query);
 
@@ -112,9 +139,7 @@ mainRouter.get(AppMainRoute.SEARCH, async (req, res) => {
     query,
     hasQuery: typeof query === `string`,
     results,
-    account: {
-      type: UserType.USER,
-    },
+    user,
   });
 });
 

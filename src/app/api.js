@@ -143,6 +143,13 @@ class API {
     });
   }
 
+  login(email, password) {
+    return this._load(ApiUrl.USER_AUTH, {
+      method: HttpRequestMethod.POST,
+      data: {email, password},
+    });
+  }
+
   async _load(url, options) {
     const response = await this._http.request({
       url,

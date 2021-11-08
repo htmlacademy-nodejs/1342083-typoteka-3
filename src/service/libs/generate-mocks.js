@@ -1,6 +1,6 @@
 'use strict';
 
-const passwordUtils = require(`../libs/password`);
+const passwordUtils = require(`../../common/libs/password`);
 const {
   FULL_TEXT_MIN_SIZE,
   PICTURES,
@@ -47,36 +47,36 @@ module.exports = async (count) => {
       [UserKey.EMAIL]: `jerde@example.com`,
       [UserKey.FIRST_NAME]: `Kendall`,
       [UserKey.LAST_NAME]: `Jerde`,
-      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`jerde`),
-      [UserKey.AVATAR]: `avatar01.png`,
+      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`jerde@example.com`),
+      [UserKey.AVATAR]: `avatar-1.png`,
     },
     {
       [UserKey.EMAIL]: `medhurst@example.com`,
       [UserKey.FIRST_NAME]: `Shanna`,
       [UserKey.LAST_NAME]: `Medhurst`,
-      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`medhurst`),
-      [UserKey.AVATAR]: `avatar02.png`,
+      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`medhurst@example.com`),
+      [UserKey.AVATAR]: `avatar-2.png`,
     },
     {
       [UserKey.EMAIL]: `johnson@example.com`,
       [UserKey.FIRST_NAME]: `Eva`,
       [UserKey.LAST_NAME]: `Johnson`,
-      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`johnson`),
-      [UserKey.AVATAR]: `avatar03.png`,
+      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`johnson@example.com`),
+      [UserKey.AVATAR]: `avatar-3.png`,
     },
     {
       [UserKey.EMAIL]: `kautzer@example.com`,
       [UserKey.FIRST_NAME]: `Lera`,
       [UserKey.LAST_NAME]: `Kautzer`,
-      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`kautzer`),
-      [UserKey.AVATAR]: `avatar04.png`,
+      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`kautzer@example.com`),
+      [UserKey.AVATAR]: `avatar-4.png`,
     },
     {
       [UserKey.EMAIL]: `ebert@example.com`,
       [UserKey.FIRST_NAME]: `Foster`,
       [UserKey.LAST_NAME]: `Ebert`,
-      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`ebert`),
-      [UserKey.AVATAR]: `avatar05.png`,
+      [UserKey.PASSWORD_HASH]: await passwordUtils.hash(`ebert@example.com`),
+      [UserKey.AVATAR]: `avatar-5.png`,
     },
   ];
 
