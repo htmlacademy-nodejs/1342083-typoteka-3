@@ -1,12 +1,12 @@
 'use strict';
 
 const {Router} = require(`express`);
+const checkAuth = require(`../middlewares/check-auth`);
 const {getAPI} = require(`../api`);
 const {
   AppMyRoute,
   AppPage,
   ContentLimit,
-  UserType,
 } = require(`../../common/enums`);
 const {
   calculatePagination,
@@ -16,7 +16,8 @@ const {
 const myRouter = new Router();
 const api = getAPI();
 
-myRouter.get(AppMyRoute.MAIN, async (req, res) => {
+myRouter.get(AppMyRoute.MAIN, checkAuth, async (req, res) => {
+  const {user} = req.session;
   const {
     page,
     offset
@@ -36,13 +37,12 @@ myRouter.get(AppMyRoute.MAIN, async (req, res) => {
     count,
     page,
     totalPages,
-    account: {
-      type: UserType.ADMIN,
-    },
+    user,
   });
 });
 
-myRouter.get(AppMyRoute.COMMENTS, async (req, res) => {
+myRouter.get(AppMyRoute.COMMENTS, checkAuth, async (req, res) => {
+  const {user} = req.session;
   const {
     page,
     offset
@@ -62,9 +62,7 @@ myRouter.get(AppMyRoute.COMMENTS, async (req, res) => {
     count,
     page,
     totalPages,
-    account: {
-      type: UserType.ADMIN,
-    },
+    user,
   });
 });
 

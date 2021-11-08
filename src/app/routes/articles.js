@@ -1,19 +1,20 @@
 'use strict';
 
 const {Router} = require(`express`);
+const checkAuth = require(`../middlewares/check-auth`);
 const {getAPI} = require(`../api`);
 const {upload} = require(`../storage`);
 const {
   AppArticleRoute,
   AppRoute,
   AppPage,
-  UserType,
   FormElementKey,
   ArticleKey,
   ContentLimit,
   DateFormatPattern,
   LoggerName,
   RouteParam,
+  CommentKey,
 } = require(`../../common/enums`);
 const {
   getCurrentDate,
@@ -23,7 +24,6 @@ const {
   getArticleData,
 } = require(`../../common/helpers`);
 const {getLogger} = require(`../../common/libs/logger`);
-
 
 const articlesRouter = new Router();
 const api = getAPI();
@@ -36,6 +36,7 @@ articlesRouter.get(AppArticleRoute.MAIN, (_req, res) => {
 });
 
 articlesRouter.get(AppArticleRoute.CATEGORY, async (req, res) => {
+  const {user} = req.session;
   const {page, offset} = calculatePagination(ContentLimit.PREVIEW_LIST, req.query.page);
   const {id: categoryId} = req.params;
 
@@ -60,13 +61,12 @@ articlesRouter.get(AppArticleRoute.CATEGORY, async (req, res) => {
     categories,
     page,
     totalPages,
-    account: {
-      type: UserType.USER,
-    },
+    user,
   });
 });
 
-articlesRouter.get(AppArticleRoute.ADD, async (_req, res) => {
+articlesRouter.get(AppArticleRoute.ADD, checkAuth, async (req, res) => {
+  const {user} = req.session;
   const categories = await api.getCategories();
 
   res.render(AppPage.ADMIN_ARTICLE, {
@@ -75,13 +75,12 @@ articlesRouter.get(AppArticleRoute.ADD, async (_req, res) => {
       [ArticleKey.CATEGORIES]: [],
     },
     categories,
-    account: {
-      type: UserType.ADMIN,
-    },
+    user,
   });
 });
 
-articlesRouter.get(AppArticleRoute.EDIT, async (req, res) => {
+articlesRouter.get(AppArticleRoute.EDIT, checkAuth, async (req, res) => {
+  const {user} = req.session;
   const [
     article,
     categories,
@@ -94,9 +93,7 @@ articlesRouter.get(AppArticleRoute.EDIT, async (req, res) => {
     isEditMode: true,
     article,
     categories,
-    account: {
-      type: UserType.ADMIN,
-    },
+    user,
   });
 });
 
@@ -105,10 +102,14 @@ articlesRouter.post(
     upload.single(FormElementKey.UPLOAD),
     async (req, res) => {
       const {id} = req.params;
+      const {user} = req.session;
       const articleUpdate = getArticleData(req.body, req.file);
 
       try {
-        await api.updateArticle(id, articleUpdate);
+        await api.updateArticle(id, {
+          ...articleUpdate,
+          [ArticleKey.USER_ID]: user.id,
+        });
 
         const url = assembleRoute(AppRoute.ARTICLE, {
           [RouteParam.ARTICLE_ID]: id,
@@ -129,9 +130,7 @@ articlesRouter.post(
             ...articleUpdate,
           },
           categories,
-          account: {
-            type: UserType.ADMIN,
-          },
+          user,
           validationError,
         });
       }
@@ -140,13 +139,12 @@ articlesRouter.post(
 
 articlesRouter.get(AppArticleRoute.ARTICLE, async (req, res, next) => {
   try {
+    const {user} = req.session;
     const article = await api.getArticle(req.params.id);
     res.render(AppPage.ARTICLE, {
       article,
       backHref: req.headers.referer,
-      account: {
-        type: UserType.USER,
-      },
+      user,
     });
   } catch (err) {
     next();
@@ -155,12 +153,16 @@ articlesRouter.get(AppArticleRoute.ARTICLE, async (req, res, next) => {
 
 articlesRouter.post(
     AppArticleRoute.ADD,
-    upload.single(FormElementKey.UPLOAD),
+    [checkAuth, upload.single(FormElementKey.UPLOAD)],
     async (req, res) => {
       const article = getArticleData(req.body, req.file);
+      const {user} = req.session;
 
       try {
-        await api.createArticle(article);
+        await api.createArticle({
+          ...article,
+          [ArticleKey.USER_ID]: user.id,
+        });
         res.redirect(AppRoute.MY);
       } catch (err) {
         logger.error(err.message);
@@ -169,23 +171,25 @@ articlesRouter.post(
         res.render(AppPage.ADMIN_ARTICLE, {
           article,
           categories,
-          account: {
-            type: UserType.ADMIN,
-          },
+          user,
           validationError,
         });
       }
     }
 );
 
-articlesRouter.post(AppArticleRoute.COMMENTS, async (req, res) => {
+articlesRouter.post(AppArticleRoute.COMMENTS, checkAuth, async (req, res) => {
   const {id} = req.params;
+  const {user} = req.session;
 
   try {
     const url = assembleRoute(AppRoute.ARTICLE, {
-      articleId: id,
+      [CommentKey.ARTICLE_ID]: id,
     });
-    const newComment = await api.createComment(id, req.body);
+    const newComment = await api.createComment(id, {
+      ...req.body,
+      [CommentKey.USER_ID]: user.id,
+    });
     res.redirect(`${url}/#comment-${newComment.id}`);
   } catch (err) {
     const article = await api.getArticle(id);
@@ -194,9 +198,7 @@ articlesRouter.post(AppArticleRoute.COMMENTS, async (req, res) => {
     res.render(AppPage.ARTICLE, {
       article,
       backHref: AppRoute.MAIN,
-      account: {
-        type: UserType.USER,
-      },
+      user,
       validationError,
     });
   }

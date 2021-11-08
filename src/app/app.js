@@ -52,13 +52,15 @@ sequelize.sync({force: false});
 
 const app = express();
 app.use(express.urlencoded({extended: false}));
-app.use(express.json());
 app.use(session({
   secret: SESSION_SECRET,
   store: sessionStore,
   resave: false,
   proxy: true,
   saveUninitialized: false,
+  cookie: {
+    sameSite: `strict`,
+  },
 }));
 
 const logger = getLogger({
