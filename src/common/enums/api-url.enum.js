@@ -17,6 +17,7 @@ const ApiUrl = {
   SEARCH: `/search`,
 
   USER: `/user`,
+  USER_AUTH: `/user/auth`,
 };
 
 module.exports = {

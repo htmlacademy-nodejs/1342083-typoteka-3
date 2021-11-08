@@ -7,12 +7,13 @@ block content
       .popup.popup--registration.popup--anti
         h2.popup__title Войти
         .popup__form.form.form--log-in
-          form(action=AppFormAction.LOGIN method="GET")
+          form(action=AppFormAction.LOGIN method="POST")
             .form__field
               label
-                input(type="email" name=FormElementKey.EMAIL placeholder="Электронная почта" required)
+                input(type="email" name=FormElementKey.EMAIL placeholder="Электронная почта")
             .form__field
               label
-                input(type="password" name=FormElementKey.PASSWORD placeholder="Пароль" required)
-            p.form__error-message Некоторая ошибка произошла, беда!
+                input(type="password" name=FormElementKey.PASSWORD placeholder="Пароль")
+            if validationError
+              +form-errors(validationError, "При регистрации произошли ошибки:")
             button.form__submit-btn.form__submit-btn--log-in.button.button--colored(type="submit") Войти

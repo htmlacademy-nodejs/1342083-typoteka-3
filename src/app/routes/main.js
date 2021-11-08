@@ -100,7 +100,25 @@ mainRouter.get(AppMainRoute.LOGIN, (_req, res) => {
   });
 });
 
-mainRouter.get(AppMainRoute.LOGOUT, (_req, res) => {
+mainRouter.post(AppMainRoute.LOGIN, async (req, res) => {
+  try {
+    const user = await api.login(
+        req.body[FormElementKey.EMAIL],
+        req.body[FormElementKey.PASSWORD],
+    );
+    req.session.user = user;
+    req.session.save(() => res.redirect(AppRoute.MAIN));
+  } catch (err) {
+    const validationError = [err.response.data];
+    res.render(AppPage.LOGIN, {
+      account: {},
+      validationError,
+    });
+  }
+});
+
+mainRouter.get(AppMainRoute.LOGOUT, (req, res) => {
+  delete req.session.user;
   res.redirect(AppRoute.MAIN);
 });
 
