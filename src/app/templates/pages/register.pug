@@ -1,6 +1,9 @@
 extends /layouts/default.pug
 
 block content
+  -
+    userData = userData || {};
+
   main
     h1.visually-hidden Регистрация пользователя
     section
@@ -10,25 +13,48 @@ block content
           form(action=AppFormAction.REGISTER method="POST")
             .form__field
               label
-                input(type="email" name=FormElementKey.EMAIL placeholder="Электронная почта" value=userData[UserKey.EMAIL])
+                input(
+                  type="email"
+                  name=FormElementKey.EMAIL
+                  placeholder="Электронная почта"
+                  value=userData[UserKey.EMAIL]
+                )
             .form__field
               label
-                input(type="text" name=FormElementKey.FIRST_NAME placeholder="Имя" value=userData[UserKey.FIRST_NAME])
+                input(
+                  type="text"
+                  name=FormElementKey.FIRST_NAME
+                  placeholder="Имя"
+                  value=userData[UserKey.FIRST_NAME]
+                )
             .form__field
               label
-                input(type="text" name=FormElementKey.LAST_NAME placeholder="Фамилия" value=userData[UserKey.LAST_NAME])
+                input(
+                  type="text"
+                  name=FormElementKey.LAST_NAME
+                  placeholder="Фамилия"
+                  value=userData[UserKey.LAST_NAME]
+                )
             .form__field
               label
-                input(type="password" name=FormElementKey.PASSWORD placeholder="Пароль")
+                input(
+                  type="password"
+                  name=FormElementKey.PASSWORD
+                  placeholder="Пароль"
+                )
             .form__field
               label
-                input(type="password" name=FormElementKey.PASSWORD_REPEATED placeholder="Повтор пароля")
-            if validationError
-              +form-errors(validationError, "При регистрации произошли ошибки:")
+                input(
+                  type="password"
+                  name=FormElementKey.PASSWORD_REPEATED
+                  placeholder="Повтор пароля"
+                )
             .form__image-loader
               a.form__avatar.avatar
                 img(src="/img/icons/smile.svg" alt="аватар пользователя")
               label
                 input.visually-hidden(type="file" name=FormElementKey.UPLOAD)
                 | Загрузить фото профиля
+            if validationError
+              +form-errors(validationError, "При регистрации произошли ошибки:")
             button.form__submit-btn.form__submit-btn--register.button.button--colored(type="submit") Зарегистрироваться
