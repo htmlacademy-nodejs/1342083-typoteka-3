@@ -132,8 +132,8 @@ describe(`API добавляет новую публикацию`, () => {
     response = await request(app).post(`/articles`).send(newArticle);
   });
 
-  test(`Сервер вернет 200`, () => {
-    expect(response.statusCode).toBe(HttpStatusCode.OK);
+  test(`Сервер вернет 201`, () => {
+    expect(response.statusCode).toBe(HttpStatusCode.CREATED);
   });
 
   test(`Количество публикаций равно 4`, async () => {
@@ -215,8 +215,8 @@ describe(`API добавляет новый комментарий`, () => {
     response = await request(app).post(`/articles/1/comments`).send(newComment);
   });
 
-  test(`Сервер вернет 200`, () => {
-    expect(response.statusCode).toBe(HttpStatusCode.OK);
+  test(`Сервер вернет 201`, () => {
+    expect(response.statusCode).toBe(HttpStatusCode.CREATED);
   });
 
   test(`Текст нового комментария равен "Золотое сечение — соотношение двух величин, гармоническая пропорция"`, () => {

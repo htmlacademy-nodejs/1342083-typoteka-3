@@ -1,15 +1,13 @@
-mixin hot-item(article, index, length)
+mixin hot-item(article)
   -
     const articleId = article[ArticleKey.ID];
     const url = assembleRoute(AppRoute.ARTICLES_$ARTICLE_ID, {articleId});
     const announce = article[ArticleKey.ANNOUNCE];
     const count = article[ArticleKey.COMMENTS_COUNT];
 
-  li.hot__list-item(class={
-    "hot__list-item--margin": index === length - 2,
-    "hot__list-item--end": index === length - 1,
-  })
-    a.hot__list-link(href=url) #{truncateString(announce)}
+  li.hot__list-item
+    a.hot__list-link(href=url)
+      span.hot__link-text #{truncateString(announce)}
       sup.hot__link-sup &nbsp;#{count}
 
 section.main-page__hot.hot
@@ -19,6 +17,11 @@ section.main-page__hot.hot
   if !isPopularEmpty
     ul.hot__list
       each article, index in popularArticles
-        +hot-item(article, index, popularArticles.length)
+        +hot-item(article)
   else
     p.hot__empty Здесь пока ничего нет...
+  template#template-hot
+    li.hot__list-item
+      a.hot__list-link
+        span.hot__link-text
+        sup.hot__link-sup

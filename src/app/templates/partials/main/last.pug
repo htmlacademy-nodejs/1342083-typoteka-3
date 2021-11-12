@@ -1,4 +1,4 @@
-mixin last-item(comment, index, length)
+mixin last-item(comment)
   -
     const commentId = comment[CommentKey.ID];
     const articleId = comment[CommentKey.ARTICLE_ID];
@@ -8,7 +8,7 @@ mixin last-item(comment, index, length)
     const url = `${assembleRoute(AppRoute.ARTICLES_$ARTICLE_ID, {articleId})}#comment-${commentId}`;
     const text = comment[CommentKey.TEXT];
 
-  li.last__list-item(class={"last__list-item--end": index === length - 1})
+  li.last__list-item
     img.last__list-image(src=getUserAvatarSrc(avatar) width="20" height="20" alt="Аватар пользователя")
     b.last__list-name #{fullName}
     a.last__list-link(href=url) #{truncateString(text)}
@@ -20,6 +20,11 @@ section.main-page__last.last
   if !isLastEmpty
     ul.last__list
       each comment, index in lastComments
-        +last-item(comment, index, lastComments.length)
+        +last-item(comment)
   else
     p.last__empty Здесь пока ничего нет...
+  template#template-last
+    li.last__list-item
+      img.last__list-image(src width="20" height="20" alt="Аватар пользователя")
+      b.last__list-name
+      a.last__list-link

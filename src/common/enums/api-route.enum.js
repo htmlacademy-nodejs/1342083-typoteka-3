@@ -8,7 +8,7 @@ const {UserRoute} = require(`./user-route.enum`);
 
 const ApiRoute = {
   ARTICLES: ArticlesRoute.MAIN,
-  ARTICLES_POPULAR: `${ArticlesRoute.MAIN}${ArticlesRoute.POPULAR}`,
+  ARTICLES_POPULAR: `${ArticlesRoute.MAIN}${ArticlesRoute.HOT}`,
   ARTICLES_$ARTICLE_ID: `${ArticlesRoute.MAIN}${ArticlesRoute.$ARTICLE_ID}`,
   ARTICLES_$ARTICLE_ID_COMMENTS: `${ArticlesRoute.MAIN}${ArticlesRoute.$ARTICLE_ID_COMMENTS}`,
   COMMENTS: CommentsRoute.MAIN,

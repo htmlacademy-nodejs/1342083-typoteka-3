@@ -20,6 +20,5 @@ module.exports = (service) => async (req, res, next) => {
     return res.status(HttpStatusCode.NOT_FOUND).send(message);
   }
 
-  res.locals.comment = comment;
   return next();
 };
