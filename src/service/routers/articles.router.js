@@ -5,6 +5,7 @@ const {
   ArticlesRoute,
   HttpStatusCode,
 } = require(`../../common/enums`);
+const {adaptCommentToClient, adaptHotToClient} = require(`../../common/helpers`);
 const {commentSchema} = require(`../../common/schemas`);
 const {
   articleExist,
@@ -12,6 +13,8 @@ const {
   validateRouteParams,
   validateSchema,
 } = require(`../middlewares`);
+
+const HOT_LIMIT = 4;
 
 const articlesRouter = (app, articleService, commentService) => {
   const router = new Router();
@@ -32,10 +35,10 @@ const articlesRouter = (app, articleService, commentService) => {
 
   router.post(ArticlesRoute.ROOT, articleValidator, async (req, res) => {
     const newArticle = await articleService.create(req.body);
-    res.status(HttpStatusCode.OK).json(newArticle);
+    res.status(HttpStatusCode.CREATED).json(newArticle);
   });
 
-  router.get(ArticlesRoute.POPULAR, async (req, res) => {
+  router.get(ArticlesRoute.HOT, async (req, res) => {
     const articles = await articleService.findAllPopular(req.query.limit);
     res.status(HttpStatusCode.OK).json(articles);
   });
@@ -64,8 +67,17 @@ const articlesRouter = (app, articleService, commentService) => {
   router.post(ArticlesRoute.$ARTICLE_ID_COMMENTS,
       existMiddlewares.concat(validateSchema(commentSchema)),
       async (req, res) => {
-        const comment = await commentService.create(req.params.articleId, req.body);
-        res.status(HttpStatusCode.OK).json(comment);
+        const io = req.app.locals.socketio;
+        const [comment] = await commentService.create(req.params.articleId, req.body);
+
+        if (io) {
+          const articles = await articleService.findAllPopular(HOT_LIMIT);
+
+          io.emit(`comment:create`, adaptCommentToClient(comment));
+          io.emit(`hot:update`, articles.map(adaptHotToClient));
+        }
+
+        res.status(HttpStatusCode.CREATED).json(comment);
       });
 };
 

@@ -8,7 +8,7 @@ const ArticlesRoute = {
   CATEGORY_$CATEGORY_ID: `/category/:categoryId`,
   ADD: `/add`,
   EDIT_$ARTICLE_ID: `/edit/:articleId`,
-  POPULAR: `/popular`,
+  HOT: `/popular`,
 };
 
 module.exports = {

@@ -15,11 +15,13 @@ class CommentService {
     this._User = sequelize.models.User;
   }
 
-  create(articleId, comment) {
-    return this._Comment.create({
+  async create(articleId, comment) {
+    const newComment = await this._Comment.create({
       [CommentKey.ARTICLE_ID]: articleId,
       ...comment,
     });
+
+    return this.findOne(newComment.id);
   }
 
   async drop(commentId) {
@@ -45,7 +47,22 @@ class CommentService {
       where: {
         [CommentKey.ID]: commentId,
       },
-      raw: true,
+      include: [
+        {
+          model: this._User,
+          as: ModelAlias.USERS,
+          attributes: {
+            include: [
+              UserKey.FIRST_NAME,
+              UserKey.LAST_NAME,
+              UserKey.AVATAR,
+            ],
+            exclude: [
+              UserKey.PASSWORD_HASH,
+            ],
+          },
+        },
+      ],
     });
   }
 

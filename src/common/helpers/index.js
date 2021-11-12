@@ -1,5 +1,7 @@
 'use strict';
 
+const {adaptCommentToClient} = require(`./adapt-comment-to-client.helper`);
+const {adaptHotToClient} = require(`./adapt-hot-to-client.helper`);
 const {assembleErrors} = require(`./assemble-errors.helper`);
 const {assembleRoute} = require(`./assemble-route.helper`);
 const {calculatePagination} = require(`./calculate-pagination.helper`);
@@ -26,6 +28,8 @@ const {readContent} = require(`./read-content.helper`);
 const {truncateString} = require(`./truncate-string.helper`);
 
 module.exports = {
+  adaptCommentToClient,
+  adaptHotToClient,
   assembleErrors,
   assembleRoute,
   calculatePagination,
