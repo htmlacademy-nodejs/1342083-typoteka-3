@@ -1,11 +1,10 @@
 .new-publication__category-wrapper
   each category in categories
     -
-      const isChecked = article[ArticleKey.CATEGORIES].some((item) => item.id === category.id);
+      const isChecked = articleCategories.some((item) => item.id === category.id);
       const inputId = `${FormElementKey.CATEGORY}-${category[CategoryKey.ID]}`;
 
     .new-publication__checkbox
       input(id=inputId type="checkbox" name=FormElementKey.CATEGORY value=category[CategoryKey.ID] checked=isChecked)
       label(for=inputId) #{category[CategoryKey.NAME]}
   a.new-publication__form-link.button.button--transparent(href=AppRoute.CATEGORIES) Добавить категорию
-+form-error(validationError[FormElementKey.CATEGORY])

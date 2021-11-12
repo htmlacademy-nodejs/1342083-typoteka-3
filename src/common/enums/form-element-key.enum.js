@@ -9,12 +9,14 @@ const FormElementKey = {
   PUBLICATION_DATE: `publication-date`,
   TITLE: `title`,
   UPLOAD: `upload`,
+  UPLOAD_TEMP: `upload-temp`,
   EMAIL: `email`,
   FIRST_NAME: `first-name`,
   LAST_NAME: `last-name`,
   PASSWORD: `password`,
   PASSWORD_REPEATED: `password-repeated`,
   QUERY: `query`,
+  NAME: `name`,
 };
 
 module.exports = {

@@ -1,11 +1,11 @@
 section#comments.post__comments.comments
-  h2.comments__title.title.title--middle #{article[ArticleKey.COMMENTS].length ? "Комментарии" : "Комментарии отсутствуют"}
-  if article[ArticleKey.COMMENTS].length
+  h2.comments__title.title.title--middle #{comments.length ? "Комментарии" : "Комментарии отсутствуют"}
+  if comments.length
     ul.comments__list
-      each comment in article[ArticleKey.COMMENTS]
+      each comment in comments
         li.comments__comment(id=`comment-${comment[CommentKey.ID]}`)
           .comments__avatar.avatar
-            img(src=`/img/${comment.users[UserKey.AVATAR]}` alt="аватар пользователя")
+            img(src=getUserAvatarSrc(comment.users[UserKey.AVATAR]) alt="аватар пользователя")
           .comments__text
             .comments__head
               p #{comment.users[UserKey.FIRST_NAME]} #{comment.users[UserKey.LAST_NAME]} •
@@ -16,12 +16,13 @@ section#comments.post__comments.comments
     #comment-form.comments__footer.comments__footer--user
       form(action=`${AppFormAction.ARTICLES}/${article[ArticleKey.ID]}/comments` method="POST")
         .comments__avatar.avatar
-          img(src=`/img/${user[UserKey.AVATAR]}` alt="аватар пользователя")
+          img(src=getUserAvatarSrc(user[UserKey.AVATAR]) alt="аватар пользователя")
         label
           textarea(rows="1" name=`${CommentKey.TEXT}` placeholder="Присоединиться к обсуждению")
         button.comments__button.button.button--colored(type="submit") Опубликовать
-      if validationError
-        p.comments__error #{validationError}
+      if errors
+        each error in errors
+          p.comments__error #{error.message}
   else
     .comments__footer.comments__footer--visitor
       a.comments__button.button.button--colored(href=AppRoute.LOGIN) Войти

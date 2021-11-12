@@ -22,7 +22,9 @@ mixin pagination(page, totalPages, width = 2)
   ul.pagination&attributes(attributes)
     if start > 1
       li
-        a.pagination__button.button.button--backwards.button--disabled(href=href=`?page=${page - 1}` aria-label="Страница назад") Назад
+        a.pagination__button.button.button--backwards.button--disabled(
+          href=`?page=${page - 1}`
+          aria-label="Предыдущая страница") Назад
     while i++ < end
       if i === page
         li.pagination__item.pagination__item--active
@@ -32,4 +34,6 @@ mixin pagination(page, totalPages, width = 2)
           a(href=`?page=${i}`)= i
     if end < totalPages
       li
-        a.pagination__button.button.button--forward(href=href=`?page=${page + 1}` aria-label="Страница вперед") Вперед
+        a.pagination__button.button.button--forward(
+          href=`?page=${page + 1}`
+          aria-label="Следующая страница") Вперед

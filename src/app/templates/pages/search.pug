@@ -1,22 +1,31 @@
 extends /layouts/default.pug
 
 block content
+  -
+    const hasResults = results && results.length;
+    const notFound = results && !results.length;
+
+  mixin search-result(article)
+    -
+      const createdDate = article[ArticleKey.CREATED_DATE];
+      const url = `${AppRoute.ARTICLES}/${article[ArticleKey.ID]}`;
+      const title = formatSearchResult(article[ArticleKey.TITLE], query);
+
+    .search__result
+      time.search__date(datetime=createdDate) #{humanizeDate(createdDate)}
+      a.search__link(href=url)!= title
+
   main
     section.search-page
-      .search-page__wrapper(class={"search-page__wrapper--empty": hasResult})
+      .search-page__wrapper(class={"search-page__wrapper--empty": notFound})
         h1 Поиск
         .search.search-page__form
           form(action=AppFormAction.SEARCH method="get")
             label
               input(type="text" name=FormElementKey.QUERY placeholder="Что ищем?" value=query)
             button.search__button.button.button--transparent(type="submit") Найти
-        if hasQuery
-          if results.length
+          if hasResults
             each article in results
-              .search__result
-                time.search__date(datetime=article[ArticleKey.CREATED_DATE])
-                  | #{humanizeDate(article[ArticleKey.CREATED_DATE])}
-                a.search__link(href=`${AppRoute.ARTICLES}/${article[ArticleKey.ID]}`)
-                  != formatSearchResult(article[ArticleKey.TITLE], query)
-          else
+              +search-result(article)
+          if notFound
             p.search-page__empty Ничего не нашлось

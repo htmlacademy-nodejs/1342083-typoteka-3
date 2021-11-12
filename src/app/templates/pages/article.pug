@@ -1,6 +1,16 @@
 extends /layouts/default.pug
 
 block content
+  -
+    const articleId = article[ArticleKey.ID];
+    const createdDate = article[ArticleKey.CREATED_DATE];
+    const title = article[ArticleKey.TITLE];
+    const categories = article[ArticleKey.CATEGORIES];
+    const picture = article[ArticleKey.PICTURE];
+    const announce = article[ArticleKey.ANNOUNCE];
+    const fullText = article[ArticleKey.FULL_TEXT];
+    const editLink = assembleRoute(AppRoute.ARTICLES_EDIT_$ARTICLE_ID, {articleId});
+
   main
     section.post
       h1.visually-hidden Пост
@@ -9,15 +19,18 @@ block content
         .post__wrapper
           .post__head
             a.post__backwards.button.button--backwards(href=backHref) Назад
-            time.post__date(datetime=article[ArticleKey.CREATED_DATE])
-              | #{humanizeDate(article[ArticleKey.CREATED_DATE])}
-            h2.post__title.title.title--main #{article[ArticleKey.TITLE]}
-            +themes(article[ArticleKey.CATEGORIES]).post__themes
-          if article[ArticleKey.PICTURE]
+            time.post__date(datetime=createdDate) #{humanizeDate(createdDate)}
+            h2.post__title.title.title--main #{title}
+            +themes(categories).post__themes
+          if picture
             .post__picture
-              img(src=`/img/${article[ArticleKey.PICTURE]}` alt=article[ArticleKey.TITLE])
+              img(src=`/img/${picture}` alt=title)
           .post__text
-            p #{article[ArticleKey.ANNOUNCE]}
-            p #{article[ArticleKey.FULL_TEXT]}
+            p #{announce}
+            if fullText
+              p #{fullText}
+          if isAdmin
+          .post__edit
+            a.button.button--colored.header__button-new(href=editLink) Редактировать
       .post__wrapper.post__wrapper--comments
         include /partials/article/comments.pug

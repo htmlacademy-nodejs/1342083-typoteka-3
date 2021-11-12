@@ -1,23 +1,21 @@
 'use strict';
 
 const express = require(`express`);
-const api = require(`../api`);
-const sequelize = require(`../../common/libs/sequelize`);
 const {
   API_PREFIX,
   API_PORT,
 } = require(`../../common/constants`);
 const {
-  LoggerName,
-  HttpStatusCode,
   CliCommand,
   ExitCode,
+  HttpStatusCode,
+  LoggerName,
 } = require(`../../common/enums`);
-const {getLogger} = require(`../../common/libs/logger`);
+const {getLogger} = require(`../../common/libs/logger.lib`);
+const sequelize = require(`../../common/libs/sequelize.lib`);
+const {api} = require(`../api`);
 
-const logger = getLogger({
-  name: LoggerName.API,
-});
+const logger = getLogger({name: LoggerName.API});
 
 const app = express();
 app.use(express.urlencoded({extended: false}));

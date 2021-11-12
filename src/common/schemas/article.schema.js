@@ -2,15 +2,15 @@
 
 const Joi = require(`joi`);
 const {
-  ArticleKey,
+  AnySchemaAlias,
+  ArraySchemaAlias,
   ArticleAnnounceSizeRestrict,
   ArticleCategoriesSizeRestrict,
   ArticleFullTextSizeRestrict,
+  ArticleKey,
   ArticleTitleSizeRestrict,
-  AnySchemaAlias,
-  ArraySchemaAlias,
-  StringSchemaAlias,
   NumberSchemaAlias,
+  StringSchemaAlias,
 } = require(`../../common/enums`);
 
 const REQUIRED_MESSAGE = `Обязательное поле`;

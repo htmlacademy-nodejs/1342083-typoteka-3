@@ -14,6 +14,6 @@ block content
             .form__field
               label
                 input(type="password" name=FormElementKey.PASSWORD placeholder="Пароль")
-            if validationError
-              +form-errors(validationError, "При регистрации произошли ошибки:")
+            if errors
+              +form-errors(errors, "При регистрации произошли ошибки:")
             button.form__submit-btn.form__submit-btn--log-in.button.button--colored(type="submit") Войти

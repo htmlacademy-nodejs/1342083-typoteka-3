@@ -1,16 +1,16 @@
 'use strict';
 
-const defineCategory = require(`./category`);
-const defineUser = require(`./user`);
-const defineArticle = require(`./article`);
-const defineComment = require(`./comment`);
-const defineArticleCategory = require(`./article-category`);
 const {
   ArticleCategoryKey,
   ModelAlias,
   CommentKey,
   ArticleKey,
 } = require(`../../common/enums`);
+const defineArticle = require(`./article.model`);
+const defineArticleCategory = require(`./article-category.model`);
+const defineCategory = require(`./category.model`);
+const defineComment = require(`./comment.model`);
+const defineUser = require(`./user.model`);
 
 module.exports = (sequelize) => {
   const Article = defineArticle(sequelize);
