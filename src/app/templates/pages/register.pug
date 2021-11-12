@@ -10,51 +10,34 @@ block content
       .popup.popup--registration.popup--anti
         h2.popup__title Регистрация
         .popup__form.popup__form--active.form.form--register
-          form(action=AppFormAction.REGISTER method="POST")
+          form(action=AppFormAction.REGISTER method="POST" enctype="multipart/form-data")
             .form__field
               label
                 input(
                   type="email"
                   name=FormElementKey.EMAIL
                   placeholder="Электронная почта"
-                  value=userData[UserKey.EMAIL]
-                )
+                  value=userData[UserKey.EMAIL])
             .form__field
               label
-                input(
-                  type="text"
-                  name=FormElementKey.FIRST_NAME
-                  placeholder="Имя"
-                  value=userData[UserKey.FIRST_NAME]
-                )
+                input(type="text" name=FormElementKey.FIRST_NAME placeholder="Имя" value=userData[UserKey.FIRST_NAME])
             .form__field
               label
-                input(
-                  type="text"
-                  name=FormElementKey.LAST_NAME
-                  placeholder="Фамилия"
-                  value=userData[UserKey.LAST_NAME]
-                )
+                input(type="text" name=FormElementKey.LAST_NAME placeholder="Фамилия" value=userData[UserKey.LAST_NAME])
             .form__field
               label
-                input(
-                  type="password"
-                  name=FormElementKey.PASSWORD
-                  placeholder="Пароль"
-                )
+                input(type="password" name=FormElementKey.PASSWORD placeholder="Пароль")
             .form__field
               label
-                input(
-                  type="password"
-                  name=FormElementKey.PASSWORD_REPEATED
-                  placeholder="Повтор пароля"
-                )
+                input(type="password" name=FormElementKey.PASSWORD_REPEATED placeholder="Повтор пароля")
             .form__image-loader
               a.form__avatar.avatar
-                img(src="/img/icons/smile.svg" alt="аватар пользователя")
+                img(src=getUserAvatarSrc(userData[UserKey.AVATAR]) alt="аватар пользователя")
               label
-                input.visually-hidden(type="file" name=FormElementKey.UPLOAD)
+                input.visually-hidden(type="file" name=FormElementKey.UPLOAD value=userData[UserKey.AVATAR])
                 | Загрузить фото профиля
-            if validationError
-              +form-errors(validationError, "При регистрации произошли ошибки:")
+              if userData[UserKey.AVATAR]
+                input(type="hidden" name=FormElementKey.UPLOAD_TEMP value=userData[UserKey.AVATAR])
+            if errors
+              +form-errors(errors, "При регистрации произошли ошибки:")
             button.form__submit-btn.form__submit-btn--register.button.button--colored(type="submit") Зарегистрироваться

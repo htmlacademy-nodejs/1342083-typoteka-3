@@ -2,10 +2,13 @@ extends /layouts/admin.pug
 
 block content
   -
-    const action = isEditMode ? `${AppRoute.ARTICLES}/edit/${article[ArticleKey.ID]}` : AppFormAction.ADD_ARTICLE;
+    const articleId = article[ArticleKey.ID];
+    const articleCategories = article[ArticleKey.CATEGORIES];
+    const action = isEditMode ? assembleRoute(AppRoute.ARTICLES_EDIT_$ARTICLE_ID, {articleId}) : AppRoute.ARTICLES_ADD;
     const title = isEditMode ? "Редактирование публикации" : "Новая публикация";
     const submitButtonText = isEditMode ? "Сохранить" : "Опубликовать";
-    validationError = validationError || {};
+    errorsByName = errorsByName || {};
+    errors = errors || [];
 
   main
     section
@@ -19,7 +22,10 @@ block content
                 .new-publication__date-form-division
                   .new-publication__date-block
                     label(for="publication-date" aria-label="Календарь")
-                    input#publication-date(type="text" name=FormElementKey.PUBLICATION_DATE data-value=article[ArticleKey.CREATED_DATE])
+                    input#publication-date(
+                      type="text"
+                      name=FormElementKey.PUBLICATION_DATE
+                      data-value=article[ArticleKey.CREATED_DATE])
               button.new-publication__button.button.button--colored(type="submit") #{submitButtonText}
             a.popup__button.button.button--popup-close(href=AppRoute.MY aria-label="Отмена") Отмена
             .new-publication__form.form
@@ -27,22 +33,32 @@ block content
                 .form__field
                   label
                     input(type="text" name=FormElementKey.TITLE placeholder="Заголовок" value=article[ArticleKey.TITLE])
-                +form-error(validationError[FormElementKey.TITLE])
+                if errorsByName[ArticleKey.TITLE]
+                  +form-error(errorsByName[ArticleKey.TITLE])
                 .form__field.form__field--post-image
                   label
-                    input#image-name-field(type="text" name=FormElementKey.PICTURE placeholder="Фотография" value=article[ArticleKey.PICTURE] readonly)
+                    input#image-name-field(
+                      type="text"
+                      name=FormElementKey.PICTURE
+                      placeholder="Фотография"
+                      value=article[ArticleKey.PICTURE]
+                      readonly)
                   .form__image-loader.form__image-loader--publication
                     label
                       input.visually-hidden(type="file" name=FormElementKey.UPLOAD)
                       | Обзор
                 include /partials/admin/article/categories.pug
+                if errorsByName[ArticleKey.CATEGORIES]
+                  +form-error(errorsByName[ArticleKey.CATEGORIES])
               .form__wrapper.form__wrapper--text
                 .form__field.form__field--publication-text
                   label
-                    textarea(rows="5" name=FormElementKey.ANNOUNCE placeholder="Анонс публикации") #{article[ArticleKey.ANNOUNCE]}
-                +form-error(validationError[FormElementKey.ANNOUNCE])
+                    textarea(rows="5" name=FormElementKey.ANNOUNCE placeholder="Анонс публикации")
+                      | #{article[ArticleKey.ANNOUNCE]}
+                if errorsByName[ArticleKey.ANNOUNCE]
+                  +form-error(errorsByName[ArticleKey.ANNOUNCE])
                 .form__field.form__field--publication-text
                   label
-                    textarea(rows="10" name=FormElementKey.FULL_TEXT placeholder="Полный текст публикации") #{article[ArticleKey.FULL_TEXT]}
-                  +form-error(validationError[FormElementKey.FULL_TEXT])
-              +form-errors(validationError)
+                    textarea(rows="10" name=FormElementKey.FULL_TEXT placeholder="Полный текст публикации")
+                      | #{article[ArticleKey.FULL_TEXT]}
+              +form-errors(errors)

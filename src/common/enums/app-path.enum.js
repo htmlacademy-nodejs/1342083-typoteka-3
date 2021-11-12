@@ -1,9 +1,9 @@
 'use strict';
 
 const AppPath = {
-  VIEWS_PATH: `templates`,
-  PUBLIC_PATH: `public`,
-  UPLOAD_PATH: `upload`,
+  VIEWS: `templates`,
+  PUBLIC: `public`,
+  UPLOAD: `upload`,
 };
 
 module.exports = {

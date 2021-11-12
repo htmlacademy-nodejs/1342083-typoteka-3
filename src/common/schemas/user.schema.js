@@ -2,9 +2,9 @@
 
 const Joi = require(`joi`);
 const {
-  UserKey,
-  StringSchemaAlias,
   AnySchemaAlias,
+  StringSchemaAlias,
+  UserKey,
 } = require(`../enums`);
 
 const MIN_PASSWORD_LENGTH = 6;

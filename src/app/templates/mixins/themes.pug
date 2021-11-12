@@ -3,12 +3,13 @@ mixin themes(categories, activeCategory)
     each category in categories
       -
         const isActive = category[CategoryKey.ID] === activeCategory;
-        const hasCount = Boolean(category[CategoryKey.COUNT]);
+        const categoryId = category[CategoryKey.ID];
+        const url = assembleRoute(AppRoute.ARTICLES_CATEGORY_$CATEGORY_ID, {categoryId});
+        const name = category[CategoryKey.NAME];
+        const count = category[CategoryKey.COUNT];
+        const hasCount = Boolean(count);
 
       li.themes__item
-        a.themes__item-link(
-          class={"themes__item-link--active": isActive}
-          href=`${AppRoute.CATEGORY}/${category[CategoryKey.ID]}`)
-          | #{category[CategoryKey.NAME]}
+        a.themes__item-link(class={"themes__item-link--active": isActive} href=url) #{name}
           if hasCount
-            sup &nbsp;#{category[CategoryKey.COUNT]}
+            sup &nbsp;#{count}

@@ -1,15 +1,19 @@
 'use strict';
 
 const chulk = require(`chalk`);
-const {getLogger} = require(`../../common/libs/logger`);
-const sequelize = require(`../../common/libs/sequelize`);
-const generateMocks = require(`../libs/generate-mocks`);
-const initDb = require(`../libs/init-db`);
+const {getLogger} = require(`../../common/libs/logger.lib`);
+const sequelize = require(`../../common/libs/sequelize.lib`);
+const generateMocks = require(`../libs/generate-mocks.lib`);
+const initDb = require(`../libs/init-db.lib`);
 const {
   CliCommand,
   ExitCode,
-  ArticleCountRestrict,
 } = require(`../../common/enums`);
+
+const ArticlesCountRestrict = {
+  MIN: 10,
+  MAX: 1000,
+};
 
 const logger = getLogger();
 
@@ -26,10 +30,10 @@ module.exports = {
     logger.info(`Connection to database established`);
 
     const [count] = args;
-    const articleCount = Number.parseInt(count, 10) || ArticleCountRestrict.MIN;
+    const articleCount = Number.parseInt(count, 10) || ArticlesCountRestrict.MIN;
 
-    if (articleCount > ArticleCountRestrict.MAX) {
-      console.error(chulk.red(`Не больше ${ArticleCountRestrict.MAX} публикаций.`));
+    if (articleCount > ArticlesCountRestrict.MAX) {
+      console.error(chulk.red(`Не больше ${ArticlesCountRestrict.MAX} публикаций.`));
       process.exit(ExitCode.ERROR);
     }
 

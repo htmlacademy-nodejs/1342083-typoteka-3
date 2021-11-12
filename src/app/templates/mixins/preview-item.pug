@@ -1,20 +1,36 @@
 mixin preview-item(article)
-  li.preview__item(class={"preview__item--noimage": !article[ArticleKey.PICTURE]})
+  -
+    const articleId = article[ArticleKey.ID];
+    const picture = article[ArticleKey.PICTURE];
+    const categories = article[ArticleKey.CATEGORIES];
+    const title = truncateString(article[ArticleKey.TITLE]);
+    const createdDate = article[ArticleKey.CREATED_DATE];
+    const articleUrl = assembleRoute(AppRoute.ARTICLES_$ARTICLE_ID, {articleId});
+    const announce = article[ArticleKey.ANNOUNCE];
+    const comments = article[ArticleKey.COMMENTS];
+
+  mixin breadcrumbs-item(category)
+    -
+      const categoryId = category[CategoryKey.ID];
+      const categoryUrl = assembleRoute(AppRoute.ARTICLES_CATEGORY_$CATEGORY_ID, {categoryId});
+      const name = category[CategoryKey.NAME];
+
+    li.preview__breadcrumbs-item
+      a.preview__breadcrumbs-link(href=categoryUrl) #{name}
+
+  li.preview__item(class={"preview__item--noimage": !picture})
     ul.preview__breadcrumbs
-      each category in article[ArticleKey.CATEGORIES]
-        li.preview__breadcrumbs-item
-          a.preview__breadcrumbs-link(href=`${AppRoute.CATEGORY}/${category[CategoryKey.ID]}`) #{category[CategoryKey.NAME]}
-    if article[ArticleKey.PICTURE]
+      each category in categories
+        +breadcrumbs-item(category, articleId)
+    if picture
       .preview__background
-        img.preview__background-image(src=`/img/${article[ArticleKey.PICTURE]}` width="460" height="240" alt=article[ArticleKey.TITLE])
-    time.preview__time(datetime=article[ArticleKey.CREATED_DATE])
-      | #{humanizeDate(article[ArticleKey.CREATED_DATE])}
+        img.preview__background-image(src=`/img/${picture}` width="460" height="240" alt=title)
+    time.preview__time(datetime=createdDate) #{humanizeDate(createdDate)}
     h3.preview__name
-      a.preview__name-link(href=`${AppRoute.ARTICLES}/${article[ArticleKey.ID]}`)
-        | #{truncateString(article[ArticleKey.TITLE])}
-    if article[ArticleKey.ANNOUNCE]
-      p.preview__text #{article[ArticleKey.ANNOUNCE]}
-    a.preview__comment(href=`${AppRoute.ARTICLES}/${article[ArticleKey.ID]}#comments`)
+      a.preview__name-link(href=articleUrl) #{title}
+    if announce
+      p.preview__text #{announce}
+    a.preview__comment(href=`${articleUrl}#comments`)
       | Комментарии
       span.preview__cloud
-      b.preview__comment-count &nbsp;#{article[ArticleKey.COMMENTS].length}
+      b.preview__comment-count &nbsp;#{comments.length}

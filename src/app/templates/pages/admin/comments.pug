@@ -3,23 +3,28 @@ extends /layouts/admin.pug
 block content
   mixin publication-item(comment)
     -
-      const user = comment.users;
-      const avatar = user.avatar ? `/img/${user.avatar}` : "/img/icons/smile.svg";
-      const fullName = `${user.firstName} ${user.lastName}`;
-      const createdDate = comment.createdDate;
-      const url = `/articles/${comment.articles.id}#comment-${comment.id}`
-      const title = comment.articles.title;
-      const text = comment.text;
+      const commentId = comment[CommentKey.ID];
+      const user = comment[CommentKey.USERS];
+      const avatar = user[UserKey.AVATAR];
+      const fullName = `${user[UserKey.FIRST_NAME]} ${user[UserKey.LAST_NAME]}`;
+      const createdDate = comment[CommentKey.CREATED_DATE];
+      const article = comment[CommentKey.ARTICLES];
+      const articleId = article[ArticleKey.ID];
+      const url = `${assembleRoute(AppRoute.ARTICLES_$ARTICLE_ID, {articleId})}#comment-${commentId}`;
+      const title = article[ArticleKey.TITLE];
+      const text = comment[CommentKey.TEXT];
+      const action = assembleRoute(AppRoute.MY_COMMENTS_$COMMENT_ID, {commentId});
 
     li.publication__list-item
-      .publication__header
-        img.publication__list-image(src=avatar width="20" height="20" alt="Аватар пользователя")
-        b.publication__list-name= fullName
-        time.publication__item-time(datetime=createdDate) #{humanizeDate(createdDate, true)}
-      a.publication__item-text(href=url) #{text}
-      p.publication__text-strong #{title}
-      button.publication__button.button.button--close-item(type="button")
-        span.visually-hidden Удалить
+      form.form(action=action method="POST")
+        .publication__header
+          img.publication__list-image(src=getUserAvatarSrc(avatar) width="20" height="20" alt="Аватар пользователя")
+          b.publication__list-name= fullName
+          time.publication__item-time(datetime=createdDate) #{humanizeDate(createdDate, true)}
+        a.publication__item-text(href=url) #{text}
+        p.publication__text-strong #{title}
+        button.publication__button.button.button--close-item(type="submit")
+          span.visually-hidden Удалить
 
   main.main-page.main-page--padding
     if comments.length

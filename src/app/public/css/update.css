@@ -107,3 +107,22 @@
 .search__result:last-child {
   margin-bottom: 0;
 }
+
+/* category */
+
+.category__list-item {
+  flex-wrap: wrap;
+}
+
+/* avatar */
+
+.avatar {
+  overflow: hidden;
+}
+
+/* post */
+
+.post__edit {
+  padding-left: 140px;
+  padding-top: 34px;
+}

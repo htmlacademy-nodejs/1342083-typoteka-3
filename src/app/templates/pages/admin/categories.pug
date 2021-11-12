@@ -2,26 +2,40 @@ extends /layouts/admin.pug
 
 block content
   -
-    validationErrors = validationErrors || [];
+    errors = errors || {};
+
+  mixin category-item(category)
+    -
+      const categoryId = category[CategoryKey.ID];
+      const value = category[CategoryKey.NAME];
+      const elementId = `${FormElementKey.CATEGORY}-${categoryId}`;
+      const action = `${AppFormAction.CATEGORIES}/${categoryId}`;
+
+    li.category__list-item
+      form.form(action=action method="POST")
+        label(for=elementId)
+          span.visually-hidden Редактировать категорию
+        input(id=elementId type="text" name=FormElementKey.NAME value=value)
+        button.category__button.button.button--category(type="submit" name="action" value=AdminAction.UPDATE) Сохранить
+        button.category__button.button.button--category(type="submit" name="action" value=AdminAction.DELETE) Удалить
+      if invalidCategoryId === categoryId
+        .form__validation-error
+          .form__errors
+            each error in errors
+              p.form__error.form__error-message #{error.message}
 
   main.main-page.main-page--padding
     section.main-page__category.category
       h1.category__title Категории
       .category__add-form.form
-        form(action=AppFormAction.ADD_CATEGORY method="POST")
-          input#add-category(type="text" name="name" placeholder="Новая категория")
+        form(action=AppFormAction.CATEGORIES method="POST")
+          input#add-category(type="text" name="name" placeholder="Новая категория" value=categoryName)
           label(for="add-category")
             span.visually-hidden Добавить категорию
-          button.category__button.button.button--category(type="submit") Добавить
-        +form-errors(validationErrors)
+          button.category__button.button.button--category(type="submit" value=AdminAction.ADD) Добавить
+        if isAddErrors
+          +form-errors(errors)
       if categories.length
         ul.category__list
           each category in categories
-            li.category__list-item
-              form(action=AppFormAction.EDIT_CATEGORY method="POST")
-                - const elId = `${FormElementKey.CATEGORY}-${category[CategoryKey.ID]}`;
-                label(for=elId)
-                  span.visually-hidden Редактировать категорию
-                input(id=elId type="text" name=FormElementKey.CATEGORY value=category[CategoryKey.NAME])
-                button.category__button.button.button--category(type="submit") Сохранить
-                button.category__button.button.button--category(type="button") Удалить
+            +category-item(category)

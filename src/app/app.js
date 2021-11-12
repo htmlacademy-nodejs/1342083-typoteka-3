@@ -1,114 +1,72 @@
 'use strict';
 
-const {SESSION_SECRET} = process.env;
 const path = require(`path`);
 const express = require(`express`);
-const session = require(`express-session`);
-const sequelize = require(`../common/libs/sequelize`);
-const SequelizeStore = require(`connect-session-sequelize`)(session.Store);
 const {
-  mainRoutes,
-  myRoutes,
-  articlesRoutes,
-} = require(`./routes`);
-const {getLogger} = require(`../common/libs/logger`);
+  articlesRouter,
+  mainRouter,
+  myRouter,
+} = require(`./routers`);
 const {APP_PORT} = require(`../common/constants`);
 const {
-  LoggerName,
+  AdminAction,
+  AppFormAction,
   AppPath,
   AppRoute,
-  AppFormAction,
   ArticleKey,
   CategoryKey,
   CommentKey,
-  UserKey,
-  UserType,
-  HttpStatusCode,
-  AppPage,
   FormElementKey,
+  UserKey,
 } = require(`../common/enums`);
 const {
-  truncateString,
-  humanizeDate,
+  assembleRoute,
+  checkIsUserAdmin,
   formatSearchResult,
+  getUserAvatarSrc,
+  humanizeDate,
+  truncateString,
 } = require(`../common/helpers`);
-
-const SessionStore = {
-  EXPIRATION: 180000,
-  EXPIRATION_INTERVAL: 60000,
-};
-
-if (!SESSION_SECRET) {
-  throw new Error(`SESSION_SECRET environment variable is not defined`);
-}
-
-const sessionStore = new SequelizeStore({
-  db: sequelize,
-  expiration: SessionStore.EXPIRATION,
-  checkExpirationInterval: SessionStore.EXPIRATION_INTERVAL,
-});
-
-sequelize.sync({force: false});
+const {
+  internalServerError,
+  notFound,
+} = require(`./errors`);
+const {session} = require(`./session`);
 
 const app = express();
 app.use(express.urlencoded({extended: false}));
-app.use(session({
-  secret: SESSION_SECRET,
-  store: sessionStore,
-  resave: false,
-  proxy: true,
-  saveUninitialized: false,
-  cookie: {
-    sameSite: `strict`,
-  },
-}));
-
-const logger = getLogger({
-  name: LoggerName.APP,
-});
+app.use(session);
 
 app.set(`view engine`, `pug`);
-app.set(`views`, path.resolve(__dirname, AppPath.VIEWS_PATH));
+app.set(`views`, path.resolve(__dirname, AppPath.VIEWS));
 
 app.locals = {
   ...app.locals,
-  basedir: path.join(__dirname, AppPath.VIEWS_PATH),
-  truncateString,
-  humanizeDate,
-  formatSearchResult,
-  AppRoute,
+  basedir: path.join(__dirname, AppPath.VIEWS),
+  AdminAction,
   AppFormAction,
+  AppRoute,
   ArticleKey,
   CategoryKey,
   CommentKey,
-  UserKey,
-  UserType,
   FormElementKey,
+  UserKey,
+  assembleRoute,
+  checkIsUserAdmin,
+  formatSearchResult,
+  getUserAvatarSrc,
+  humanizeDate,
+  truncateString,
 };
 
-app.use(express.static(path.resolve(__dirname, AppPath.PUBLIC_PATH)));
-app.use(express.static(path.resolve(__dirname, AppPath.UPLOAD_PATH)));
+app.use(express.static(path.resolve(__dirname, AppPath.PUBLIC)));
+app.use(express.static(path.resolve(__dirname, AppPath.UPLOAD)));
 
-app.use(AppRoute.ARTICLES, articlesRoutes);
-app.use(AppRoute.MY, myRoutes);
-app.use(AppRoute.MAIN, mainRoutes);
+app.use(AppRoute.ARTICLES, articlesRouter);
+app.use(AppRoute.MAIN, mainRouter);
+app.use(AppRoute.MY, myRouter);
 
-app.use((req, res) => {
-  logger.error(req);
-  res.status(HttpStatusCode.NOT_FOUND).render(AppPage.ERROR_404, {
-    account: {
-      error: HttpStatusCode.NOT_FOUND,
-    },
-  });
-});
-
-app.use((err, _req, res, _next) => {
-  logger.error(err);
-  res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).render(AppPage.ERROR_500, {
-    account: {
-      error: HttpStatusCode.INTERNAL_SERVER_ERROR,
-    },
-  });
-});
+app.use(notFound);
+app.use(internalServerError);
 
 app.listen(process.env.APP_PORT || APP_PORT);

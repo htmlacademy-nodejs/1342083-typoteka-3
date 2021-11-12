@@ -7,7 +7,7 @@ const {
   API_TIMEOUT,
 } = require(`../common/constants`);
 const {
-  ApiUrl,
+  ApiRoute,
   HttpRequestMethod,
   RouteParam,
 } = require(`../common/enums`);
@@ -21,8 +21,44 @@ class API {
     });
   }
 
+  getArticle(id) {
+    const url = assembleRoute(ApiRoute.ARTICLES_$ARTICLE_ID, {
+      [RouteParam.ARTICLE_ID]: id,
+    });
+
+    return this._load(url);
+  }
+
+  createArticle(data) {
+    return this._load(ApiRoute.ARTICLES, {
+      method: HttpRequestMethod.POST,
+      data,
+    });
+  }
+
+  deleteArticle(id) {
+    const url = assembleRoute(ApiRoute.ARTICLES_$ARTICLE_ID, {
+      [RouteParam.ARTICLE_ID]: id,
+    });
+
+    return this._load(url, {
+      method: HttpRequestMethod.DELETE,
+    });
+  }
+
+  updateArticle(id, data) {
+    const url = assembleRoute(ApiRoute.ARTICLES_$ARTICLE_ID, {
+      [RouteParam.ARTICLE_ID]: id,
+    });
+
+    return this._load(url, {
+      method: HttpRequestMethod.PUT,
+      data,
+    });
+  }
+
   getArticles({limit, offset}) {
-    return this._load(ApiUrl.ARTICLES, {
+    return this._load(ApiRoute.ARTICLES, {
       params: {
         limit,
         offset,
@@ -31,7 +67,7 @@ class API {
   }
 
   getPopularArticles(limit) {
-    return this._load(ApiUrl.ARTICLES_POPULAR, {
+    return this._load(ApiRoute.ARTICLES_POPULAR, {
       params: {
         limit,
       },
@@ -39,7 +75,7 @@ class API {
   }
 
   getArticlesByCategory({categoryId, limit, offset}) {
-    const url = assembleRoute(ApiUrl.CATEGORIES_$CATEGORY_ARTICLES, {
+    const url = assembleRoute(ApiRoute.CATEGORIES_$CATEGORY_ID_ARTICLES, {
       [RouteParam.CATEGORY_ID]: categoryId,
     });
 
@@ -51,34 +87,29 @@ class API {
     });
   }
 
-  getArticle(id) {
-    const url = assembleRoute(ApiUrl.ARTICLES_$ARTICLE, {
-      [RouteParam.ARTICLE_ID]: id,
-    });
-
-    return this._load(url);
-  }
-
-  updateArticle(id, article) {
-    const url = assembleRoute(ApiUrl.ARTICLES_$ARTICLE, {
+  createComment(id, data) {
+    const url = assembleRoute(ApiRoute.ARTICLES_$ARTICLE_ID_COMMENTS, {
       [RouteParam.ARTICLE_ID]: id,
     });
 
     return this._load(url, {
-      method: HttpRequestMethod.PUT,
-      data: article,
+      method: HttpRequestMethod.POST,
+      data,
     });
   }
 
-  createArticle(article) {
-    return this._load(ApiUrl.ARTICLES, {
-      method: HttpRequestMethod.POST,
-      data: article,
+  deleteComment(commentId) {
+    const url = assembleRoute(ApiRoute.COMMENTS_$COMMENT, {
+      [RouteParam.COMMENT_ID]: commentId,
+    });
+
+    return this._load(url, {
+      method: HttpRequestMethod.DELETE,
     });
   }
 
   getComents({limit, offset}) {
-    return this._load(ApiUrl.ARTICLES_COMMENTS, {
+    return this._load(ApiRoute.COMMENTS, {
       params: {
         limit,
         offset,
@@ -87,41 +118,51 @@ class API {
   }
 
   getCommentsByArticle(id) {
-    const url = assembleRoute(ApiUrl.ARTICLES_$ARTICLE_COMMENTS, {
+    const url = assembleRoute(ApiRoute.ARTICLES_$ARTICLE_ID_COMMENTS, {
       [RouteParam.ARTICLE_ID]: id,
     });
 
     return this._load(url);
   }
 
-  createComment(id, comment) {
-    const url = assembleRoute(ApiUrl.ARTICLES_$ARTICLE_COMMENTS, {
-      [RouteParam.ARTICLE_ID]: id,
-    });
-
-    return this._load(url, {
-      method: HttpRequestMethod.POST,
-      data: comment,
-    });
-  }
-
   getCategory(id) {
-    const url = assembleRoute(ApiUrl.CATEGORIES_$CATEGORY, {
+    const url = assembleRoute(ApiRoute.CATEGORIES_$CATEGORY_ID, {
       [RouteParam.CATEGORY_ID]: id,
     });
 
     return this._load(url);
   }
 
-  createCategory(category) {
-    return this._load(ApiUrl.CATEGORIES, {
+  createCategory(data) {
+    return this._load(ApiRoute.CATEGORIES, {
       method: HttpRequestMethod.POST,
-      data: category,
+      data,
+    });
+  }
+
+  deleteCategory(id) {
+    const url = assembleRoute(ApiRoute.CATEGORIES_$CATEGORY_ID, {
+      [RouteParam.CATEGORY_ID]: id,
+    });
+
+    return this._load(url, {
+      method: HttpRequestMethod.DELETE,
+    });
+  }
+
+  updateCategory(id, data) {
+    const url = assembleRoute(ApiRoute.CATEGORIES_$CATEGORY_ID, {
+      [RouteParam.CATEGORY_ID]: id,
+    });
+
+    return this._load(url, {
+      method: HttpRequestMethod.PUT,
+      data,
     });
   }
 
   getCategories(needCount) {
-    return this._load(ApiUrl.CATEGORIES, {
+    return this._load(ApiRoute.CATEGORIES, {
       params: {
         needCount,
       },
@@ -129,22 +170,22 @@ class API {
   }
 
   search(query) {
-    return this._load(ApiUrl.SEARCH, {
+    return this._load(ApiRoute.SEARCH, {
       params: {
         query,
       },
     });
   }
 
-  createUser(user) {
-    return this._load(ApiUrl.USER, {
+  createUser(data) {
+    return this._load(ApiRoute.USER, {
       method: HttpRequestMethod.POST,
-      data: user,
+      data,
     });
   }
 
   login(email, password) {
-    return this._load(ApiUrl.USER_AUTH, {
+    return this._load(ApiRoute.USER_AUTH, {
       method: HttpRequestMethod.POST,
       data: {email, password},
     });
@@ -159,7 +200,8 @@ class API {
   }
 }
 
-const url = `http://localhost:${process.env.API_PORT || API_PORT}${API_PREFIX}`;
+const port = process.env.API_PORT || API_PORT;
+const url = `http://localhost:${port}${API_PREFIX}`;
 const defaultAPI = new API(url, API_TIMEOUT);
 
 module.exports = {

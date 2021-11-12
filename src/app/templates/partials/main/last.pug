@@ -1,14 +1,25 @@
+mixin last-item(comment, index, length)
+  -
+    const commentId = comment[CommentKey.ID];
+    const articleId = comment[CommentKey.ARTICLE_ID];
+    const user = comment[CommentKey.USERS];
+    const avatar = user[UserKey.AVATAR];
+    const fullName = `${user[UserKey.FIRST_NAME]} ${user[UserKey.LAST_NAME]}`;
+    const url = `${assembleRoute(AppRoute.ARTICLES_$ARTICLE_ID, {articleId})}#comment-${commentId}`;
+    const text = comment[CommentKey.TEXT];
+
+  li.last__list-item(class={"last__list-item--end": index === length - 1})
+    img.last__list-image(src=getUserAvatarSrc(avatar) width="20" height="20" alt="Аватар пользователя")
+    b.last__list-name #{fullName}
+    a.last__list-link(href=url) #{truncateString(text)}
+
 section.main-page__last.last
   h2.last__name
     | Последние комментарии&nbsp;
     span.last__icon.last__icon--cloud
-  if lastComments.length
+  if !isLastEmpty
     ul.last__list
       each comment, index in lastComments
-        li.last__list-item(class={"last__list-item--end": index === lastComments.length - 1})
-          img.last__list-image(src="/img/avatar-2.png" width="20" height="20" alt="Аватар пользователя")
-          b.last__list-name Анна Артамонова
-          a.last__list-link(href=`${AppRoute.ARTICLES}/${comment[CommentKey.ARTICLE_ID]}#comment-${comment[CommentKey.ID]}`)
-            | #{truncateString(comment[CommentKey.TEXT])}
+        +last-item(comment, index, lastComments.length)
   else
     p.last__empty Здесь пока ничего нет...

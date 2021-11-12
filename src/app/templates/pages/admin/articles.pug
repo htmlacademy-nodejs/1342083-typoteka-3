@@ -1,18 +1,28 @@
 extends /layouts/admin.pug
 
 block content
+  mixin notes-item(article)
+    -
+      const articleId = article[ArticleKey.ID];
+      const action = assembleRoute(AppRoute.MY_$ARTICLE_ID, {articleId});
+      const url = assembleRoute(AppRoute.ARTICLES_$ARTICLE_ID, {articleId});
+      const createdDate = article[ArticleKey.CREATED_DATE];
+      const title = article[ArticleKey.TITLE];
+
+    li.notes__list-item
+      form.form(action=action method="POST")
+        time.notes__item-time(datetime=createdDate) #{humanizeDate(createdDate)}
+        a.notes__item-text(href=url) #{title}
+        button.notes__button.button.button--close-item(type="subbmit")
+          span.visually-hidden Удалить
+
   main.main-page.main-page--padding
     if articles.length
       section.main-page__notes.notes
         h1.notes__title Мои записи
         ul.notes__list
           each article in articles
-            li.notes__list-item
-              time.notes__item-time(datetime=article[ArticleKey.CREATED_DATE])
-                | #{humanizeDate(article[ArticleKey.CREATED_DATE])}
-              a.notes__item-text(href=`${AppRoute.ARTICLES}/${article[ArticleKey.ID]}`) #{article[ArticleKey.TITLE]}
-              button.notes__button.button.button--close-item(type="button")
-                span.visually-hidden Закрыть строку списка
+            +notes-item(article)
       .notes__toggle-wrapper
         +pagination(page, totalPages).notes__pagination
     else
