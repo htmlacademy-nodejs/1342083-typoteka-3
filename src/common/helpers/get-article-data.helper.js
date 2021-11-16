@@ -9,17 +9,11 @@ const {ensureArray} = require(`./ensure-array.helper`);
 
 const getArticleData = (body, file) => {
   const createdDate = new Date(body[FormElementKey.PUBLICATION_DATE]).toISOString();
-  const categories = ensureArray(body[FormElementKey.CATEGORY])
-    .map((category) => ({
-      [CategoryKey.ID]: Number(category),
-    }));
-  let picture = null;
+  const categories = ensureArray(body[FormElementKey.CATEGORY]).map((category) => ({
+    [CategoryKey.ID]: Number(category),
+  }));
+  const picture = file?.filename ?? body[FormElementKey.PICTURE] ?? null;
 
-  if (file) {
-    picture = file.filename;
-  } else if (body[FormElementKey.PICTURE]) {
-    picture = body[FormElementKey.PICTURE];
-  }
 
   return {
     [ArticleKey.TITLE]: body[FormElementKey.TITLE],

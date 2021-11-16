@@ -8,15 +8,7 @@ const {
 const getUserData = (body, file) => {
   const upload = body[FormElementKey.UPLOAD];
   const uploadTemp = body[FormElementKey.UPLOAD_TEMP];
-  let avatar = null;
-
-  if (file) {
-    avatar = file.filename;
-  } else if (upload) {
-    avatar = upload;
-  } else if (!upload && uploadTemp) {
-    avatar = uploadTemp;
-  }
+  const avatar = file?.filename ?? upload ?? uploadTemp ?? null;
 
   const userData = {
     [UserKey.EMAIL]: body[FormElementKey.EMAIL],
